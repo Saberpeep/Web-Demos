@@ -9,7 +9,15 @@ $("#button1").click(function(){
     
     var randomrow = Math.floor((Math.random() * 5) + 1);
     var randomdir = Math.floor((Math.random() * 3) + 1);
-    cubesruntext($("#input1").val(),randomdir,randomrow);
+    var words = $("#input1").val().split(" ");
+    var i = 0;
+    var inputinterval = setInterval(function(){
+        cubesruntext(words[i],randomdir,randomrow); 
+        i++;
+        if (i >= words.length){
+            clearInterval(inputinterval);
+        }
+    },800);
     
     $("#button1").removeAttr("disabled");
 });
