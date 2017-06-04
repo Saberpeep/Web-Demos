@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>CoSci554 Lab Pages - Julian Dymer</title>
+		<link href="images/favicon.png" rel="icon" />
+		<link href="https://fonts.googleapis.com/css?family=Alegreya+Sans|Droid+Sans|Roboto+Slab" rel="stylesheet">
+		<style>
+			body {
+				background-color:#686A75;
+				font-family: 'Droid Sans', sans-serif;
+				margin:3%;
+			}
+			header {
+				background-color:#222633;
+				color:white;
+				font-weight: 300;
+				padding-top:5px;
+				padding-bottom:5px;
+				text-align: center;
+			}
+			header h1 {
+				font-family: 'Roboto Slab', serif;
+			}
+			header h2 {
+				font-family: 'Alegreya Sans', sans-serif;
+			}
+			header * {
+				font-weight: 300;
+			}
+			section#main {
+				background-color:#EDECF8;
+				color:#4C4B4F;
+				padding: 10px 20px 10px 20px;
+				overflow:hidden;
+				position:relative;
+                min-height: 400px;
+			}
+			section#main article, section#main section {
+				position:relative;
+				z-index:2;
+			}
+			section#main h3 {
+				background-color:#4C4B4F;
+				color:#EDECF8;
+				font-family: 'Alegreya Sans', sans-serif;
+				font-weight: 300;
+				letter-spacing: 0.5px;
+				padding:5px;
+				padding-left:10px;
+				float:left;
+				clear:right;
+				box-sizing:border-box;
+				height:30px;
+				/*the width of the .labGroup minus the 30px of the colored box*/
+				width:570px;
+				margin-top:0px;
+			}
+			section#main .box {
+				float:left;
+				clear:left;
+				box-sizing:border-box;
+				height:30px;
+				width:30px;
+				margin-top:0px;
+				padding-left:7.5px;
+				/*these next two need to work in conjunction*/
+				padding-bottom:3px;
+				font-size:27px;
+				color:white;
+			}
+			section#main .box#red {
+				background-color:red;
+			}
+			section#main .box#green {
+				background-color:green;
+			}
+			section#main .box#blue {
+				background-color:blue;
+			}
+			section#main .box#orange {
+				background-color:orange;
+			}
+			section#main .box#purple {
+				background-color:purple;
+			}
+			section#main .lab {
+				overflow:hidden;
+				height:30px;
+				margin-bottom:10px;
+				clear:both;
+			}
+			section#main .labGroup {
+				background-color:white;
+				/*must also change with width of grey boxes (see above)*/
+				width:600px;
+				margin-bottom:10px;
+				overflow:hidden;
+			}
+			section#main .parts{
+				padding-bottom:10px;
+				margin-left:30px;
+				overflow:hidden;
+			}
+			section#main .parts a{
+				float:left;
+				clear:both;
+				margin-bottom:5px;
+			}
+			hr {
+				border:none;
+				height:1px;
+				background-color:#FFF8EA;
+			}
+			strong {
+				font-weight:700;
+			}
+			a {
+				color:rgb(100,100,181);
+			}
+			a:visited {
+				color:rgb(134,138,151);
+			}
+			a:hover {
+				color:rgb(134,138,220);
+			}
+			#sideimg {
+				width:50%;
+				position:absolute;
+				top: 20px;
+				right:20px;	
+			}
+			
+		</style>
+	</head>
+
+	<body>
+		<header>
+			<hr />
+			<h1>Web Demos</h1>
+			<h2>by Julian Dymer</h2>
+			<hr />
+		</header>
+		<section id="main">
+			<article class="labGroup">
+				<section class="lab">
+					<p class="box" id="red">1</p>
+					<h3><strong>Isometric</strong></h3>
+				</section>
+				<section class="parts" id="lab1">
+					<a href="#">Launch Demo ></a>
+				</section>
+			</article>
+			
+			<img id="sideimg" src="images/codebg.png" alt="" />
+		</section>
+	</body>
+</html>
