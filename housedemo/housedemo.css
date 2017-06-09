@@ -1,0 +1,195 @@
+html {font-size: 6.022em;} /* baseline font size */
+
+body {
+    font-size: 50%; /* needs to be % of 200 that cube dimentions are */
+    line-height: 1;
+}
+
+#demowrap {
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+}
+
+#demowrap{
+    transform-style: preserve-3d;
+}
+
+.plane {
+    width: 500px;/*must be 5x cube width*/
+    height: 500px;/*must be 5x cube height*/
+    margin:100px auto;
+    background-color: rgb(99, 155, 93);
+    border-radius: 250px;
+    transform-style: preserve-3d;
+    transform:  rotateX(60deg) rotateY(0deg) rotateZ(-45deg)
+                    translate3d(0px,0px,0px);
+    text-align:center;
+}
+
+.housewrap{
+    transform-style: preserve-3d;
+    width: 100px;
+    height: 100px;
+    display:inline-block;
+    margin: auto auto;
+    vertical-align: middle;
+    
+    position:relative;
+    
+}
+.plane:before {
+    content: '';
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+}
+
+.housewrap .cubewrap{
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 100%;
+    margin: 0;
+}
+
+.cubewrap{
+    width: 100px; /*if changing these, remember than change font size and all transforms (currently the ones that say 50px)*/
+    height: 100px;
+    margin: 0 0;
+    float:left;
+    transform-style: preserve-3d;
+    background-color:rgb(50, 50, 50);
+    background-color:rgba(0, 0, 0, 0.3);
+    
+    position:absolute;
+    top:0;
+    left:0;
+}
+.cube {
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    /*default vertical height*/
+    transform:  translate3d(0,0,50px);
+}
+.cubewrap, .cube{
+    transition: all 0.5s;
+}
+.side{
+    transition: all 0.2s;
+}
+
+/*#cube2 .vertical-adj{
+    transform: translateZ(300px);
+}
+#cube9 .vertical-adj{
+    transform: translateZ(300px);
+}
+#cube9.horizontal-adj{
+    margin-top:400px;
+}*/
+
+.side {
+    position: absolute;
+    top:0;
+    left:0;
+    width: 100%;
+    height: 100%;
+
+    background-color: white;
+    /*border: 2px solid black;*/
+
+    color: black; 
+    text-align: center;
+    line-height: 2em;
+    overflow:hidden;
+    
+    text-align: center;
+    white-space: nowrap;
+}
+.side:before {
+    content: '';
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+}
+
+.side p{
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 100%;
+    margin: 0;
+}
+
+/*
+background-color: rgb(244, 244, 244);
+background-color: rgb(222, 222, 222);
+background-color: rgb(211, 211, 211);
+*/
+
+/*makes sides into cubes*/
+.top    { transform:                  translateZ(50px) rotateZ(90deg); }
+.front  { transform: rotateY(-90deg)  translateZ(50px) rotateZ(90deg); }
+.right  { transform: rotateX(-90deg)  translateZ(50px) rotateZ(0deg); }
+.left   { transform: rotateX(90deg)  translateZ(50px) rotateZ(-180deg); }
+.back   { transform: rotateY(90deg)  translateZ(50px) rotateZ(-90deg); }
+.bottom { transform: rotateX(180deg)  translateZ(50px) rotateZ(90deg); }
+
+/*specific section/side positioning*/
+/*makes cubes into a house*/
+.housewrap{
+    transform: scale3d(2,2,2);
+}
+
+.house-body{
+    transform: scaleZ(0.8);
+}
+
+.house-top{
+    transform:translateZ(80px) scaleZ(0.5);
+}
+.house-top .front, .house-top .back{
+    clip-path: polygon(50% 0, 0 100%, 100% 100%);
+}
+
+.house-roof{
+    background-color: transparent;
+}
+.house-roof.roof-right{
+    transform:translateZ(70px) translateY(65px) rotateX(45deg) scale3d(1.2,0.12,0.97);
+}
+.house-roof.roof-left{
+    transform:translateZ(70px) translateY(-65px) rotateX(-45deg) scale3d(1.2,0.12,0.97);
+}
+
+.house-chimney{
+    transform:translate3d(30px,30px,80px) scale3d(0.3,0.3,0.7);
+}
+
+/*default base colors*/
+.side{
+    background-color: rgb(222, 222, 222);
+}
+.house-roof .side{
+    background-color: rgb(66, 66, 66);
+}
+
+/*default shading*/
+.top    { -webkit-filter: brightness(1.5);
+                  filter: brightness(1.5); }
+.front  { -webkit-filter: brightness(1.0);
+                  filter: brightness(1.0); }
+.right  { -webkit-filter: brightness(1.2);
+                  filter: brightness(1.2); }
+.back   { -webkit-filter: brightness(0.8);
+                  filter: brightness(0.8); }
+.left   { -webkit-filter: brightness(0.6);
+                  filter: brightness(0.6); }
+.bottom { -webkit-filter: brightness(0.4);
+                  filter: brightness(0.4); }
+
+
