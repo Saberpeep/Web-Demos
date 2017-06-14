@@ -12,52 +12,63 @@
 </head>
 
 <body>
+    <!--for browsers that dont suppourt clip-path-->
+    <svg width="0" height="0">
+      <defs>
+        <clipPath id="clip-shape" clipPathUnits="objectBoundingBox">
+          <polygon points="0.5 0, 0 1, 1 1" />
+        </clipPath>
+      </defs>
+    </svg>
+    <!--                                        -->
     <div id="demowrap">
         <div class="plane">
-            <div class="housewrap">
-                <div class="cubewrap house-body">
-                    <div class="cube vertical-adj">
-                        <div class="side    top"><p>T</p></div>
-                        <div class="side   left"><p>L</p></div>
-                        <div class="side  right"><p>R</p></div>
-                        <div class="side  front"><p>F</p></div>
-                        <div class="side   back"><p>B</p></div>
-                        <div class="side bottom"><p>X</p></div>
+            <div class="houseswrap">
+                <div class="housewrap">
+                    <div class="cubewrap house-body">
+                        <div class="cube vertical-adj">
+                            <div class="side    top"><p>T</p></div>
+                            <div class="side   left"><p>L</p></div>
+                            <div class="side  right"><p>R</p></div>
+                            <div class="side  front"><p>F</p></div>
+                            <div class="side   back"><p>B</p></div>
+                            <div class="side bottom"><p>X</p></div>
+                        </div>
                     </div>
-                </div>
-                <div class="cubewrap house-top">
-                    <div class="cube vertical-adj">
-                        <div class="side  front"><p>F</p></div>
-                        <div class="side   back"><p>B</p></div>
+                    <div class="cubewrap house-top">
+                        <div class="cube vertical-adj">
+                            <div class="side  front"><p>F</p></div>
+                            <div class="side   back"><p>B</p></div>
+                        </div>
                     </div>
-                </div>
-                <div class="cubewrap house-roof roof-right">
-                    <div class="cube">
-                        <div class="side    top"><p>T</p></div>
-                        <div class="side   left"><p>L</p></div>
-                        <div class="side  right"><p>R</p></div>
-                        <div class="side  front"><p>F</p></div>
-                        <div class="side   back"><p>B</p></div>
-                        <div class="side bottom"><p>X</p></div>
+                    <div class="cubewrap house-roof roof-right">
+                        <div class="cube">
+                            <div class="side    top"><p>T</p></div>
+                            <div class="side   left"><p>L</p></div>
+                            <div class="side  right"><p>R</p></div>
+                            <div class="side  front"><p>F</p></div>
+                            <div class="side   back"><p>B</p></div>
+                            <div class="side bottom"><p>X</p></div>
+                        </div>
                     </div>
-                </div>
-                <div class="cubewrap house-roof roof-left">
-                    <div class="cube">
-                        <div class="side    top"><p>T</p></div>
-                        <div class="side   left"><p>L</p></div>
-                        <div class="side  right"><p>R</p></div>
-                        <div class="side  front"><p>F</p></div>
-                        <div class="side   back"><p>B</p></div>
-                        <div class="side bottom"><p>X</p></div>
+                    <div class="cubewrap house-roof roof-left">
+                        <div class="cube">
+                            <div class="side    top"><p>T</p></div>
+                            <div class="side   left"><p>L</p></div>
+                            <div class="side  right"><p>R</p></div>
+                            <div class="side  front"><p>F</p></div>
+                            <div class="side   back"><p>B</p></div>
+                            <div class="side bottom"><p>X</p></div>
+                        </div>
                     </div>
-                </div>
-                <div class="cubewrap house-chimney">
-                    <div class="cube">
-                        <div class="side    top"><p>T</p></div>
-                        <div class="side   left"><p>L</p></div>
-                        <div class="side  right"><p>R</p></div>
-                        <div class="side  front"><p>F</p></div>
-                        <div class="side   back"><p>B</p></div>
+                    <div class="cubewrap house-chimney">
+                        <div class="cube">
+                            <div class="side    top"><p>T</p></div>
+                            <div class="side   left"><p>L</p></div>
+                            <div class="side  right"><p>R</p></div>
+                            <div class="side  front"><p>F</p></div>
+                            <div class="side   back"><p>B</p></div>
+                        </div>
                     </div>
                 </div>
             </div>
