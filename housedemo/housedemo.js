@@ -21,7 +21,7 @@ $(function() {
                     startX = e.pageX - offset;
                 }
 
-                $elem.css("transform","rotateZ(" + (offset * -1) + "deg) scale3d(2,2,2)");
+                $elem.css("transform","rotateZ(" + (offset * -1) + "deg)");
             }
         /*detect if mouse leaves window*/
         var $window = $(window),
