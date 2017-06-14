@@ -5,7 +5,7 @@ $("#input1").keypress(function(event){
 });
 /* set on ground: $("#cube .vertical-adj").css("transform","translateZ(100px)"); */
 $("#button1").click(function(){
-    $("#button1").attr("disabled","disabled");
+    $("#button1").attr("disabled","disabled").addClass("active");
     
     var randomrow = Math.floor((Math.random() * 5) + 1);
     var randomdir = Math.floor((Math.random() * 3) + 1);
@@ -16,10 +16,9 @@ $("#button1").click(function(){
         i++;
         if (i >= words.length){
             clearInterval(inputinterval);
+            $("#button1").removeAttr("disabled").removeClass("active");
         }
     },800);
-    
-    $("#button1").removeAttr("disabled");
 });
 
 
@@ -39,6 +38,15 @@ var qbert = [
     [1,2,3,4,5],
     [0,1,2,3,4]
 ];
+
+//shift view based on mouse move
+$(document).mousemove(function (event) {
+    $("#demowrapper").css("transform","rotateY(" + (((event.pageX - ($("#demowrapper").width() / 2)) / 200)) + "deg)"
+                                    + "rotateX(" + (((event.pageY - ($("#demowrapper").width() / 2)) / 200) * -1) + "deg)");
+  
+
+});
+
 function cubesloadarray(arr,factor){
     if (factor == 0){
         cubesloadarray(flat,1);
@@ -122,6 +130,8 @@ function cubesruntext(text,direction,row){
     } 
     if (text.length < 4){
         text = "&nbsp;&nbsp;" + text + "&nbsp;&nbsp;";
+    }else{
+        text = text + "&nbsp;";
     }
     direction = direction || "ttr";
     
@@ -246,76 +256,23 @@ cubesbeginloopdemo();
 var loopdemointerval;
 function cubesbeginloopdemo(){ 
     cubesloadarray(qbert,1);
-    var verbs   = ["Work","Make","Do","Makes"];
-    var nouns   = ["It","Us"];
-    var adverbs = ["Harder","Better","Faster","Stronger"];
-    var solo    = ["More","Than","Ever","Hour","After","Hour","Work","Is","Never","Over"];
-    var tick = 1;
-    var randomrow = 1;
-    var randomdir = 1;
+    var technologic   = "buy it use it break it fix it trash it change it mail upgrade it charge it point it zoom it press it snap it work it quick erase it write it cut it paste it save it load it check it quick rewrite it plug it play it burn it rip it drag and drop it zip unzip it lock it fill it curl it find it view it code it jam unlock it surf it scroll it pose it click it cross it crack it twitch update it name it read it tune it print it scan it send it fax rename it touch it bring it pay it watch it turn it leave it stop format it technologic technologic technologic technologic";
+    var words = technologic.split(" ");
+    var randomrow = Math.floor((Math.random() * 5) + 1);
+    var randomdir = Math.floor((Math.random() * 3) + 1);
+    var i = 0;
+    
     loopdemointerval = setInterval(function(){
-        var randomverb   = Math.floor((Math.random() * 4) + 1) - 1
-        var randomnoun   = Math.floor((Math.random() * 2) + 1) - 1
-        var randomadverb = Math.floor((Math.random() * 4) + 1) - 1
-        switch (tick){
-            //random stanzas
-            case 1:
-            case 4:
-            case 7:
-                randomdir = Math.floor((Math.random() * 3) + 1);
-                randomrow = Math.floor((Math.random() * 5) + 1);
-                cubesruntext(verbs[randomverb],randomdir,randomrow);
-                break;
-            case 2:
-            case 5:
-            case 8:
-                cubesruntext(nouns[randomnoun],randomdir,randomrow);
-                break;
-            case 3:
-            case 6:
-            case 9:
-                cubesruntext(adverbs[randomadverb],randomdir,randomrow);
-                break;
-            //solo
-            case 10:
-                randomdir = Math.floor((Math.random() * 3) + 1);
-                randomrow = Math.floor((Math.random() * 5) + 1);
-                cubesruntext(solo[tick-10],randomdir,randomrow);
-                break;
-            case 11:
-            case 12:
-                cubesruntext(solo[tick-10],randomdir,randomrow);
-                break;
-            case 13:
-                randomdir = Math.floor((Math.random() * 3) + 1);
-                randomrow = Math.floor((Math.random() * 5) + 1);
-                cubesruntext(solo[tick-10],randomdir,randomrow);
-                break;
-            case 14:
-            case 15:
-                cubesruntext(solo[tick-10],randomdir,randomrow);
-                break;
-            case 16:
-                randomdir = Math.floor((Math.random() * 3) + 1);
-                randomrow = Math.floor((Math.random() * 5) + 1);
-                cubesruntext(solo[tick-10],randomdir,randomrow);
-                break;
-            case 17:
-            case 18:
-            case 19:
-                cubesruntext(solo[tick-10],randomdir,randomrow);
-                break;
-            //reset
-            case 20:
-                tick = -1;
-                break;
+        cubesruntext(words[i],randomdir,randomrow); 
+        if(i % 2 == 0){
+            randomrow = Math.floor((Math.random() * 5) + 1);
+            randomdir = Math.floor((Math.random() * 3) + 1);
         }
-    tick++;
-    }, 800);//must be at least 800 at current speed
-}
-function cubesstoploopdemo(){
-    clearInterval(loopdemointerval);
-    cubesloadarray(flat,1);
+        if (i >= words.length){
+            i = 0;
+        }
+        i++;
+    },800);//must be at least 800 at current scroll speed
 }
 
 //demo code intro
