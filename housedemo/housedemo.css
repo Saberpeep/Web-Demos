@@ -3,6 +3,7 @@ html {font-size: 6.022em;} /* baseline font size */
 body {
     font-size: 50%; /* needs to be % of 200 that cube dimentions are */
     line-height: 1;
+
 }
 
 #demowrap {
@@ -31,17 +32,24 @@ body {
     text-align:center;
 }
 
-.housewrap{
+.houseswrap{
     transform-style: preserve-3d;
     width: 100px;
     height: 100px;
     display:inline-block;
     margin: auto auto;
     vertical-align: middle;
-    
-    position:relative;
-    
+    transform: scale3d(2,2,2);
 }
+.housewrap{
+    transform-style: preserve-3d;
+    width: 100px;
+    height: 100px;
+    position:absolute;
+    top:0;
+    left:0;
+}
+
 .plane:before {
     content: '';
     display: inline-block;
@@ -141,9 +149,6 @@ background-color: rgb(211, 211, 211);
 
 /*specific section/side positioning*/
 /*makes cubes into a house*/
-.housewrap{
-    transform: scale3d(2,2,2);
-}
 
 .house-body{
     transform: scaleZ(0.8);
@@ -154,6 +159,8 @@ background-color: rgb(211, 211, 211);
 }
 .house-top .front, .house-top .back{
     clip-path: polygon(50% 0, 0 100%, 100% 100%);
+    -webkit-clip-path: url("#clip-shape"); 
+    clip-path: url("#clip-shape");
 }
 
 .house-roof{
@@ -180,16 +187,15 @@ background-color: rgb(211, 211, 211);
 
 /*default shading*/
 .top    { -webkit-filter: brightness(1.5);
-                  filter: brightness(1.5); }
-.front  { -webkit-filter: brightness(1.0);
-                  filter: brightness(1.0); }
+                         filter: brightness(1.5); }
+.bottom { -webkit-filter: brightness(0.4);
+                         filter: brightness(0.4); }
+
 .right  { -webkit-filter: brightness(1.2);
                   filter: brightness(1.2); }
-.back   { -webkit-filter: brightness(0.8);
-                  filter: brightness(0.8); }
+.front  { -webkit-filter: brightness(1.0);
+                  filter: brightness(1.0); }
 .left   { -webkit-filter: brightness(0.6);
                   filter: brightness(0.6); }
-.bottom { -webkit-filter: brightness(0.4);
-                  filter: brightness(0.4); }
-
-
+.back   { -webkit-filter: brightness(0.8);
+                  filter: brightness(0.8); }
