@@ -6,7 +6,13 @@ body {
 }
 #demowrapper{
     margin-top:-250px;
+    transform-style: preserve-3d;
 }
+button.active{
+    transform: rotateZ(360deg);
+    transition: all 0.2s;
+}
+
 .plane {
     width: 500px;/*must be 5x cube width*/
     height: 500px;/*must be 5x cube height*/
