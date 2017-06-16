@@ -95,16 +95,40 @@ $(function() {
         e.preventDefault();
     });
     //rotate on touch swipe
-    $(document).on("swipeRight","#demowrap",function(){
-        var delta = 1;
-        offset += (delta * 90);
-        shiftActiveSide(delta);
-        setRotationStyles(offset);
-    });
-    $(document).on("swipeleft","#demowrap",function(){
-        var delta = -1;
-        offset += (delta * 90);
-        shiftActiveSide(delta);
-        setRotationStyles(offset);
-    });
+    $("#demowrap")
+        .on('touchstart', function (e) {
+            isMouseDown = true;
+            lastpos = e.pageX;
+        })
+        .on('touchend', function(e) {
+            isMouseDown = false;
+        })
+        .on('touchmove', function (e) {
+            if(isMouseDown) {
+                newpos = e.pageX;
+                var delta;
+                if(newpos > lastpos){
+                    delta = 1;
+                }else if (newpos < lastpos){
+                    delta = -1;
+                }else{
+                    delta = 0;
+                }
+                console.log(delta);
+                offset += (delta * 90);
+                
+                shiftActiveSide(delta);
+                setRotationStyles(offset);
+                
+                isMouseDown = false;
+            }
+            //detect if touch leaves window while dragging
+            var $window = $(window),
+                $html = $('html');
+            $window.on('touchcancel', function(event) {
+                if (!$html.is(event.target))
+                    return;
+                $("#demowrap").trigger("touchend");
+            });
+        });
 });
