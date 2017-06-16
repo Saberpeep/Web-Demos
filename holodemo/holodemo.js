@@ -68,7 +68,7 @@ $(function() {
                 }else{
                     delta = 0;
                 }
-                
+                console.log(delta);
                 offset += (delta * 90);
                 
                 shiftActiveSide(delta);
@@ -93,5 +93,18 @@ $(function() {
         setRotationStyles(offset);
         
         e.preventDefault();
+    });
+    //rotate on touch swipe
+    $("#demowrap").on("swipeRight",function(){
+        var delta = 1;
+        offset += (delta * 90);
+            shiftActiveSide(delta);
+            setRotationStyles(offset);
+    });
+    $("#demowrap").on("swipeleft",function(){
+        var delta = -1;
+        offset += (delta * 90);
+        shiftActiveSide(delta);
+        setRotationStyles(offset);
     });
 });
