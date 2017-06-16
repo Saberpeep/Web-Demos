@@ -95,13 +95,13 @@ $(function() {
         e.preventDefault();
     });
     //rotate on touch swipe
-    $("#demowrap").on("swipeRight",function(){
+    $(document).on("swipeRight","#demowrap",function(){
         var delta = 1;
         offset += (delta * 90);
-            shiftActiveSide(delta);
-            setRotationStyles(offset);
+        shiftActiveSide(delta);
+        setRotationStyles(offset);
     });
-    $("#demowrap").on("swipeleft",function(){
+    $(document).on("swipeleft","#demowrap",function(){
         var delta = -1;
         offset += (delta * 90);
         shiftActiveSide(delta);
