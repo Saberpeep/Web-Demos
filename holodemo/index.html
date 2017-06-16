@@ -1,0 +1,48 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+
+    <title>Holo Demo</title>
+    <meta name="description" content="Holo Demo">
+    <meta name="author" content="Julian Dymer">
+    
+    <link href="https://fonts.googleapis.com/css?family=Anton" rel="stylesheet">
+    <link rel="stylesheet" href="holodemo.css">
+</head>
+
+<body>
+    <!--for browsers that dont suppourt clip-path-->
+    <svg width="0" height="0">
+      <defs>
+        <clipPath id="clip-shape" clipPathUnits="objectBoundingBox">
+          <polygon points="0.5 0, 0 1, 1 1" />
+        </clipPath>
+      </defs>
+    </svg>
+    <!--------------------------------------------->
+    <div id="demowrap">
+        <div class="plane">
+            <div class="objouterwrap">
+                <div class="objinnerwrap">
+                    <div class="cubewrap obj-body">
+                        <div class="cube vertical-adj">
+                            <div class="side    top"><a></a></div>
+                            <div class="side   left"><a href="#">Contact</a></div>
+                            <div class="side  right"><a href="#">About</a></div>
+                            <div class="side  front active"><a href="#">Home</a></div>
+                            <div class="side   back"><a href="#">Gallery</a></div>
+                            <div class="side bottom"><a>X</a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="jquery.mousewheel.min.js"></script>
+    <script src="holodemo.js"></script>
+</body>
+</html>

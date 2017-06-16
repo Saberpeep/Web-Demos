@@ -1,0 +1,201 @@
+html {font-size: 3.7em;} /* baseline font size */
+
+body {
+    font-size: 50%; /* needs to be % of 200 that cube dimentions are */
+    line-height: 1;
+    font-family: 'Anton', sans-serif;
+    background-color: black;
+}
+
+#demowrap {
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+}
+
+#demowrap{
+    transform-style: preserve-3d;
+}
+
+.plane {
+    width: 500px;/*must be 5x cube width*/
+    height: 500px;/*must be 5x cube height*/
+    margin:100px auto;
+    background-color: rgba(15, 8, 0,0.7);
+    border: 8px double rgb(237, 152, 7);
+    border-radius: 250px;
+    transform-style: preserve-3d;
+    transform:  rotateX(60deg) rotateY(0deg) rotateZ(-45deg)
+                translate3d(0px,0px,0px);
+    text-align:center;
+}
+
+.objouterwrap{
+    transform-style: preserve-3d;
+    width: 100px;
+    height: 100px;
+    display:inline-block;
+    margin: auto auto;
+    vertical-align: middle;
+    transform: scale3d(2,2,2) rotateZ(-45deg);
+}
+.objinnerwrap{
+    transform-style: preserve-3d;
+    width: 100px;
+    height: 100px;
+    position:absolute;
+    top:0;
+    left:0;
+    transition: transform 1s;
+}
+
+.plane:before {
+    content: '';
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+}
+
+.objinnerwrap .cubewrap{
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 100%;
+    margin: 0;
+}
+
+.cubewrap{
+    width: 100px; /*if changing these, remember than change font size and all transforms (currently the ones that say 50px)*/
+    height: 100px;
+    margin: 0 0;
+    float:left;
+    transform-style: preserve-3d;
+    background-color:rgb(50, 50, 50);
+    background-color:rgba(0, 0, 0, 0.3);
+    
+    position:absolute;
+    top:0;
+    left:0;
+}
+.cube {
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    /*default vertical height*/
+    transform:  translate3d(0,0,50px);
+}
+.cubewrap, .cube{
+    transition: all 0.5s;
+}
+.side{
+    transition: all 0.2s;
+}
+
+/*#cube2 .vertical-adj{
+    transform: translateZ(300px);
+}
+#cube9 .vertical-adj{
+    transform: translateZ(300px);
+}
+#cube9.horizontal-adj{
+    margin-top:400px;
+}*/
+
+.side {
+    position: absolute;
+    top:0;
+    left:0;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+
+    background-color: rgba(30, 13, 4,0.7);
+    border: 3px double rgb(237, 152, 7);
+    backface-visibility: hidden;
+
+    color: black; 
+    text-align: center;
+    line-height: 2em;
+    overflow:hidden;
+    
+    text-align: center;
+    white-space: nowrap;
+}
+.side:before {
+    content: '';
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+}
+
+.side a{
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 100%;
+    margin: 0;
+    text-decoration: none;
+    
+    color: rgb(86, 43, 10);
+    transition: all 1s;
+}
+.side a:before{
+    z-index: -1;
+    content:"";
+    display: inline-block;
+    height: 90%;
+    width: 90%;
+    box-sizing: border-box;
+    position:absolute;
+    top:5%;
+    left:5%;
+    
+    border:10px inset rgb(124, 66, 6);
+    border-radius: 50%;
+    background-color: rgb(137, 52, 0);
+    background-color: rgba(137, 52, 0, 0.3);
+}
+.side.active a{
+    font-size:70%;
+    color: rgb(255, 183, 50);
+}
+.side.active a:before{
+    border:10px inset rgb(255, 144, 17);
+    background-color: rgb(91, 34, 0);
+}
+.side.active.stage2 a:before{
+    transform: rotateZ(360deg);
+    transition: all 1s;
+}
+
+/*makes sides into cubes*/
+.top    { transform:                  translateZ(50px) rotateZ(90deg); }
+.front  { transform: rotateY(-90deg)  translateZ(50px) rotateZ(90deg); }
+.right  { transform: rotateX(-90deg)  translateZ(50px) rotateZ(0deg); }
+.left   { transform: rotateX(90deg)  translateZ(50px) rotateZ(-180deg); }
+.back   { transform: rotateY(90deg)  translateZ(50px) rotateZ(-90deg); }
+.bottom { transform: rotateX(180deg)  translateZ(50px) rotateZ(90deg); }
+
+/*specific section/side positioning*/
+/*makes cubes into a house*/
+
+/*.house-top{
+    transform:translateZ(80px) scaleZ(0.5);
+}
+.house-top .front, .house-top .back{
+    clip-path: polygon(50% 0, 0 100%, 100% 100%);
+    -webkit-clip-path: url("#clip-shape"); 
+    clip-path: url("#clip-shape");
+}*/
+/*default base colors*/
+.top a{
+    width:100%;
+    height:100%;
+}
+/*default shading*/
+.top    { -webkit-filter: brightness(0.4);
+                  filter: brightness(0.4); }
+.bottom { -webkit-filter: brightness(0.4);
+                  filter: brightness(0.4); }
