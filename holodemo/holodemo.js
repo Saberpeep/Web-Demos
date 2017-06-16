@@ -98,14 +98,14 @@ $(function() {
     $("#demowrap")
         .on('touchstart', function (e) {
             isMouseDown = true;
-            lastpos = e.pageX;
+            lastpos = e.changedTouches[0].pageX;
         })
         .on('touchend', function(e) {
             isMouseDown = false;
         })
         .on('touchmove', function (e) {
             if(isMouseDown) {
-                newpos = e.pageX;
+                newpos = e.changedTouches[0].pageX;
                 var delta;
                 if(newpos > lastpos){
                     delta = 1;
