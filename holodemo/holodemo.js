@@ -21,13 +21,13 @@ $(function() {
         $cube.css("transform","rotateZ(" + (offset * -1) + "deg)");
     }
     function shiftActiveSide(delta){
+        $("#msg").css("opacity","0");
         side += (delta * -1);
         if (side > 3){
             side = 0;
         }else if (side < 0){
             side = 3;
         }
-        //console.log(side);
         if(side == 0){
             $(".side").removeClass("active");
             $(".front").addClass("active");
@@ -68,7 +68,6 @@ $(function() {
                 }else{
                     delta = 0;
                 }
-                console.log(delta);
                 offset += (delta * 90);
                 
                 shiftActiveSide(delta);
@@ -114,7 +113,6 @@ $(function() {
                 }else{
                     delta = 0;
                 }
-                console.log(delta);
                 offset += (delta * 90);
                 
                 shiftActiveSide(delta);
