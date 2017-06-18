@@ -70,7 +70,6 @@ $(function() {
                 }else if (newpos < lastpos){
                     delta = -1;
                 }
-                console.log(newpos,lastpos,delta);
                 offset += (delta * 90);
                 
                 shiftActiveSide(delta);
