@@ -32,7 +32,7 @@ body {
     text-align:center;
 }
 
-.houseswrap{
+.objouterwrap{
     transform-style: preserve-3d;
     width: 100px;
     height: 100px;
@@ -177,6 +177,30 @@ background-color: rgb(211, 211, 211);
     transform:translate3d(30px,30px,80px) scale3d(0.3,0.3,0.7);
 }
 
+.house-smoke{
+    transform: translate3d(30px,30px,150px) scale3d(0.3,0.3,0.3);
+    background-color: transparent;
+}
+
+.house-smoke .cube{
+    transition: none;
+    transform:rotateZ(-45deg) translateZ(-50px);
+}
+
+.house-smoke .side{
+    height: 100px;
+    width: 100px;
+    background-image:url(puff.png);
+    background-color: transparent;
+    transform: rotateY(-90deg) rotateZ(90deg) scale(0.1);
+    transition: none;
+}
+.house-smoke .side.stage2{
+    opacity:0;
+    transform: rotateY(-90deg) rotateZ(90deg) scale(2) translateY(-150px);
+    transition: all 5s;
+}
+
 /*default base colors*/
 .side{
     background-color: rgb(222, 222, 222);
@@ -187,9 +211,9 @@ background-color: rgb(211, 211, 211);
 
 /*default shading*/
 .top    { -webkit-filter: brightness(1.5);
-                         filter: brightness(1.5); }
+                  filter: brightness(1.5); }
 .bottom { -webkit-filter: brightness(0.4);
-                         filter: brightness(0.4); }
+                  filter: brightness(0.4); }
 
 .right  { -webkit-filter: brightness(1.2);
                   filter: brightness(1.2); }
