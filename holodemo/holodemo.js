@@ -10,18 +10,22 @@ $(function() {
     }, 1000);
     
     //setup
-    var offset = 0, isMouseDown = false;
-    var side = 0;
-    var $cube = $(".objinnerwrap");
-    var $sprite = $(".house-smoke .cube");
+    var offset = 0,
+        isMouseDown = false,
+        side = 0,
+        $cube = $(".objinnerwrap"),
+        $sprite = $(".house-smoke .cube"),
+        demoWrap = document.getElementById("demowrap"),
+        $window = $(window),
+        $html = $('html');
     
     function setRotationStyles(offset){
         $(".top").children().css("transform","rotateZ(" + (offset * -1) + "deg) translateZ(50px)");
         $sprite.css("transform","rotateZ(" + (offset - 45) + "deg) translateZ(50px)");
         $cube.css("transform","rotateZ(" + (offset * -1) + "deg)");
+        $("#msg").css("opacity","0");
     }
     function shiftActiveSide(delta){
-        $("#msg").css("opacity","0");
         side += (delta * -1);
         if (side > 3){
             side = 0;
@@ -57,17 +61,16 @@ $(function() {
         .on('mouseup', function(e) {
             isMouseDown = false;
         })
-        .on('mousemove', function (e) {
-            if(isMouseDown) {
+    demoWrap.onmousemove = function (e) {
+            if(isMouseDown && e.pageX != lastpos) {
                 newpos = e.pageX;
-                var delta;
+                var delta = 0;
                 if(newpos > lastpos){
                     delta = 1;
                 }else if (newpos < lastpos){
                     delta = -1;
-                }else{
-                    delta = 0;
                 }
+                console.log(newpos,lastpos,delta);
                 offset += (delta * 90);
                 
                 shiftActiveSide(delta);
@@ -76,14 +79,12 @@ $(function() {
                 isMouseDown = false;
             }
             //detect if mouse leaves window while dragging
-            var $window = $(window),
-                $html = $('html');
-            $window.on('mouseleave', function(event) {
+            window.onmouseleave = function(event) {
                 if (!$html.is(event.target))
                     return;
                 $("#demowrap").trigger("mouseup");
-            });
-        });
+            };
+        };
     //rotate on mouse wheel
     $(window).mousewheel(function(e, delta) {
         offset += (delta * 90);
@@ -103,15 +104,13 @@ $(function() {
             isMouseDown = false;
         })
         .on('touchmove', function (e) {
-            if(isMouseDown) {
+            if(isMouseDown && e.changedTouches[0].pageX != lastpos) {
                 newpos = e.changedTouches[0].pageX;
-                var delta;
+                var delta = 0;
                 if(newpos > lastpos){
                     delta = 1;
                 }else if (newpos < lastpos){
                     delta = -1;
-                }else{
-                    delta = 0;
                 }
                 offset += (delta * 90);
                 
@@ -121,8 +120,6 @@ $(function() {
                 isMouseDown = false;
             }
             //detect if touch leaves window while dragging
-            var $window = $(window),
-                $html = $('html');
             $window.on('touchcancel', function(event) {
                 if (!$html.is(event.target))
                     return;
