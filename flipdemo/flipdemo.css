@@ -3,6 +3,7 @@ html {font-size: 6.022em;} /* baseline font size */
 body {
     font-size: 100%;
     line-height: 1;
+    background-color:#d82067;
 }
 #demowrap{
     transform-style: preserve-3d;
@@ -19,8 +20,11 @@ button.active{
     margin:0 auto;
     background-color: transparent;
     transform-style: preserve-3d;
-    overflow:hidden;
-    transform: rotateX(15deg);
+    transform: rotateX(16deg);
+}
+.plane:after{
+    content:"\00a0";
+    float:none;
 }
 
 .col {

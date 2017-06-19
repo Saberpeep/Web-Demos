@@ -194,6 +194,7 @@ function printString(string, speed = 1, callback){
     }, 1000 / speed);
 }
 function printWord(word, posX){
+    randomizeTransitions();
     clearScreen();
     word = word.toUpperCase();
     //if no position defined, center text
@@ -238,6 +239,14 @@ function findWidth(word){
     }
     return width;
 }
+function randomizeTransitions(){
+    var rand;
+    for (var i = 0; i < $panels.length; i++){
+        rand = Math.floor((Math.random() * 7) + 3);
+        $panels.eq(i).css("transition","all " + ((1 / rand) * 5) + "s");
+        console.log(((1 / rand) * 5));
+    }
+}
 
 //button and input box code
 $("#input1").keypress(function(event){
@@ -247,13 +256,14 @@ $("#input1").keypress(function(event){
 });
 $("#button1").click(function(){
     $("#button1").attr("disabled","disabled").addClass("active");
-    printString($("#input1").val());
-    $("#button1").removeAttr("disabled").removeClass("active");
+    printString($("#input1").val(),1,function(){
+        $("#button1").removeAttr("disabled").removeClass("active");
+    });
 });
 
 //demo code
 $("#button1").attr("disabled","disabled");
-printString("This Too Shall Pass",1,function(){
+printString("let it go this too shall pass",1,function(){
     $("#button1").removeAttr("disabled");
 });
 
