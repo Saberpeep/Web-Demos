@@ -239,12 +239,26 @@ function findWidth(word){
     }
     return width;
 }
+/*function randomizeTransitions(){
+    var rand;
+    var gradient = Math.floor($cols.length / 2);
+    
+    for (var col = 0; col < $cols.length; col++){
+        $col = $cols.eq(col).children(".panel");
+        
+        for (var row = 0; row < $col.length; row++){
+            rand = Math.floor((Math.random() * 1) + 0.5);
+            $col.eq(row).css("transition","all " + (rand + (Math.abs(gradient / 5)) + 0.3) + "s");
+        }
+        console.log((Math.abs(gradient / 5) + 0.3));
+        gradient--;
+    }
+}*/
 function randomizeTransitions(){
     var rand;
     for (var i = 0; i < $panels.length; i++){
-        rand = Math.floor((Math.random() * 8) + 4);
-        $panels.eq(i).css("transition","all " + ((1 / rand) * 5) + "s");
-        console.log(((1 / rand) * 5));
+        rand = Math.floor((Math.random() * 12) + 5);
+        $panels.eq(i).css("transition","all " + (rand / 10) + "s");
     }
 }
 
