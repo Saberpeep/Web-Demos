@@ -188,10 +188,10 @@ function printString(string, speed = 1, callback){
                 clearScreen();
                 if(callback)
                     callback();
-            }, 1000 / speed);
+            }, 1400 / speed);
             return;
         }
-    }, 1000 / speed);
+    }, 1400 / speed);
 }
 function printWord(word, posX){
     randomizeTransitions();
@@ -242,7 +242,7 @@ function findWidth(word){
 function randomizeTransitions(){
     var rand;
     for (var i = 0; i < $panels.length; i++){
-        rand = Math.floor((Math.random() * 7) + 3);
+        rand = Math.floor((Math.random() * 8) + 4);
         $panels.eq(i).css("transition","all " + ((1 / rand) * 5) + "s");
         console.log(((1 / rand) * 5));
     }
