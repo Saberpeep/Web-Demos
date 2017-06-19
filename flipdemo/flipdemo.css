@@ -1,0 +1,71 @@
+html {font-size: 6.022em;} /* baseline font size */
+
+body {
+    font-size: 100%;
+    line-height: 1;
+}
+#demowrap{
+    transform-style: preserve-3d;
+    width:100%;
+    perspective: 500px;
+}
+button.active{
+    transform: rotateZ(360deg);
+    transition: all 0.2s;
+}
+
+.plane {
+    width:90%;
+    margin:0 auto;
+    background-color: transparent;
+    transform-style: preserve-3d;
+    overflow:hidden;
+    transform: rotateX(15deg);
+}
+
+.col {
+    width:5%;
+    margin:0;
+    float:left;
+    clear: none;
+}
+
+.panel{
+    position: relative;
+    width:100%;
+    margin: 0;
+    transform-style: preserve-3d;
+    transition: all 0.9s;
+}
+.panel:after {
+    content: "";
+    display: block;
+    padding-bottom: 100%;
+}
+
+.side{
+    transition: all 0.2s;
+}
+
+.side {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    background-color: transparent;
+    /*border: 2px solid black;*/
+
+    overflow:hidden;
+    white-space: nowrap;
+    backface-visibility: hidden;
+    transform-style: preserve-3d;
+}
+
+.front { background-color: rgb(24,24,24);
+         transform: rotateY(0deg); }
+.back  { background-color: rgb(244, 244, 244);
+         transform: rotateY(180deg); }
+
+.panel.active { transform: rotateY(180deg); }
