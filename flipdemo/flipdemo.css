@@ -72,4 +72,31 @@ button.active{
 .back  { background-color: rgb(244, 244, 244);
          transform: rotateY(180deg); }
 
-.panel.active { transform: rotateY(180deg); }
+.panel.active { transform: rotateY(180deg) !important; }
+
+.cascade .panel:nth-child(1){
+    transform: translateZ(-20px) rotateX(-16deg);
+}
+.cascade .panel:nth-child(2){
+    transform: translateZ(-15px) rotateX(-16deg);
+}
+.cascade .panel:nth-child(3){
+    transform: translateZ(-10px) rotateX(-16deg);
+}
+.cascade .panel:nth-child(4){
+    transform: translateZ(-5px) rotateX(-16deg);
+}
+.cascade .panel:nth-child(5){
+    transform: translateZ(0px) rotateX(-16deg);
+}
+
+.flyin .col:nth-child(odd) .panel{
+    transform: translateX(-4000px) rotateX(-360deg);
+}
+.flyin .col:nth-child(even) .panel{
+    transform: translateX(4000px) rotateX(360deg);
+}
+
+.zoomin .panel{
+    transform: translateZ(-4000px);
+}
