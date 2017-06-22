@@ -461,7 +461,7 @@ function setLayout(layout = "flat"){
     }
 }
 
-//button and input box code
+//button and input box functionality
 $("#input1").keypress(function(event){
     if(event.keyCode == 13 && $("#button1").attr("disabled") != "disabled"){
         $("#button1").click();
@@ -471,11 +471,24 @@ $("#button1").click(function(){
     if ($("#input1").val() !== ""){
         $("#button1").attr("disabled","disabled").addClass("active");
         var rand = Math.floor((Math.random() * 4) + 0);
+        clearScreen();
         setLayout(rand);
         printString($("#input1").val(),1,function(){
-        $("#button1").removeAttr("disabled").removeClass("active");
-        setLayout("flat");
-    });   
+            $("#button1").removeAttr("disabled").removeClass("active");
+            setLayout("flat");
+        });   
+    }else{
+        clearScreen();
+    }
+});
+//flip on click functionality
+$panels.click(function(){
+    if ($("#button1").attr("disabled") != "disabled"){
+        if ($(this).hasClass("active")){
+            $(this).removeClass("active");
+        }else{
+            $(this).addClass("active");
+        }
     }
 });
 
