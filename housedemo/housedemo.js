@@ -42,9 +42,7 @@ $(function() {
                 $house.css("transform","rotateZ(" + (offset * -1) + "deg)");
             }
         /*detect if mouse leaves window*/
-        window.onmouseleave = function(event) {
-            if (!$html.is(event.target))
-                return;
+        demoWrap.onmouseleave = function(event) {
             $("#demowrap").trigger("mouseup");
         };
     };
@@ -75,8 +73,6 @@ $(function() {
         var $window = $(window),
             $html = $('html');
         window.ontouchcancel = function(event) {
-            if (!$html.is(event.target))
-                return;
             $("#demowrap").trigger("touchend");
         };
     });
