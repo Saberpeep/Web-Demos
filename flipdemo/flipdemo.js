@@ -361,7 +361,7 @@ var charPixels = {
     },
     lookup: function(letter){
         var charCode = letter.charCodeAt(0);
-        //check if is within capital letter range
+        //check if is within range of suppourted characters
         if (charCode >= 32 && charCode <= 90)
             return charPixels.key(charCode - 32);
         return this.SPACE;
@@ -369,12 +369,30 @@ var charPixels = {
 }
 function printString(string, speed = 1, callback){
     var words = string.split(" "),
-        posX = 0,
-        i = 0;
+        i = 0,
+        startPos = 0,
+        endPos;
+    
+    //print a word every 1.3s / speed
     var wordsInterval = setInterval(function(){
-        //print one word every second / speed
-        printWord(words[i]);
-        i++;
+        //print a word. endPos is set to the cursors resting place.
+        endPos = printWord(words[i], startPos);  
+        //if the word was too long for the screen, 
+        // move the starting point left 10 columns for the next run,
+        // and DOES NOT advance the variable as to print the next part of the same word again,
+        // and will continue until the cursor rests within the screen.
+        if (endPos > $cols.length){
+            startPos -= 10;
+        }else{
+            //if the word fit fine, move to the next word,
+            // and if there are more words reset the variables
+            i++;
+            if(i < words.length){
+                startPos = 0;
+                endPos = findWidth(words[i]);
+            }
+        }
+        //if there are no more words, clean up and call the callback. 
         if (i >= words.length){
             clearInterval(wordsInterval);
             setTimeout(function(){
@@ -391,17 +409,13 @@ function printWord(word, posX){
     clearScreen();
     word = word.toUpperCase();
     
-    /*//if word is wider than screen, split it - WORK IN PROGRESS
-    if(findWidth(word) > $cols.length){
-        printWord(word.substring($cols.length));
-    }*/
-    
     //if no position defined, center text
     if (!posX){
-        posX = Math.floor(($cols.length - findWidth(word)) / 2);
         //if word is wider than screen, dont center
         if(findWidth(word) > $cols.length){
             posX = 0;
+        }else{
+            posX = Math.floor(($cols.length - findWidth(word)) / 2);
         }
     }
     
@@ -412,6 +426,32 @@ function printWord(word, posX){
     }
     return posX;
 }
+/*function scrollWord(word, startPos){
+    randomizeTransitions();
+    clearScreen();
+    word = word.toUpperCase();
+    if (!startPos)
+        startPos = 0;
+    var endPos = $cols.length + 1;
+    var letters = word.split("");
+    
+    var scrollInterval = setInterval(function(){
+        if (endPos > $cols.length){
+            clearScreen();
+            endPos = startPos;
+            for (var i = 0; i < letters.length; i++){
+                endPos = printLetter(letters[i],endPos);
+                endPos ++;
+            }
+            console.log(startPos);
+            startPos -= $cols.length;
+        }else{
+            clearInterval(scrollInterval);
+            return endPos;
+        }     
+    },1000);
+    return endPos;
+}*/
 function printLetter(letter, posX){
     posX = printArray(charPixels.lookup(letter), posX);
     return posX;
@@ -420,11 +460,13 @@ function printArray(arr,posX){
     //flips panels based on 1s and 0s in input array
     var col = 0,row = 0;
     for(col = 0; (col < arr[0].length) && col <= ($cols.length - arr[0].length); col++){
-        for (row = 0; row < arr.length; row++){
-            if (arr[row][col] == 1){
-                $cols.eq(posX + col).children(".panel").eq(row).addClass("active");
-            }else{
-                $cols.eq(posX + col).children(".panel").eq(row).removeClass("active");
+        if (posX + col >= 0){
+            for (row = 0; row < arr.length; row++){
+                if (arr[row][col] == 1){
+                    $cols.eq(posX + col).children(".panel").eq(row).addClass("active");
+                }else{
+                    $cols.eq(posX + col).children(".panel").eq(row).removeClass("active");
+                }
             }
         }
     }
@@ -491,6 +533,7 @@ $panels.click(function(){
         }
     }
 });
+
 
 //demo code
 $("#button1").attr("disabled","disabled");

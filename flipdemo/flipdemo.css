@@ -4,6 +4,7 @@ body {
     font-size: 100%;
     line-height: 1;
     background-color:#d82067;
+    overflow: hidden;
 }
 .plane *{
     -webkit-touch-callout: none; /* iOS Safari */
