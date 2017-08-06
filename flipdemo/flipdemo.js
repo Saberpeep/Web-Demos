@@ -380,8 +380,8 @@ function printString(string, speed = 1, callback){
         //if the word was too long for the screen, 
         // move the starting point left 10 columns for the next run,
         // and DOES NOT advance the variable as to print the next part of the same word again,
-        // and will continue until the cursor rests within the screen.
-        if (endPos > $cols.length){
+        // and will continue until the cursor rests within the screen (+1 col).
+        if (endPos > $cols.length + 1){
             startPos -= 10;
         }else{
             //if the word fit fine, move to the next word,
@@ -512,7 +512,9 @@ $("#input1").keypress(function(event){
 $("#button1").click(function(){
     if ($("#input1").val() !== ""){
         $("#button1").attr("disabled","disabled").addClass("active");
-        var rand = Math.floor((Math.random() * 4) + 0);
+        var rand = Math.floor((Math.random() * 8) + 0);
+        if (rand > 4)
+            rand == 0;
         clearScreen();
         setLayout(rand);
         printString($("#input1").val(),1,function(){
@@ -534,10 +536,14 @@ $panels.click(function(){
     }
 });
 
-
+/*
 //demo code
+$("#input1").hide();
+$("#button1").hide();
 $("#button1").attr("disabled","disabled");
 printString("let it go this too shall pass",1,function(){
     $("#button1").removeAttr("disabled");
+    $("#input1").fadeIn(1000);
+    $("#button1").fadeIn(1000);
 });
-
+*/

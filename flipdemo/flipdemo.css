@@ -6,7 +6,7 @@ body {
     background-color:#d82067;
     overflow: hidden;
 }
-.plane *{
+.plane *, #button1{
     -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none; /* Safari */
      -khtml-user-select: none; /* Konqueror HTML */
@@ -21,8 +21,29 @@ body {
     width:100%;
     perspective: 500px;
 }
-button.active{
-    transform: rotateZ(360deg);
+
+#input1{
+    padding:10px;
+    background-color: rgb(24, 24, 24);
+    color:rgb(244, 244, 244);;
+    border:2px solid transparent;
+}
+#button1{
+    padding:10px;
+    background-color: rgb(24, 24, 24);
+    color:rgb(244, 244, 244);;
+    border:2px solid transparent;
+    transition: transform 0.2s;
+}
+#button1:hover{
+    transform: scale(0.9);
+}
+#button1:disabled{
+    background-color: rgb(244, 244, 244);
+    color:rgb(200, 200, 200);;
+}
+#button1.active{
+    transform: rotateY(360deg);
     transition: all 0.2s;
 }
 
