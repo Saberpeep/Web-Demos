@@ -536,7 +536,7 @@ $panels.click(function(){
     }
 });
 
-/*
+
 //demo code
 $("#input1").hide();
 $("#button1").hide();
@@ -546,4 +546,4 @@ printString("let it go this too shall pass",1,function(){
     $("#input1").fadeIn(1000);
     $("#button1").fadeIn(1000);
 });
-*/
+
