@@ -8,7 +8,10 @@ $(function() {
         $demowrap = $("#demowrap"),
         demowrap = document.getElementById("demowrap"),
         $train = $(".train"),
-        activeCar = 0;
+        activeCar = 0,
+        $links = $(".cubewrap .car .right a"),
+        $crane = $(".crane"),
+        scrollDisable = false;
     
     setActiveCar(activeCar);
 
@@ -17,59 +20,89 @@ $(function() {
     $(document).mousemove(function (event) {
         $demowrap.css("transform","rotateY(" + (((event.pageX - ($demowrap.width() / 2)) / 200)) + "deg)" + "rotateX(" + (((event.pageY - ($demowrap.width() / 2)) / 200) * -1) + "deg)");
 
-        $body.css("background", "linear-gradient(to bottom, #a4ddfc 0%,#ffdad1 " + (30 - event.pageY / 100) + "%,#222222 " + (30 - event.pageY / 100) + "%,#222222 100%)");
+        $body.css("background", "linear-gradient(to bottom, #a4ddfc 0vh,#ffdad1 " + (30 - event.pageY / 100) + "vh,#222222 " + (30 - event.pageY / 100) + "vh,#222222 100vh)");
     });
-
+    
+    //car click scroll
     $(".cubewrap").click(function(event){
+        event.preventDefault();
         var $target = $(this);
         var which = $(".cubewrap").index($target);
-        if (activeCar != which)
-            event.preventDefault;
-        activeCar = which;
-        setActiveCar(activeCar);
-    });
-    var setActiveCarInterval;
-    function setActiveCar(car){
-        if (setActiveCarInterval){
-            clearInterval(setActiveCarInterval);
+        if (activeCar != which){
+            activeCar = which;
+            setActiveCar(activeCar);
         }
+    });
+    
+    //link click animation
+    $links.click(function(event){
+        event.preventDefault();
+        var $target = $(this);
+        var which = $links.index($target);
+        if (activeCar == which){
+            scrollDisable = true;
+            $crane.addClass("animate-down");
+            setTimeout(function(){
+                $train.children().eq(activeCar).addClass("animate-up");
+                $crane.removeClass("animate-down");
+                setTimeout(function(){
+                   window.location.href = $target.attr("href");
+                }, 1500);
+            }, 1000);
+        }
+    });
+    //sets active car by index
+    var setActiveCarInterval,
+        setActiveCarTimeout;
+    function setActiveCar(car){
+        if (setActiveCarInterval || setActiveCarTimeout){
+            clearInterval(setActiveCarInterval);
+            clearTimeout(setActiveCarTimeout);
+        }
+        if (!scrollDisable){
 
-        var $target = $train.children().eq(car);
+            var $target = $train.children().eq(car);
 
-        console.log($(".cubewrap").index($target));
+            $train.css("transform","translateX(" + (($(".train .cubewrap").index($target) * -500)/ 10) + "vw)");
+            $train.children().removeClass("active");
+            setActiveCarTimeout = setTimeout(function(){
+                $train.children().eq(car).addClass("active");  
+            },1400);
 
-        $train.css("transform","translateX(" + (($(".train .cubewrap").index($target) * -500)/ 10) + "vmax)");
-        $train.children().removeClass("active");
-        $train.children().eq(car).addClass("active");
-        
-        var i = 0;
-        setActiveCarInterval = setInterval(function(){
-            setCarShade(i, Math.abs(car - i));
-            i++;
-            if (i >= $train.children().length){
-                clearInterval(setActiveCarInterval);
-                return;
-            }
-        },10);
+            var i = 0;
+            setActiveCarInterval = setInterval(function(){
+                setCarShade(i, Math.abs(car - i));
+                i++;
+                if (i >= $train.children().length){
+                    clearInterval(setActiveCarInterval);
+                    return;
+                }
+            },10);
+        }
     }
+    //shades car of index based on shade factor 
     function setCarShade(car,shade){
         if (car >= 0 && car < $train.children().length ){
             $train.children().eq(car).find(".top").css("filter", "brightness(" + (1.5 - shade / 4) + ")");
             $train.children().eq(car).find(".left").css("filter", "brightness(" + (0.6 - shade / 4) + ")");
             $train.children().eq(car).find(".right").css("filter", "brightness(" + (1.2 - shade / 4) + ")");
+            $train.children().eq(car).find(".back").css("filter", "brightness(" + (0.8 - shade / 4) + ")");
         }
     }
+    //calls setActiveCar based on index of current car and delta
     function shiftActiveCar(delta){
-        if (delta > 0)
-            activeCar--;
-        else if(delta < 0)
-            activeCar++;
-        
-        if (activeCar < 0)
-            activeCar = 0;
-        if (activeCar >= $train.children().length)
-            activeCar = $train.children().length - 1;
-        setActiveCar(activeCar);
+        if (!scrollDisable){
+            if (delta > 0)
+                activeCar--;
+            else if(delta < 0)
+                activeCar++;
+
+            if (activeCar < 0)
+                activeCar = 0;
+            if (activeCar >= $train.children().length)
+                activeCar = $train.children().length - 1;
+            setActiveCar(activeCar);
+        }
     }
 
    //rotate on drag
