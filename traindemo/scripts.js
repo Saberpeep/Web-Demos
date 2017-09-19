@@ -20,7 +20,7 @@ $(function() {
     $(document).mousemove(function (event) {
         $demowrap.css("transform","rotateY(" + (((event.pageX - ($demowrap.width() / 2)) / 200)) + "deg)" + "rotateX(" + (((event.pageY - ($demowrap.width() / 2)) / 200) * -1) + "deg)");
 
-        $body.css("background", "linear-gradient(to bottom, #a4ddfc 0vh,#ffdad1 " + (30 - event.pageY / 100) + "vh,#222222 " + (30 - event.pageY / 100) + "vh,#222222 100vh)");
+        //$body.css("background", "linear-gradient(to bottom, #a4ddfc 0vh,#ffdad1 " + (30 - event.pageY / 100) + "vh,#222222 " + (30 - event.pageY / 100) + "vh,#222222 100vh)");
     });
     
     //car click scroll
@@ -46,8 +46,11 @@ $(function() {
                 $train.children().eq(activeCar).addClass("animate-up");
                 $crane.removeClass("animate-down");
                 setTimeout(function(){
-                   window.location.href = $target.attr("href");
-                }, 1500);
+                    
+                    setTimeout(function(){
+                        window.location.href = $target.attr("href");
+                    }, 1500);
+                }, 500);
             }, 1000);
         }
     });
