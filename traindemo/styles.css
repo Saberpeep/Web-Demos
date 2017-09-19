@@ -7,6 +7,7 @@ body{margin:0;}
     line-height: 1;
     perspective: 300vw;
     background-color:#222222;
+    background: linear-gradient(to bottom, #a4ddfc 0%,#a4ddfc 30%,#222222 30%,#222222 100%);
     overflow: hidden;
 }
 #demowrap *{
