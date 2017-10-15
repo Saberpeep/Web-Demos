@@ -35,9 +35,9 @@ body{margin:0;}
     transform:  rotateX(70deg) rotateY(0deg) rotateZ(-25deg) translate3d(-20vw,-20vw,0);
 }
 .sky{
-    width: 100%;
+    width: 200%;
     height: 100%;
-    transform: translateZ(-10vh) translateY(-100vw) rotateZ(25deg) rotateX(-90deg);
+    transform: translateZ(-100vh) translateY(-120vh) translateX(-50vw) rotateX(-90deg) rotateX(90deg);
     transform-style: preserve-3d;
     position: fixed;
     background-size: cover;
