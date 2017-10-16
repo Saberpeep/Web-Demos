@@ -1,13 +1,12 @@
 $(function() {
     //setup
-    var CUBESIZEINPIXELS = $(".cubewrap").eq(0).width(),
-        isMouseDown = false,
-        $window = $(window),
+    var $window = $(window),
         $html = $('html'),
         $body = $("body"),
         $demowrap = $("#demowrap"),
         demowrap = document.getElementById("demowrap"),
         $train = $(".train"),
+        isMouseDown = false,
         activeCar = 0,
         $links = $(".cubewrap .car .right a"),
         $crane = $(".crane"),
@@ -49,7 +48,7 @@ $(function() {
                     
                     setTimeout(function(){
                         window.location.href = $target.attr("href");
-                    }, 1500);
+                    }, 500);
                 }, 500);
             }, 1000);
         }
@@ -108,7 +107,7 @@ $(function() {
         }
     }
 
-   //rotate on drag
+   //shift on drag
     var lastpos, newpos;
     $("#demowrap")
         .on('mousedown', function (e) {
@@ -140,15 +139,12 @@ $(function() {
                 $("#demowrap").trigger("mouseup");
             };
         };
-    //rotate on mouse wheel
+    //shift on mouse wheel
     $(window).mousewheel(function(e, delta) {
-        //offset += (delta * 90);
-        
         shiftActiveCar(delta);
-        
         e.preventDefault();
     });
-    //rotate on touch swipe
+    //shift on touch swipe
     $("#demowrap")
         .on('touchstart', function (e) {
             isMouseDown = true;
@@ -179,4 +175,8 @@ $(function() {
                 $("#demowrap").trigger("touchend");
             });
         });
+    
+    window.addEventListener('unload', function(event) {
+        //prevents firefox from caching page
+    });
 });

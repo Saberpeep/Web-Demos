@@ -1,5 +1,8 @@
 html {font-size: 10vw;} /* baseline font size */
-body{margin:0;}
+body{
+    margin:0;
+    overflow:hidden;
+}
 
 #outerwrap {
     margin:0;
@@ -19,6 +22,7 @@ body{margin:0;}
 }
 #demowrap{
     font-family: "Arial Black", "Arial Bold", Gadget, sans-serif;
+    font-weight:900;
     text-transform: uppercase;
     transform-style: preserve-3d;
     max-width: 1920px;
@@ -32,7 +36,7 @@ body{margin:0;}
     background-color: #222222;
     border:1.2vw solid #222222;
     transform-style: preserve-3d;
-    transform:  rotateX(70deg) rotateY(0deg) rotateZ(-25deg) translate3d(-20vw,-20vw,0);
+    transform:  rotateX(75deg) rotateY(1deg) rotateZ(-25deg) translate3d(-20vw,-20vw,-10vh);
 }
 .sky{
     width: 200%;
@@ -52,9 +56,11 @@ body{margin:0;}
     background-image: url("textures/tracks.png");
     background-size: contain;
     
-    display: table-cell;
-    vertical-align: middle;
+    /* fixes firefox */
+    /* display: table-cell;*/
+    transform-style: preserve-3d;
     
+    vertical-align: middle;
     white-space: nowrap;
 }
 
@@ -64,6 +70,9 @@ body{margin:0;}
     margin-left: 50vw;
     
     white-space: nowrap;
+    
+    //transform: translateY(5vw);
+    padding-top:5vw;
 }
 
 .cubewrap{
