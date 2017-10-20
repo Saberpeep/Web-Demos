@@ -1,4 +1,8 @@
-var $html = $("html"),
+var FRAMES_PER_SECOND = 60,
+    MAX_FALL_SPEED = 15,
+    MAX_WALK_SPEED = 10,
+    JUMP_VELOCITY = 31,
+    $document = $(document),
     $window = $(window),
     $body = $("body"),
     body = document.getElementsByTagName("body")[0],
@@ -36,7 +40,7 @@ $player.css({"width": "50px",
              "background-position-x": "0px"
             });
 $arms.css({"width": "100px",
-             "height": "100px", 
+             "height": "75px",
              "background-color": "transparent",
              "position": "absolute",
              "top": "0px",
@@ -51,7 +55,6 @@ $player.append($arms);
 $body.prepend($player);
 
 $player.data("padding", (($player.innerWidth() - $player.width()) / 2));
-console.log($player.data("padding"));
 
 //collect platform elements
 $platforms = $("div, article, container, aside, header, footer, iframe");
@@ -59,17 +62,9 @@ $platforms = $("div, article, container, aside, header, footer, iframe");
 //set up styles
 $("<style>")
     .prop("type", "text/css")
-    .html(".collision {\
+    .html(".platform {\
                 transition: border 1s;\
-            }\
-            .collision-top {\
                 border-top: 2px solid black !important;\
-            }\
-            .collision-left {\
-                border-left: 2px solid black !important;\
-            }\
-            .collision-right {\
-                border-right: 2px solid black !important;\
             }")
     .appendTo("head");
 //change page title
@@ -80,21 +75,27 @@ setInterval(function(){
     //platform collision
     for (var i = 0; i < $platforms.length; i++){
         if ($player.offset().top + $player.height() >= $platforms.eq(i).offset().top
-            && $player.offset().top + $player.height() < $platforms.eq(i).offset().top + 10
+            && $player.offset().top + $player.height() < $platforms.eq(i).offset().top + MAX_FALL_SPEED
             && $player.offset().left + $player.innerWidth() - $player.data("padding") >= $platforms.eq(i).offset().left 
             && $player.offset().left + $player.data("padding") <= $platforms.eq(i).offset().left + $platforms.eq(i).width()){
                 landed = true;
-                $platforms.eq(i).addClass("collision collision-top");
+                $platforms.eq(i).addClass("platform");
                 if ($player.offset().top + $player.height() > $platforms.eq(i).offset().top)
                     $player.css("top", ($platforms.eq(i).offset().top - $player.height()) + "px");
                 break;
+        }else if ($player.offset().top + $player.height() >= $window.height() + $window.scrollTop()){
+                //stops falling out of the bottom of the window
+                landed = true;
+                if ($player.offset().top + $player.height() > $window.height() + $window.scrollTop())
+                    $player.css("top", ($window.height() + $window.scrollTop() - $player.height()) + "px");
+                break;
         }else{
                 landed = false;
-                $platforms.eq(i).removeClass("collision collision-top");
+                $platforms.eq(i).removeClass("platform");
         }
     }
     if (!landed){
-        if(gravity < 10){
+        if(gravity < MAX_FALL_SPEED){
             gravity += 1;
         }
     }else{
@@ -109,9 +110,9 @@ setInterval(function(){
     if (yVelocity > 0){
         yVelocity--;
     }
-    if (key_jump && jumpCounter > 0){
+    if (key_jump && jumpCounter > 0 && yVelocity == 0){
         if (!jumping){
-            yVelocity = 30;
+            yVelocity = JUMP_VELOCITY;
             jumpCounter--;   
         }
         jumping = true;
@@ -121,10 +122,10 @@ setInterval(function(){
     
     //crouch fall
     if (key_crouch){
-        if (crouchFallTimer < 0.5 * 60){
+        if (crouchFallTimer < 0.5 * FRAMES_PER_SECOND){
             crouchFallTimer++;
         }else{
-            $player.css("top", ($player.offset().top + 10) + "px");
+            $player.css("top", ($player.offset().top + MAX_FALL_SPEED) + "px");
             falling = true;
             crouchFallTimer = 0;
         }
@@ -157,12 +158,17 @@ setInterval(function(){
     
     if (key_walkL || key_walkR){
         $player.css("transform","scaleX(" + walkDirection + ")");
-        animation_walk += 0.2;
+        if (key_crouch)
+            animation_walk += 0.09;   
+        else if(key_run)
+            animation_walk += 0.4;
+        else
+            animation_walk += 0.2;
         $player.css("background-position-x", (Math.trunc(animation_walk) * -100) + "px");
         if (animation_walk > 8)
             animation_walk = 1;
         
-        if(xVelocity < 10){
+        if(xVelocity < MAX_WALK_SPEED){
             xVelocity += 1;
         }
     }else{
@@ -189,14 +195,14 @@ setInterval(function(){
     $player.css("left", ($player.offset().left + adjustedxVelocity * walkDirection) + "px");
     
     //edge constraints
-    if ($player.position().left + $player.data("padding") < 0)
-        $player.css("left", -$player.data("padding") + "px");
-    else if ($player.position().left + $player.innerWidth() > $html.outerWidth())
-        $player.css("left", ($html.outerWidth() - $player.innerWidth()) + "px");
-    
-    if ($player.position().top + $player.height() > $html.height())
-        $player.css("top", ($html.height() - $player.height()) + "px");
-}, 17);
+    if ($player.position().left + $player.data("padding") < 0){
+        $player.css("left", -1 * $player.data("padding") + "px");   
+    }
+    /*else if ($player.position().left + $player.innerWidth() - $player.data("padding") > $window.width() + $window.scrollLeft()){
+        //$player.css("left", ($window.width() + $window.scrollLeft() - $player.innerWidth() + $player.data("padding")) + "px");
+        $player.css("left","0");
+    }*/
+}, 1000 / FRAMES_PER_SECOND);
 
 //arms
 $window.mousemove(function(e) {
