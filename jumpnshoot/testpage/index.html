@@ -264,21 +264,21 @@
             $('#quad3content').hide();
             $('#quad4content').hide();
 
-            $('#quad1').click(function() {
+            $('#quad1').click(function(e) {
                 $('#quad1content').toggle(500);
-                e.preventdefault();
+                e.preventDefault();
             });
-            $('#quad2').click(function() {
+            $('#quad2').click(function(e) {
                 $('#quad2content').toggle(500);
-                e.preventdefault();
+                e.preventDefault();
             });
-            $('#quad3').click(function() {
+            $('#quad3').click(function(e) {
                 $('#quad3content').toggle(500);
-                e.preventdefault();
+                e.preventDefault();
             });
-            $('#quad4').click(function() {
+            $('#quad4').click(function(e) {
                 $('#quad4content').toggle(500);
-                e.preventdefault();
+                e.preventDefault();
             });
 
         });

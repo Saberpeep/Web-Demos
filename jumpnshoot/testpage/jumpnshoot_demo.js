@@ -2,6 +2,7 @@ var FRAMES_PER_SECOND = 60,
     MAX_FALL_SPEED = 15,
     MAX_WALK_SPEED = 10,
     JUMP_VELOCITY = 31,
+    BULLET_SPEED = 15,
     $document = $(document),
     $window = $(window),
     $body = $("body"),
@@ -22,11 +23,18 @@ var FRAMES_PER_SECOND = 60,
     crouchFallTimer = 0,
     key_run = false,
     key_shoot = false,
-    animation_shoot = 0;
+    animation_shoot = 0,
+    armAngleRad = 0,
+    armAngleDeg = 0,
+    bulletIndex = 0,
+    gunpointX = 0,
+    gunpointY = 0;
 
+//SETUP
 //create player element
 var $player = $("<div>", {id: "player", html: ""});
-var $arms = $("<div>", {id: "arms", html: ""});
+var $arm = $("<div>", {id: "arms", html: ""});
+var $bullet = $("<span>", {class: "bullet", html: ""});
 $player.css({"width": "50px",
              "height": "100px",
              "padding-left": "25px",
@@ -38,10 +46,9 @@ $player.css({"width": "50px",
              "background-image": "url(images/jumpnshoot-sheet.png)",
              "background-repeat": "no-repeat",
              "background-position-x": "0px"
-            });
-$arms.css({"width": "100px",
+});
+$arm.css({  "width": "100px",
              "height": "75px",
-             "background-color": "transparent",
              "position": "absolute",
              "top": "0px",
              "left": "0px",
@@ -50,27 +57,45 @@ $arms.css({"width": "100px",
              "background-repeat": "no-repeat",
              "background-position-x": "0px",
              "transform-origin": "45px 24px"
-            });
-$player.append($arms);
+});
+$bullet.css({"width": "4px",
+             "height": "4px",
+             "position": "absolute",
+             "top": "0px",
+             "left": "0px",
+             "background-color": "#ffe492",
+             "transform-origin": "20px -15px",
+             "border-radius":"2px",
+             "visibility": "hidden"
+});
+//insert elements
+$player.append($arm);
 $body.prepend($player);
+for (var i = 0; i < 10; i++){
+    $body.prepend($bullet.clone());
+}
+$bullets = $(".bullet");
 
 $player.data("padding", (($player.innerWidth() - $player.width()) / 2));
 
 //collect platform elements
 $platforms = $("div, article, container, aside, header, footer, iframe");
 
-//set up styles
+//set up style classes
 $("<style>")
     .prop("type", "text/css")
     .html(".platform {\
                 transition: border 1s;\
                 border-top: 2px solid black !important;\
+            }\
+           .shot {\
+                visibility: visible !important;\
             }")
     .appendTo("head");
 //change page title
 $("title").html("JumpNShoot in " + $("title").html());
 
-//player loop
+//PLAYER LOOP
 setInterval(function(){
     //platform collision
     for (var i = 0; i < $platforms.length; i++){
@@ -135,15 +160,25 @@ setInterval(function(){
     
     //shoot
     if (key_shoot){
-        if (animation_shoot < 1)
+        if (animation_shoot < 1){
             animation_shoot = 1;
+            if (!$bullets.eq(Math.trunc(bulletIndex)).hasClass("shot")){
+                $bullets.eq(Math.trunc(bulletIndex)).addClass("shot");
+                if (bulletIndex < $bullets.length)
+                    bulletIndex += 1;
+                else
+                    bulletIndex = 0;
+            }else{
+                animation_shoot = 0;
+            }
+        }
         animation_shoot += 0.2;
-        $arms.css("background-position-x", (Math.trunc(animation_shoot) * -100) + "px");
+        $arm.css("background-position-x", (Math.trunc(animation_shoot) * -100) + "px");
         if (animation_shoot > 3)
             animation_shoot = 0;
     }else{
         animation_shoot = 0;
-        $arms.css("background-position-x", "0px");
+        $arm.css("background-position-x", "0px");
     }
     
     //scroll to follow player
@@ -194,7 +229,7 @@ setInterval(function(){
     $player.css("top", ($player.offset().top + gravity - yVelocity) + "px");
     $player.css("left", ($player.offset().left + adjustedxVelocity * walkDirection) + "px");
     
-    //edge constraints
+    //LRedge constraints
     if ($player.position().left + $player.data("padding") < 0){
         $player.css("left", -1 * $player.data("padding") + "px");   
     }
@@ -204,15 +239,61 @@ setInterval(function(){
     }*/
 }, 1000 / FRAMES_PER_SECOND);
 
-//arms
+//BULLET LOOP
+setInterval(function(){
+    if(walkDirection == 1){
+        gunpointX = ($player.offset().left + 43) + 30 * Math.cos(armAngleRad + 0.6);
+        gunpointY = ($player.offset().top + 22) + 30 * Math.sin(armAngleRad + 0.6);
+        //43,22 is the coords of the shoulder joint, 
+        //30 is the radius of a circle that intersects the gunpoint,
+        //0.6 is the number of radians it takes to rotate the point to the gun's end
+    }else{
+        gunpointX = ($player.offset().left + 53) + 30 * Math.cos(armAngleRad - 0.6);
+        gunpointY = ($player.offset().top + 22) + 30 * Math.sin(armAngleRad - 0.6);
+    }
+    for(var i = 0; i < $bullets.length; i++){
+        var $activeBullet = $bullets.eq(i);
+        if (!$activeBullet.hasClass("shot")){
+            $activeBullet.css("left", (gunpointX) + "px")
+                         .css("top", (gunpointY) + "px");
+        }else{
+            if(!$activeBullet.data("Yvelocity")){
+                $activeBullet.data("Xvelocity", (0 + BULLET_SPEED * Math.cos(armAngleRad)));
+                $activeBullet.data("Yvelocity", (0 + BULLET_SPEED * Math.sin(armAngleRad)));
+                
+                console.log($activeBullet.data("Xvelocity"),$activeBullet.data("Yvelocity"),armAngleDeg);
+            }
+            $activeBullet.css("top", ($activeBullet.offset().top + $activeBullet.data("Yvelocity")) + "px");
+            $activeBullet.css("left", ($activeBullet.offset().left + $activeBullet.data("Xvelocity")) + "px");
+            
+            //out of bounds
+            if ($activeBullet.offset().top + $activeBullet.height() < 0
+                || $activeBullet.offset().top > $window.height() + $window.scrollTop()
+                || $activeBullet.offset().left + $activeBullet.width() < 0
+                || $activeBullet.offset().left + $activeBullet.width() + 5 > $window.width() + $window.scrollLeft()){
+                    $activeBullet.removeClass("shot");
+                    $activeBullet.removeData("Yvelocity");
+            }
+        }
+    }
+}, 1000 / FRAMES_PER_SECOND);
+
+//ARM ANGLE BY MOUSE POSITION
 $window.mousemove(function(e) {
-    if(walkDirection == 1)
-        $arms.css("transform","rotate(" + (Math.atan2(e.pageY - $player.offset().top - $player.height() / 2 + 26, e.pageX - $player.offset().left - $player.innerWidth() / 2) * 180 / Math.PI) + "deg)"); //26 is the difference between the shoulder joint and the middle of the player
-    else
-        $arms.css("transform","rotate(" + (-1 * (Math.atan2(e.pageY - $player.offset().top - $player.height() / 2 + 26, e.pageX - $player.offset().left - $player.innerWidth() / 2) * 180 / Math.PI) + 180) + "deg)");
+    if(walkDirection == 1){
+        armAngleDeg = (Math.atan2(e.pageY - $player.offset().top - $player.height() / 2 + 26, e.pageX - $player.offset().left - $player.innerWidth() / 2) * 180 / Math.PI); 
+        armAngleRad = (Math.atan2(e.pageY - $player.offset().top - $player.height() / 2 + 26, e.pageX - $player.offset().left - $player.innerWidth() / 2));
+        //26 is the difference between the shoulder joint and the middle of the player
+    }else{
+        armAngleDeg = (-1 * (Math.atan2(e.pageY - $player.offset().top - $player.height() / 2 + 26, e.pageX - $player.offset().left - $player.innerWidth() / 2) * 180 / Math.PI) + 180);
+        armAngleRad = ((Math.atan2(e.pageY - $player.offset().top - $player.height() / 2 + 26, e.pageX - $player.offset().left - $player.innerWidth() / 2)));
+    }
+    
+    
+    $arm.css("transform","rotate(" + armAngleDeg + "deg)");
 });
 
-//controls
+//CONTROLS
 $window.keydown(function(e){
     e.preventDefault();
     if (e.keyCode == '32' || e.keyCode == '87' || e.keyCode == '38') //SPACE W UPARROW
