@@ -45,7 +45,8 @@ $player.css({"width": "50px",
              "background-color": "transparent",
              "background-image": "url(images/jumpnshoot-sheet.png)",
              "background-repeat": "no-repeat",
-             "background-position-x": "0px"
+             "background-position-x": "0px",
+             "background-position-y": "-200px"
 });
 $arm.css({  "width": "100px",
              "height": "75px",
@@ -120,6 +121,7 @@ setInterval(function(){
         }
     }
     if (!landed){
+        $player.css("background-position-y", "0px");
         if(gravity < MAX_FALL_SPEED){
             gravity += 1;
         }
@@ -128,9 +130,12 @@ setInterval(function(){
     }
     
     //jump
+    if (yVelocity > gravity)
+        $player.css("background-position-y", "-100px");
     if (landed){
         yVelocity = 0;
         jumpCounter = 2;
+        $player.css("background-position-y", "-200px");
     }
     if (yVelocity > 0){
         yVelocity--;
@@ -268,9 +273,9 @@ setInterval(function(){
             
             //out of bounds
             if ($activeBullet.offset().top + $activeBullet.height() < 0
-                || $activeBullet.offset().top > $window.height() + $window.scrollTop()
+                || $activeBullet.offset().top + $activeBullet.height() + $activeBullet.data("Yvelocity") > $window.height() + $window.scrollTop()
                 || $activeBullet.offset().left + $activeBullet.width() < 0
-                || $activeBullet.offset().left + $activeBullet.width() + 5 > $window.width() + $window.scrollLeft()){
+                || $activeBullet.offset().left + $activeBullet.width() + $activeBullet.data("Xvelocity") > $window.width() + $window.scrollLeft()){
                     $activeBullet.removeClass("shot");
                     $activeBullet.removeData("Yvelocity");
             }
