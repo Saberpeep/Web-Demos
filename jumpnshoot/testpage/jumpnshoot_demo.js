@@ -81,20 +81,53 @@ $player.data("padding", (($player.innerWidth() - $player.width()) / 2));
 
 //collect platform elements
 $platforms = $("div, article, container, aside, header, footer, iframe");
+//collect target elements
+$targets = $("span, a, img, h1, h2, h3, h4, h5, li, th, td").not(".bullet, #player, #arm");
 
 //set up style classes
 $("<style>")
     .prop("type", "text/css")
-    .html(".platform {\
+    .html("@keyframes hit {\
+                0%   {transform: rotate(0deg)}\
+                45%  {transform: rotate(5deg)}\
+                85% {transform: rotate(-5deg)}\
+                100% {transform: rotate(0deg)}\
+            }\
+           @keyframes destroy {\
+                0%   {transform: translateY(0px) translateX(0px) rotate(0deg); visibility:visible;}\
+                25%   {transform: translateY(-500px) translateX(200px) rotate(300deg); visibility:visible;}\
+                99% {transform: translateY(3000px) translateX(300px) rotate(1800deg); visibility:hidden;}\
+                100% {transform: translateY(0px) translateX(0px) rotate(0deg); visibility:hidden;}\
+            }\
+          .platform {\
                 transition: border 1s;\
                 border-top: 2px solid black !important;\
             }\
            .shot {\
                 visibility: visible !important;\
-            }")
+            }\
+           .hit {\
+                transform-origin: center center;\
+                animation-name: hit;\
+                animation-duration: 0.3s;\
+                animation-iteration-count: infinite;\
+                animation-timing-function: cubic-bezier(.61,-0.16,.52,1.06);\
+           }\
+           .destroy {\
+                transform-origin: center center;\
+                animation-name: destroy;\
+                animation-duration: 3s;\
+                animation-timing-function: linear;\
+                animation-fill-mode: forwards;\
+           }\
+           .destroyed {\
+                visibility: hidden;\
+           }")
     .appendTo("head");
 //change page title
 $("title").html("JumpNShoot in " + $("title").html());
+
+//$body.css("overflow","hidden");
 
 //PLAYER LOOP
 setInterval(function(){
@@ -265,8 +298,6 @@ setInterval(function(){
             if(!$activeBullet.data("Yvelocity")){
                 $activeBullet.data("Xvelocity", (0 + BULLET_SPEED * Math.cos(armAngleRad)));
                 $activeBullet.data("Yvelocity", (0 + BULLET_SPEED * Math.sin(armAngleRad)));
-                
-                console.log($activeBullet.data("Xvelocity"),$activeBullet.data("Yvelocity"),armAngleDeg);
             }
             $activeBullet.css("top", ($activeBullet.offset().top + $activeBullet.data("Yvelocity")) + "px");
             $activeBullet.css("left", ($activeBullet.offset().left + $activeBullet.data("Xvelocity")) + "px");
@@ -278,13 +309,54 @@ setInterval(function(){
                 || $activeBullet.offset().left + $activeBullet.width() + $activeBullet.data("Xvelocity") > $window.width() + $window.scrollLeft()){
                     $activeBullet.removeClass("shot");
                     $activeBullet.removeData("Yvelocity");
+                    //continue;
             }
         }
+        //hitting targets
+            for (var j = 0; j < $targets.length; j++){
+                var $activeTarget = $targets.eq(j);
+                if(!$activeTarget.hasClass("destroy")
+                   && !$activeTarget.hasClass("destroyed")
+                   && $activeBullet.hasClass("shot")
+                   && $activeBullet.offset().top >= $activeTarget.offset().top
+                   && $activeBullet.offset().top + $activeBullet.height() <= $activeTarget.offset().top + $activeTarget.height()
+                   && $activeBullet.offset().left >= $activeTarget.offset().left
+                   && $activeBullet.offset().left + $activeBullet.width() <= $activeTarget.offset().left + $activeTarget.width()){
+                        $activeTarget.addClass("hit");
+                        $activeBullet.removeClass("shot");
+                        $activeBullet.removeData("Yvelocity");
+                    
+                        if(!$activeTarget.data("hitCounter")){
+                            $activeTarget.data("hitCounter", 1);   
+                        }else if($activeTarget.data("hitCounter") < 5){
+                            $activeTarget.data("hitCounter", $activeTarget.data("hitCounter") + 1);
+                        }else{
+                            $activeTarget.data("hitCounter", 0);
+                            $activeTarget.removeClass("hit");
+                            $activeTarget.addClass("destroy");
+                        }
+                }else{
+                    if (!$activeTarget.data("hitAnimation") && $activeTarget.hasClass("hit")){
+                        $activeTarget.data("hitAnimation", 5000 / FRAMES_PER_SECOND);
+                    }else if($activeTarget.data("hitAnimation") > 0){
+                        $activeTarget.data("hitAnimation", $activeTarget.data("hitAnimation") - 1);
+                    }else{
+                        $activeTarget.removeClass("hit");
+                        $activeTarget.removeData("hitAnimation");
+                    }   
+                }
+                //out of bounds
+                if ($activeTarget.hasClass("destroy")
+                    && ($activeTarget.offset().top + $activeTarget.height() > $window.height() + $window.scrollTop()
+                    || $activeTarget.offset().left > $window.width() + $window.scrollLeft())){
+                        $activeTarget.addClass("destroyed").removeClass("destroy");
+                }
+            }
     }
 }, 1000 / FRAMES_PER_SECOND);
 
 //ARM ANGLE BY MOUSE POSITION
-$window.mousemove(function(e) {
+window.onmousemove = function (e) {
     if(walkDirection == 1){
         armAngleDeg = (Math.atan2(e.pageY - $player.offset().top - $player.height() / 2 + 26, e.pageX - $player.offset().left - $player.innerWidth() / 2) * 180 / Math.PI); 
         armAngleRad = (Math.atan2(e.pageY - $player.offset().top - $player.height() / 2 + 26, e.pageX - $player.offset().left - $player.innerWidth() / 2));
@@ -294,9 +366,8 @@ $window.mousemove(function(e) {
         armAngleRad = ((Math.atan2(e.pageY - $player.offset().top - $player.height() / 2 + 26, e.pageX - $player.offset().left - $player.innerWidth() / 2)));
     }
     
-    
     $arm.css("transform","rotate(" + armAngleDeg + "deg)");
-});
+}
 
 //CONTROLS
 $window.keydown(function(e){
@@ -325,13 +396,13 @@ $window.keyup(function(e){
     if (e.keyCode == '16') //SHIFT
         key_run = false;
 });
-$window.mousedown(function(e){
+window.onmousedown = function (e) {
     e.preventDefault();
     if(e.which == 1)
         key_shoot = true;
-});
-$window.mouseup(function(e){
+}
+window.onmouseup = function (e) {
     //e.preventDefault();
     if(e.which == 1)
         key_shoot = false;
-});
+}
