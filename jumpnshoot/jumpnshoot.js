@@ -66,7 +66,7 @@ $player.css({"width": "50px",
              "background-position-y": "-200px",
              "display": "block",
              "box-sizing": "content-box",
-             "zindex": "999"
+             "z-index": "999"
 });
 $arm.css({  "width": "100px",
              "height": "75px",
