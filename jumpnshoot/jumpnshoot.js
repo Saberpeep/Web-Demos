@@ -15,7 +15,7 @@ function loadjQ() {
     document.getElementsByTagName("head")[0].appendChild(script);
 }
 function JumpNShoot(){
-var FRAMES_PER_SECOND = 30,
+var FRAMES_PER_SECOND = 60,
     MAX_FALL_SPEED = 15,
     MAX_WALK_SPEED = 10,
     JUMP_VELOCITY = 31,
