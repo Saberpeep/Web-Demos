@@ -63,7 +63,9 @@ $player.css({"width": "50px",
              "background-image": "url(https://saberpeep.github.io/web-demos/jumpnshoot/jumpnshoot-sheet.png)",
              "background-repeat": "no-repeat",
              "background-position-x": "0px",
-             "background-position-y": "-200px"
+             "background-position-y": "-200px",
+             "display": "block",
+             "box-sizing": "content-box"
 });
 $arm.css({  "width": "100px",
              "height": "75px",
