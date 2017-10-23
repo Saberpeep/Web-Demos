@@ -215,7 +215,7 @@ setInterval(function(){
     if (key_shoot){
         if (animation_shoot < 1){
             animation_shoot = 1;
-            if (!$bullets[Math.trunc(bulletIndex)].classList.contains("shot")){
+            if (!($bullets[Math.trunc(bulletIndex)].classList.contains("shot"))){
                 $bullets[Math.trunc(bulletIndex)].classList.add("shot");
                 if (bulletIndex < $bullets.length)
                     bulletIndex += 1;
