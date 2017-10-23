@@ -215,10 +215,9 @@ setInterval(function(){
     if (key_shoot){
         if (animation_shoot < 1){
             animation_shoot = 1;
-            console.log($bullets,$bullets.eq(Math.trunc(bulletIndex)),$bullets.eq(Math.trunc(bulletIndex))[0]);
-            if (!($bullets.eq(Math.trunc(bulletIndex))[0].classList.contains("shot"))){
+            if (!($bullets[Math.trunc(bulletIndex)].classList.contains("shot"))){
                 $bullets[Math.trunc(bulletIndex)].classList.add("shot");
-                if (bulletIndex < $bullets.length)
+                if (bulletIndex < $bullets.length - 1)
                     bulletIndex += 1;
                 else
                     bulletIndex = 0;
