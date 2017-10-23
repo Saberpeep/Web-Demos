@@ -153,7 +153,7 @@ setInterval(function(){
             && $player.offset().left + $player.innerWidth() - $player.data("padding") >= $platforms.eq(i).offset().left 
             && $player.offset().left + $player.data("padding") <= $platforms.eq(i).offset().left + $platforms.eq(i).width()){
                 landed = true;
-                $platforms.eq(i).addClass("platform");
+                $platforms.eq(i)[0].classList.add("platform");
                 if ($player.offset().top + $player.height() > $platforms.eq(i).offset().top)
                     $player.css("top", ($platforms.eq(i).offset().top - $player.height()) + "px");
                 break;
@@ -165,7 +165,7 @@ setInterval(function(){
                 break;
         }else{
                 landed = false;
-                $platforms.eq(i).removeClass("platform");
+                $platforms.eq(i)[0].classList.remove("platform");
         }
     }
     if (!landed){
@@ -215,8 +215,8 @@ setInterval(function(){
     if (key_shoot){
         if (animation_shoot < 1){
             animation_shoot = 1;
-            if (!$bullets.eq(Math.trunc(bulletIndex)).hasClass("shot")){
-                $bullets.eq(Math.trunc(bulletIndex)).addClass("shot");
+            if (!$bullets.eq(Math.trunc(bulletIndex))[0].classList.contains("shot")){
+                $bullets.eq(Math.trunc(bulletIndex))[0].classList.add("shot");
                 if (bulletIndex < $bullets.length)
                     bulletIndex += 1;
                 else
@@ -306,7 +306,7 @@ setInterval(function(){
     }
     for(var i = 0; i < $bullets.length; i++){
         var $activeBullet = $bullets.eq(i);
-        if (!$activeBullet.hasClass("shot")){
+        if (!$activeBullet[0].classList.contains("shot")){
             $activeBullet.css("left", (gunpointX) + "px")
                          .css("top", (gunpointY) + "px");
         }else{
@@ -322,22 +322,22 @@ setInterval(function(){
                 || $activeBullet.offset().top + $activeBullet.height() + $activeBullet.data("Yvelocity") > $window.height() + $window.scrollTop()
                 || $activeBullet.offset().left + $activeBullet.width() < 0
                 || $activeBullet.offset().left + $activeBullet.width() + $activeBullet.data("Xvelocity") > $window.width() + $window.scrollLeft()){
-                    $activeBullet.removeClass("shot");
+                    $activeBullet[0].classList.remove("shot");
                     $activeBullet.removeData("Yvelocity");
             }
         }
         //hitting targets
             for (var j = 0; j < $targets.length; j++){
                 var $activeTarget = $targets.eq(j);
-                if(!$activeTarget.hasClass("destroy")
-                   && !$activeTarget.hasClass("destroyed")
-                   && $activeBullet.hasClass("shot")
+                if(!$activeTarget[0].classList.contains("destroy")
+                   && !$activeTarget[0].classList.contains("destroyed")
+                   && $activeBullet[0].classList.contains("shot")
                    && $activeBullet.offset().top >= $activeTarget.offset().top
                    && $activeBullet.offset().top + $activeBullet.height() <= $activeTarget.offset().top + $activeTarget.height()
                    && $activeBullet.offset().left >= $activeTarget.offset().left
                    && $activeBullet.offset().left + $activeBullet.width() <= $activeTarget.offset().left + $activeTarget.width()){
-                        $activeTarget.addClass("hit");
-                        $activeBullet.removeClass("shot");
+                        $activeTarget[0].classList.add("hit");
+                        $activeBullet[0].classList.remove("shot");
                         $activeBullet.removeData("Yvelocity");
                     
                         if(!$activeTarget.data("hitCounter")){
@@ -346,24 +346,24 @@ setInterval(function(){
                             $activeTarget.data("hitCounter", $activeTarget.data("hitCounter") + 1);
                         }else{
                             $activeTarget.data("hitCounter", 0);
-                            $activeTarget.removeClass("hit");
-                            $activeTarget.addClass("destroy");
+                            $activeTarget[0].classList.remove("hit");
+                            $activeTarget[0].classList.add("destroy");
                         }
                 }else{
-                    if (!$activeTarget.data("hitAnimation") && $activeTarget.hasClass("hit")){
+                    if (!$activeTarget.data("hitAnimation") && $activeTarget[0].classList.contains("hit")){
                         $activeTarget.data("hitAnimation", 5000 / FRAMES_PER_SECOND);
                     }else if($activeTarget.data("hitAnimation") > 0){
                         $activeTarget.data("hitAnimation", $activeTarget.data("hitAnimation") - 1);
                     }else{
-                        $activeTarget.removeClass("hit");
+                        $activeTarget[0].classList.remove("hit");
                         $activeTarget.removeData("hitAnimation");
                     }   
                 }
                 //out of bounds
-                if ($activeTarget.hasClass("destroy")
+                if ($activeTarget[0].classList.contains("destroy")
                     && ($activeTarget.offset().top + $activeTarget.height() >= $window.height() + $window.scrollTop()
                     || $activeTarget.offset().left >= $window.width() + $window.scrollLeft())){
-                        $activeTarget.addClass("destroyed").removeClass("destroy");
+                        $activeTarget[0].classList.replace("destroyed","destroy");
                 }
             }
     }
