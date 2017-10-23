@@ -15,7 +15,7 @@ function loadjQ() {
     document.getElementsByTagName("head")[0].appendChild(script);
 }
 function JumpNShoot(){
-var FRAMES_PER_SECOND = 60,
+var FRAMES_PER_SECOND = 30,
     MAX_FALL_SPEED = 15,
     MAX_WALK_SPEED = 10,
     JUMP_VELOCITY = 31,
@@ -148,14 +148,15 @@ $("title").html("JumpNShoot in " + $("title").html());
 setInterval(function(){
     //platform collision
     for (var i = 0; i < $platforms.length; i++){
-        if ($player.offset().top + $player.height() >= $platforms.eq(i).offset().top
-            && $player.offset().top + $player.height() < $platforms.eq(i).offset().top + MAX_FALL_SPEED
-            && $player.offset().left + $player.innerWidth() - $player.data("padding") >= $platforms.eq(i).offset().left 
-            && $player.offset().left + $player.data("padding") <= $platforms.eq(i).offset().left + $platforms.eq(i).width()){
+        var $activePlatform = $platforms.eq(i);
+        if ($player.offset().top + $player.height() >= $activePlatform.offset().top
+            && $player.offset().top + $player.height() < $activePlatform.offset().top + MAX_FALL_SPEED
+            && $player.offset().left + $player.innerWidth() - $player.data("padding") >= $activePlatform.offset().left 
+            && $player.offset().left + $player.data("padding") <= $activePlatform.offset().left + $activePlatform.width()){
                 landed = true;
-                $platforms.eq(i)[0].classList.add("platform");
-                if ($player.offset().top + $player.height() > $platforms.eq(i).offset().top)
-                    $player.css("top", ($platforms.eq(i).offset().top - $player.height()) + "px");
+                $activePlatform[0].classList.add("platform");
+                if ($player.offset().top + $player.height() > $activePlatform.offset().top)
+                    $player.css("top", ($activePlatform.offset().top - $player.height()) + "px");
                 break;
         }else if ($player.offset().top + $player.height() >= $window.height() + $window.scrollTop()){
                 //stops falling out of the bottom of the window
@@ -165,7 +166,7 @@ setInterval(function(){
                 break;
         }else{
                 landed = false;
-                $platforms.eq(i)[0].classList.remove("platform");
+                $activePlatform[0].classList.remove("platform");
         }
     }
     if (!landed){
