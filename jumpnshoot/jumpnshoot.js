@@ -1,4 +1,3 @@
-
 function beginJumpNShoot(){
 if (typeof jQuery === "undefined") {
     console.log("JumpNShoot: jQuery not present, loading jQ");
@@ -61,7 +60,7 @@ $player.css({"width": "50px",
              "top": "10px",
              "left": "5px",
              "background-color": "transparent",
-             "background-image": "url(images/jumpnshoot-sheet.png)",
+             "background-image": "url(https://saberpeep.github.io/web-demos/jumpnshoot/jumpnshoot-sheet.png)",
              "background-repeat": "no-repeat",
              "background-position-x": "0px",
              "background-position-y": "-200px"
@@ -72,7 +71,7 @@ $arm.css({  "width": "100px",
              "top": "0px",
              "left": "0px",
              "background-color": "transparent",
-             "background-image": "url(images/jumpnshoot-arms-sheet.png)",
+             "background-image": "url(https://saberpeep.github.io/web-demos/jumpnshoot/jumpnshoot-arms-sheet.png)",
              "background-repeat": "no-repeat",
              "background-position-x": "0px",
              "transform-origin": "45px 24px"
