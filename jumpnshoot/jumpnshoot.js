@@ -89,7 +89,7 @@ function JumpNShoot(){
                  "position": "absolute",
                  "top": "0px",
                  "left": "0px",
-                 "background-color": "red",
+                 "background-color": "#fd3900",
                  "transform-origin": "20px -15px",
                  "border-radius":"2px",
                  "visibility": "hidden",
