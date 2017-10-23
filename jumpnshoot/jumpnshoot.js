@@ -91,9 +91,9 @@ $bullet.css({"width": "4px",
 });
 //insert elements
 $player.append($arm);
-$body.prepend($player);
+$body.append($player);
 for (var i = 0; i < 10; i++){
-    $body.prepend($bullet.clone());
+    $body.append($bullet.clone());
 }
 $bullets = $(".bullet");
 
