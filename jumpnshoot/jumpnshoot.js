@@ -87,7 +87,8 @@ $bullet.css({"width": "4px",
              "background-color": "#ffe492",
              "transform-origin": "20px -15px",
              "border-radius":"2px",
-             "visibility": "hidden"
+             "visibility": "hidden",
+             "z-index": "999"
 });
 //insert elements
 $player.append($arm);
