@@ -206,7 +206,7 @@ function JumpNShoot(){
                         cachedPlatforms[i].platform = true;
                         $platforms.eq(i)[0].classList.add("platform");
                     }
-                    if (cachedPlayer.bottom > cachedPlatforms[i].top)
+                    if (cachedPlayer.bottom > cachedPlatforms[i].top && yVelocity == 0)
                         cachedPlayer.top = cachedPlatforms[i].top - cachedPlayer.height;
                     break;
             }else if (cachedPlayer.bottom >= $window.height() + $window.scrollTop()){
@@ -225,7 +225,6 @@ function JumpNShoot(){
         }
         if (!landed){
             cachedPlayer.background_position_y = 0;
-            //$player.css("background-position-y", "0px");
             if(gravity < MAX_FALL_SPEED){
                 gravity += 1;
             }
@@ -240,12 +239,10 @@ function JumpNShoot(){
         }
         if (yVelocity > gravity)
             cachedPlayer.background_position_y = -100;
-            //$player.css("background-position-y", "-100px");
         if (landed){
             yVelocity = 0;
             jumpCounter = 2;
             cachedPlayer.background_position_y = -200;
-            //$player.css("background-position-y", "-200px");
         }
         if (yVelocity > 0){
             yVelocity--;
@@ -266,7 +263,6 @@ function JumpNShoot(){
                 crouchFallTimer++;
             }else{
                 cachedPlayer.top = cachedPlayer.top + MAX_FALL_SPEED;
-                //$player.css("top", ($player.offset().top + MAX_FALL_SPEED) + "px");
                 falling = true;
                 crouchFallTimer = 0;
             }
@@ -309,7 +305,6 @@ function JumpNShoot(){
             walkDirection = -1;
 
         if (key_walkL || key_walkR){
-            //$player.css("transform","scaleX(" + walkDirection + ")");
             if (key_crouch)
                 animation_walk += 0.09;   
             else if(key_run)
@@ -317,7 +312,6 @@ function JumpNShoot(){
             else
                 animation_walk += 0.2;
             cachedPlayer.background_position_x = (Math.trunc(animation_walk) * -100);
-            //$player.css("background-position-x", (Math.trunc(animation_walk) * -100) + "px");
             if (animation_walk > 8)
                 animation_walk = 1;
 
@@ -327,7 +321,6 @@ function JumpNShoot(){
         }else{
             animation_walk = 0;
             cachedPlayer.background_position_x = 0;
-            //$player.css("background-position-x","0px");
 
             if(xVelocity > 0){
                 xVelocity -= 0.5;
@@ -347,13 +340,10 @@ function JumpNShoot(){
         //MAIN POSITION OUTPUT
         cachedPlayer.top = (cachedPlayer.top + gravity - yVelocity);
         cachedPlayer.left = (cachedPlayer.left + adjustedxVelocity * walkDirection);
-        //$player.css("top", ($player.offset().top + gravity - yVelocity) + "px");
-        //$player.css("left", ($player.offset().left + adjustedxVelocity * walkDirection) + "px");
 
         //LRedge constraints
         if (cachedPlayer.left + cachedPlayer.oneSidePadding < 0){
-            cachedPlayer.left = -1 * cachedPlayer.oneSidePadding;
-            //$player.css("left", -1 * playerPadding + "px");   
+            cachedPlayer.left = -1 * cachedPlayer.oneSidePadding; 
         }
         /*else if ($player.position().left + $player.innerWidth() - playerPadding > $window.width() + $window.scrollLeft()){
             //$player.css("left", ($window.width() + $window.scrollLeft() - $player.innerWidth() + playerPadding) + "px");
@@ -366,7 +356,6 @@ function JumpNShoot(){
                      "background-position-y": cachedPlayer.background_position_y + "px",
                      "background-position-x": cachedPlayer.background_position_x + "px",
                      "transform": "scaleX(" + walkDirection + ")"});
-        
         
     }, 1000 / FRAMES_PER_SECOND);
 
