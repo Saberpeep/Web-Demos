@@ -200,13 +200,14 @@ function JumpNShoot(){
             if (cachedPlayer.bottom >= cachedPlatforms[i].top
                 && cachedPlayer.bottom < cachedPlatforms[i].top + MAX_FALL_SPEED
                 && cachedPlayer.left + cachedPlayer.innerWidth - cachedPlayer.oneSidePadding >= cachedPlatforms[i].left 
-                && cachedPlayer.left + cachedPlayer.oneSidePadding <= cachedPlatforms[i].left + cachedPlatforms[i].width){
+                && cachedPlayer.left + cachedPlayer.oneSidePadding <= cachedPlatforms[i].left + cachedPlatforms[i].width
+                && yVelocity <= gravity){
                     landed = true;
                     if (cachedPlatforms[i].platform == false){
                         cachedPlatforms[i].platform = true;
                         $platforms.eq(i)[0].classList.add("platform");
                     }
-                    if (cachedPlayer.bottom > cachedPlatforms[i].top && yVelocity == 0)
+                    if (cachedPlayer.bottom > cachedPlatforms[i].top)
                         cachedPlayer.top = cachedPlatforms[i].top - cachedPlayer.height;
                     break;
             }else if (cachedPlayer.bottom >= $window.height() + $window.scrollTop()){
