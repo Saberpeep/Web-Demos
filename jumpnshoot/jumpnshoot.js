@@ -191,7 +191,7 @@ function JumpNShoot(){
         .appendTo("head");
     //change page title
     $("title").html("JumpNShoot in " + $("title").html());
-
+    
     //PLAYER LOOP
     setInterval(function(){
         cachedPlayer.bottom = cachedPlayer.top + cachedPlayer.height;
@@ -506,4 +506,27 @@ function JumpNShoot(){
         if(e.which == 1)
             key_shoot = false;
     }
+    
+    //update platform and target cache on resize
+    var resizeTimer;
+    window.addEventListener('resize', function(e){
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(function() {
+            //when done resizing
+            for (var i = 0; i < cachedPlatforms.length; i++){
+                cachedPlatforms[i].top = $platforms.eq(i).offset().top;
+                cachedPlatforms[i].left = $platforms.eq(i).offset().left;
+                cachedPlatforms[i].height = $platforms.eq(i).height();
+                cachedPlatforms[i].width = $platforms.eq(i).width();
+            }
+            console.log("platform cache updated");
+            for (var i = 0; i < cachedTargets.length; i++){
+                cachedTargets[i].top = $targets.eq(i).offset().top;
+                cachedTargets[i].left = $targets.eq(i).offset().left;
+                cachedTargets[i].height = $targets.eq(i).height();
+                cachedTargets[i].width = $targets.eq(i).width();
+            }
+            console.log("target cache updated");
+        }, 1000);
+    }, true);
 }
