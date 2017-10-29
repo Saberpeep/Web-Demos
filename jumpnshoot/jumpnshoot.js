@@ -513,6 +513,7 @@ function JumpNShoot(){
         clearTimeout(resizeTimer);
         resizeTimer = setTimeout(function() {
             //when done resizing
+            console.log("updating caches...");
             for (var i = 0; i < cachedPlatforms.length; i++){
                 cachedPlatforms[i].top = $platforms.eq(i).offset().top;
                 cachedPlatforms[i].left = $platforms.eq(i).offset().left;
