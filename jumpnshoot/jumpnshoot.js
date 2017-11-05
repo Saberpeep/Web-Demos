@@ -436,7 +436,6 @@ function JumpNShoot(){
                                 cachedTargets[j].destroy = true;
                                 $targets.eq(j)[0].classList.remove("hit");
                                 $targets.eq(j)[0].classList.add("destroy");
-                                $targets.eq(j).find("*").addClass("destroy");
                             }
                     }else{
                         if (cachedTargets[j].hitAnimation == 0 && cachedTargets[j].hit == true){
