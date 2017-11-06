@@ -115,7 +115,10 @@ function JumpNShoot(){
         .not(function(){return ($(this).css("position") == "fixed")? true : false;})
         .not(function(){return ($(this).find("div, article, container, aside, header, footer, iframe").length > 0)? true : false;});
     //collect target elements
-    $targets = $("span, a, img, h1, h2, h3, h4, h5, li, th, td").not(".bullet, #player, #arm");
+    $targets = $("span, a, img, h1, h2, h3, h4, h5, li, th, td")
+        .not(".bullet, #player, #arm")
+        .not(function(){return ($(this).css("position") == "fixed")? true : false;})
+        .not(function(){return ($(this).find("div, article, container, aside, header, footer, iframe").length > 0)? true : false;});
     
     //cache player, platform, bullet, and target positions
     function cachedShape ($element, type = "") {
