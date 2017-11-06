@@ -201,7 +201,7 @@ function JumpNShoot(){
                }\
                .inlineFix.destroyed {\
                     display:inline-block;\
-               }"")
+               }")
         .appendTo("head");
     //change page title
     $("title").html("JumpNShoot in " + $("title").html());
