@@ -155,7 +155,7 @@ function JumpNShoot(){
         cachedTargets.push(new cachedShape($targets.eq(i), "target"));
     
     //fix for inline elements not accepting animations
-    $targets.is(function(){return ($(this).css("display") == "inline")? true : false;}).addClass("inlineFix");
+    $targets.filter(function(){return ($(this).css("display") == "inline")? true : false;}).addClass("inlineFix");
 
     //set up style classes
     $("<style>")
@@ -195,6 +195,9 @@ function JumpNShoot(){
                }\
                .destroyed {\
                     visibility: hidden !important;\
+               }\
+               .inlineFix.hit {\
+                    display:inline-block;\
                }\
                .inlineFix.destroy {\
                     display:inline-block;\
