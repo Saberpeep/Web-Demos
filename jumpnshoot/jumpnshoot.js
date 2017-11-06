@@ -114,7 +114,7 @@ function JumpNShoot(){
         .not(".bullet, #player, #arm")
         .not(function(){return ($(this).css("position") == "fixed")? true : false;});
     //collect target elements
-    $targets = $("span, a, img, h1, h2, h3, h4, h5, li, th, td")
+    $targets = $("span, a, img, h1, h2, h3, h4, h5, li, th, td, button, input")
         .not(".bullet, #player, #arm")
         .not(function(){return ($(this).css("position") == "fixed")? true : false;})
         .not(function(){return ($(this).find("span, a, img, h1, h2, h3, h4, h5, li, th, td").length > 0)? true : false;});
@@ -153,6 +153,9 @@ function JumpNShoot(){
         cachedBullets.push(new cachedShape($bullets.eq(i), "bullet"));
     for (var i = 0; i < $targets.length; i++)
         cachedTargets.push(new cachedShape($targets.eq(i), "target"));
+    
+    //fix for inline elements not accepting animations
+    $targets.is(function(){return ($(this).css("display") == "inline")? true : false;}).addClass("inlineFix");
 
     //set up style classes
     $("<style>")
@@ -192,7 +195,13 @@ function JumpNShoot(){
                }\
                .destroyed {\
                     visibility: hidden !important;\
-               }")
+               }\
+               .inlineFix.destroy {\
+                    display:inline-block;\
+               }\
+               .inlineFix.destroyed {\
+                    display:inline-block;\
+               }"")
         .appendTo("head");
     //change page title
     $("title").html("JumpNShoot in " + $("title").html());
