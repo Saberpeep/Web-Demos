@@ -119,9 +119,15 @@ function JumpNShoot(){
         .not(function(){return ($(this).css("position") == "fixed")? true : false;})
         .not(function(){return ($(this).find("span, a, img, h1, h2, h3, h4, h5, li, th, td, button, input").length > 0)? true : false;});
     
-    $platforms = $platforms.slice(0, 500);
-    $targets = $targets.slice(0, 500);
-    console.log("platforms:", $platforms.length, "targets:", $targets.length);
+    if ($platforms.length > 500){
+        console.log("JumpNShoot: platform array length limited to 500 (", $platforms.length, ")");
+        $platforms = $platforms.slice(0, 500);   
+    }
+    if ($targets.length > 500){
+        console.log("JumpNShoot: target array length limited to 500 (", $targets.length, ")");
+        $targets = $targets.slice(0, 500);
+        
+    }
     
     //cache player, platform, bullet, and target positions
     function cachedShape ($element, type = "") {
@@ -157,8 +163,6 @@ function JumpNShoot(){
         cachedBullets.push(new cachedShape($bullets.eq(i), "bullet"));
     for (var i = 0; i < $targets.length; i++)
         cachedTargets.push(new cachedShape($targets.eq(i), "target"));
-    
-    console.log("platformsCache:", cachedPlatforms.length, "targetsCache:", cachedTargets.length);
     
     //fix for inline elements not accepting animations
     $targets.filter(function(){return ($(this).css("display") == "inline")? true : false;}).addClass("inlineFix");
