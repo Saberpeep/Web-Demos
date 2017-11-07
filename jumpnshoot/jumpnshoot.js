@@ -112,15 +112,15 @@ function JumpNShoot(){
     //collect platform elements
     $platforms = $("div, article, container, aside, header, footer, iframe")
         .not(".bullet, #player, #arm")
-        .not(function(){return ($(this).css("position") == "fixed")? true : false;});
+        .not(function(){return ($(this).css("position") == "fixed")? true : false;})
+        .not($platforms.slice(500));;
     //collect target elements
     $targets = $("span, a, img, h1, h2, h3, h4, h5, li, th, td, button, input")
         .not(".bullet, #player, #arm")
         .not(function(){return ($(this).css("position") == "fixed")? true : false;})
-        .not(function(){return ($(this).find("span, a, img, h1, h2, h3, h4, h5, li, th, td, button, input").length > 0)? true : false;});
+        .not(function(){return ($(this).find("span, a, img, h1, h2, h3, h4, h5, li, th, td, button, input").length > 0)? true : false;})
+        .not($targets.slice(500));
     
-    $platforms.slice(0,500);
-    $targets.slice(0,500);
     console.log("platforms:", $platforms.length, "targets:", $targets.length);
     
     //cache player, platform, bullet, and target positions
