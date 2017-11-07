@@ -3,8 +3,8 @@ function beginJumpNShoot(){
     if (ALREADY_RUNNING)
             return;
     ALREADY_RUNNING = true;
-    if (typeof jQuery === "undefined") {
-        console.log("JumpNShoot: jQuery not present, loading jQ");
+    if (typeof jQuery === "undefined" || jQuery.fn.jquery < "3.2.1") {
+        console.log("JumpNShoot: jQuery 3.2.1 or greater not present, loading jQ");
         loadjQ();
     }else{
         JumpNShoot();
@@ -530,21 +530,21 @@ function JumpNShoot(){
         clearTimeout(resizeTimer);
         resizeTimer = setTimeout(function() {
             //when done resizing
-            console.log("updating caches...");
+            console.log("JumpNShoot: updating caches...");
             for (var i = 0; i < cachedPlatforms.length; i++){
                 cachedPlatforms[i].top = $platforms.eq(i).offset().top;
                 cachedPlatforms[i].left = $platforms.eq(i).offset().left;
                 cachedPlatforms[i].height = $platforms.eq(i).height();
                 cachedPlatforms[i].width = $platforms.eq(i).width();
             }
-            console.log("platform cache updated");
+            console.log("JumpNShoot: platform cache updated");
             for (var i = 0; i < cachedTargets.length; i++){
                 cachedTargets[i].top = $targets.eq(i).offset().top;
                 cachedTargets[i].left = $targets.eq(i).offset().left;
                 cachedTargets[i].height = $targets.eq(i).height();
                 cachedTargets[i].width = $targets.eq(i).width();
             }
-            console.log("target cache updated");
+            console.log("JumpNShoot: target cache updated");
         }, 1000);
     }, true);
 }
