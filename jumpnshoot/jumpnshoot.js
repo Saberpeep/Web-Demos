@@ -149,12 +149,14 @@ function JumpNShoot(){
     }
     var cachedPlayer = new cachedShape($player, "player");
     
-    for (var i = 0; i < $platforms.length; i++)
+    for (var i = 0; i < $platforms.length && i < 1000; i++)
         cachedPlatforms.push(new cachedShape($platforms.eq(i), "platform"));
     for (var i = 0; i < $bullets.length; i++)
         cachedBullets.push(new cachedShape($bullets.eq(i), "bullet"));
-    for (var i = 0; i < $targets.length; i++)
+    for (var i = 0; i < $targets.length && i < 1000; i++)
         cachedTargets.push(new cachedShape($targets.eq(i), "target"));
+    
+    console.log("platformsCache:", cachedPlatforms.length, "targetsCache:", cachedTargets.length);
     
     //fix for inline elements not accepting animations
     $targets.filter(function(){return ($(this).css("display") == "inline")? true : false;}).addClass("inlineFix");
