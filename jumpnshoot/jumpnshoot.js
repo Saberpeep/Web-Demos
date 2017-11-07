@@ -149,11 +149,11 @@ function JumpNShoot(){
     }
     var cachedPlayer = new cachedShape($player, "player");
     
-    for (var i = 0; i < $platforms.length && i < 600; i++)
+    for (var i = 0; i < $platforms.length && i < 400; i++)
         cachedPlatforms.push(new cachedShape($platforms.eq(i), "platform"));
     for (var i = 0; i < $bullets.length; i++)
         cachedBullets.push(new cachedShape($bullets.eq(i), "bullet"));
-    for (var i = 0; i < $targets.length && i < 600; i++)
+    for (var i = 0; i < $targets.length && i < 400; i++)
         cachedTargets.push(new cachedShape($targets.eq(i), "target"));
     
     console.log("platformsCache:", cachedPlatforms.length, "targetsCache:", cachedTargets.length);
