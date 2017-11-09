@@ -1,9 +1,4 @@
 (function(JumpNShoot) {
-    if (JumpNShoot.ALREADY_RUNNING){
-            console.log("JumpNShoot: can't load, instance already running!");
-            throw "JumpNShoot instance already running";
-            return;
-    }
     JumpNShoot.start = function() {
         if (JumpNShoot.ALREADY_RUNNING){
             console.log("JumpNShoot: can't start, instance already running!");
