@@ -235,7 +235,7 @@
                         landed = true;
                         if (cachedPlatforms[i].platform == false){
                             cachedPlatforms[i].platform = true;
-                            $platforms.eq(i)[0].classList.add("platform");
+                            $platforms[i].classList.add("platform");
                         }
                         if (cachedPlayer.bottom > cachedPlatforms[i].top)
                             cachedPlayer.top = cachedPlatforms[i].top - cachedPlayer.height;
@@ -250,7 +250,7 @@
                         landed = false;
                         if (cachedPlatforms[i].platform == true){
                             cachedPlatforms[i].platform = false;
-                            $platforms.eq(i)[0].classList.remove("platform");
+                            $platforms[i].classList.remove("platform");
                         }
                 }
             }
@@ -422,7 +422,7 @@
                         || cachedBullets[i].left + cachedBullets[i].width + cachedBullets[i].xVelocity > $window.width() + $window.scrollLeft()){
                             if (cachedBullets[i].shot == true){
                                 cachedBullets[i].shot = false;
-                                $bullets.eq(i)[0].classList.remove("shot");
+                                $bullets[i].classList.remove("shot");
                             }
                             cachedBullets[i].yVelocity = 0;
                     }
@@ -438,7 +438,8 @@
                             || cachedTargets[j].left >= $window.width() + $window.scrollLeft())){
                                 cachedTargets[j].destroy = false;
                                 cachedTargets[j].destroyed = true;
-                                $targets.eq(j)[0].classList.replace("destroyed","destroy");
+                                $targets[j].classList.remove("destroy");
+                                $targets[j].classList.add("destroyed");
                                 continue;
                         }
                         if(cachedTargets[j].destroy == false
@@ -450,10 +451,10 @@
                            && cachedBullets[i].left + cachedBullets[i].width <= cachedTargets[j].left + cachedTargets[j].width){
                                 if (cachedTargets[j].hit == false){
                                     cachedTargets[j].hit = true;
-                                    $targets.eq(j)[0].classList.add("hit");
+                                    $targets[j].classList.add("hit");
                                 }
                                 cachedBullets[i].shot = false;
-                                $bullets.eq(i)[0].classList.remove("shot");
+                                $bullets[i].classList.remove("shot");
                                 cachedBullets[i].yVelocity = 0;
 
                                 if(cachedTargets[j].hitcounter == 0){
@@ -464,8 +465,8 @@
                                     cachedTargets[j].hitCounter = 0;
                                     cachedTargets[j].hit = false;
                                     cachedTargets[j].destroy = true;
-                                    $targets.eq(j)[0].classList.remove("hit");
-                                    $targets.eq(j)[0].classList.add("destroy");
+                                    $targets[j].classList.remove("hit");
+                                    $targets[j].classList.add("destroy");
                                 }
                         }else{
                             if (cachedTargets[j].hitAnimation == 0 && cachedTargets[j].hit == true){
@@ -474,7 +475,7 @@
                                 cachedTargets[j].hitAnimation = cachedTargets[j].hitAnimation - 1;
                             }else{
                                 cachedTargets[j].hit = false;
-                                $targets.eq(j)[0].classList.remove("hit");
+                                $targets[j].classList.remove("hit");
                                 cachedTargets[j].hitAnimation = 0;   
                             }   
                         }
