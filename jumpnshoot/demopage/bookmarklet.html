@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>JumpNShoot Bookmarklet</title>
+        <link href="../../images/favicon.png" rel="icon" />
+        <link href="https://fonts.googleapis.com/css?family=Droid+Sans|Raleway:100" rel="stylesheet">
+        <style>
+            html{
+                min-height: 100%;
+            }
+            body{
+                background-color:#e8e8e8;
+                color: #222222;
+                font-family: 'Droid Sans', sans-serif;
+                margin: 0;
+                padding: 50px;
+                font-size:130%;
+            }
+            #outer-wrap{
+                min-width:468px;
+                min-height:486px;
+                
+            }
+            h1, h2, h3, h4{
+                background-color:#282828;
+                color:#fff;
+                
+                padding:5px;
+                margin:0;
+                margin-bottom:3px;
+                
+                font-family: 'Raleway', sans-serif;
+                font-size: 130%;
+                text-align: center;
+            }
+            .infobox{
+                display: block;
+                background-color: #efefef;
+                font-family: 'Raleway', sans-serif;
+                font-weight: bold;
+                padding: 20px;
+                width: 250px;
+                box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.26);
+                border: 1px solid #c4c4c4;
+                
+                margin:0 auto;
+                margin-top: 20px;
+            }
+            .infobox code{
+                font-size: 150%;
+                font-weight: normal;
+            }
+            .infobox.bookmarklet-message-1{
+                bottom: 200px;
+                left: 500px;
+            }
+            .infobox.bookmarklet-message-2{
+                bottom:150px;
+                left: 750px;
+            }
+            #dummyplayer{
+                width: 50px;
+                height: 100px;
+                padding-left: 25px;
+                padding-right: 25px;
+                background-color: transparent;
+                background-image: url(https://saberpeep.github.io/web-demos/jumpnshoot/jumpnshoot-sheet.png);
+                background-repeat: no-repeat;
+                background-position-x: 0px;
+                background-position-y: -200px;
+                display: block;
+                box-sizing: content-box;
+                z-index: 999;
+                
+                position: absolute;
+                bottom: 33px;
+                left: 15px;
+            }
+            #dummyarms{
+                width: 100px;
+                height: 75px;
+                position: absolute;
+                top: 0px;
+                left: 0px;
+                background-color: transparent;
+                background-image: url(https://saberpeep.github.io/web-demos/jumpnshoot/jumpnshoot-arms-sheet.png);
+                background-repeat: no-repeat;
+                background-position-x: 0px;
+                transform-origin: 45px 24px
+            }
+            a{
+                color: #5252d9;
+            }
+            footer{
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                padding:3px;
+                padding-left: 10px;
+                color: #2a2a2a;
+                background-color: #3c3c3c;
+                font-size:70%;
+            }
+            footer p{
+                margin: 5px 0 5px 0;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="outer-wrap">
+            <div class="infobox bookmarklet-message-1">
+                <h4>Now you're ready to Jump'N'Shoot!</h4><p>drag this <br /><code><a href="javascript:(function()%7Bfunction%20callback()%7BJumpNShoot.start()%3B%7Dvar%20s%3Ddocument.createElement(%22script%22)%3Bs.src%3D%22https%3A%2F%2Fsaberpeep.github.io%2Fweb-demos%2Fjumpnshoot%2Fjumpnshoot.js%22%3Bif(s.addEventListener)%7Bs.addEventListener(%22load%22%2Ccallback%2Cfalse)%7Delse%20if(s.readyState)%7Bs.onreadystatechange%3Dcallback%7Ddocument.body.appendChild(s)%3B%7D)()">JumpNShoot Bookmarklet<span></span></a></code><br /> link into your bookmarks bar <code>⤴</code></p>
+            </div>
+            <div class="infobox bookmarklet-message-2">
+                <p>Navigate to almost any site and click that bookmark in your bookmarks bar to load Jump'N'Shoot into that page!</p>
+            </div>
+            <div id="dummyplayer">
+                <div id="dummyarms"></div>
+            </div>
+            <footer>
+                <p>&copy; Julian Dymer 2017</p>
+            </footer>
+        </div>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script>
+            JumpNShoot = {};
+            $(function(){
+                var waitInterval = setInterval(function(){
+                    if (JumpNShoot.ALREADY_RUNNING){
+                        $("#dummyplayer").fadeTo(1500,0.7);
+                        clearInterval(waitInterval);
+                    }
+                },1000);
+            });
+        </script>
+    </body>
+</html>

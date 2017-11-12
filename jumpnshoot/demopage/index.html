@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>the Tutorial Level</title>
+        <link href="../../images/favicon.png" rel="icon" />
+        <link href="https://fonts.googleapis.com/css?family=Droid+Sans|Raleway:100" rel="stylesheet">
+        <style>
+            html{
+                min-height: 100%;
+            }
+            body{
+                background-color:white;
+                color: #222222;
+                font-family: 'Droid Sans', sans-serif;
+                min-height: 100%;
+                margin: 0;
+            }
+            #outer-wrap{
+                background-color:#e8e8e8;
+                
+                min-height: 950px;
+                min-width:4200px;
+                
+				position:relative;
+            }
+            h1, h2, h3, h4{
+                background-color:#282828;
+                color:#fff;
+                
+                padding:5px;
+                margin-bottom:3px;
+                
+                font-family: 'Raleway', sans-serif;
+                font-size: 130%;
+                text-align: center;
+            }
+            .infobox, .platformbox, .targetbox{
+                display: block;
+                font-family: 'Raleway', sans-serif;
+                font-weight: bold;
+                padding: 20px;
+                width: 200px;
+                box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.26);
+                border: 1px solid #c4c4c4;
+                position: absolute;
+            }
+            .platformbox{
+                background-color: #c1c1c1;
+                border: 1px solid #9b9b9b;
+                width: 300px;
+                height: 40px;
+                padding:0;
+            }
+            .targetbox{
+                background-color: #fafafa;
+                border-radius: 100px;
+                border: 15px outset #cb3030;
+                padding:0px;
+                width: 50px;
+                height: 50px;
+            }
+            .targetbox p{
+                background-color: #cb3030;
+                border-radius: 100px;
+                border: 15px inset #fafafa;
+                padding:0px;
+                margin:0;
+                width: 100%;
+                height: 100%;
+                box-sizing: border-box;
+            }
+            .infobox code{
+                font-size: 150%;
+                font-weight: normal;
+            }
+            .infobox.walk-controls{
+                bottom: 100px;
+                left: 300px;
+            }
+            .infobox.run-controls{
+                bottom: 200px;
+                left: 700px;
+            }
+            .infobox.jump-controls{
+                bottom: 300px;
+                left: 1350px;
+            }
+            .platformbox.jump-1{
+                bottom: 200px;
+                left: 1000px;
+            }
+            .platformbox.jump-2{
+                bottom: 400px;
+                left: 1000px;
+            }
+            .platformbox.jump-3{
+                bottom: 600px;
+                left: 1000px;
+            }
+            .platformbox.jump-4{
+                bottom: 800px;
+                left: 1000px;
+                width: 700px;
+            }
+            .infobox.crouch-controls{
+                bottom: 600px;
+                left: 1600px;
+            }
+            .infobox.dbljump-controls{
+                bottom: 350px;
+                left: 2100px;
+            }
+            .platformbox.dbljump-1{
+                bottom: 270px;
+                left: 1900px;
+            }
+            .platformbox.dbljump-2{
+                bottom: 570px;
+                left: 2400px;
+            }
+            .infobox.shoot-controls{
+                bottom: 200px;
+                left: 2700px;
+            }
+            .infobox.shoot-controls2{
+                bottom: 250px;
+                left: 3000px;
+            }
+            .targetbox.shoot-1{
+                bottom: 500px;
+                left: 2800px;
+            }
+            .targetbox.shoot-2{
+                bottom: 500px;
+                left: 3000px;
+            }
+            .targetbox.shoot-3{
+                bottom: 600px;
+                left: 2900px;
+            }
+            .targetbox.shoot-4{
+                bottom: 600px;
+                left: 3100px;
+            }
+            .infobox.continue{
+                bottom: 200px;
+                left: 3500px;
+                width: 150px;
+            }
+            a{
+                color: #3e3e95;
+                text-decoration: none;
+            }
+            footer{
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                padding-left: 10px;
+                color: #2a2a2a;
+                background-color: #3c3c3c;
+            }
+            footer p{
+                margin: 5px 0 5px 0;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="outer-wrap">
+            <div class="infobox walk-controls">
+                <p>Use <code>[A][D]</code> or <code>[←][→]</code> keys to walk left and right</p>
+            </div>
+            <div class="infobox run-controls">
+                <p>Hold the <code>[shift]</code> key while walking to run</p>
+            </div>
+            <div class="infobox jump-controls">
+                <p>Use the <code>[space]</code>, <code>[W]</code>, or <code>[↑]</code> key to jump</p>
+            </div>
+            <div class="platformbox jump-1"></div>
+            <div class="platformbox jump-2"></div>
+            <div class="platformbox jump-3"></div>
+            <div class="platformbox jump-4"></div>
+            <div class="infobox crouch-controls">
+                <p>Hold the <code>[S]</code> or <code>[↓]</code> key to fall down through platforms</p>
+            </div>
+            <span class="infobox dbljump-controls">
+                <p>Press the jump key while in the air to double-jump</p>
+            </span>
+            <div class="platformbox dbljump-1"></div>
+            <div class="platformbox dbljump-2"></div>
+            <div class="infobox shoot-controls">
+                <p><span>aim</span> <span>with</span> <span>the</span> <span>mouse,</span> <span>Hold</span> <span>the</span> <code><span>left</span> <span>mouse</span> <span>button</span></code> <span>to</span> <span>shoot</span></p>
+            </div>
+            <div class="infobox shoot-controls2">
+                <p><span>Most text-level</span> <span>elements</span> <span>are shootable.</span> <span>Elements will</span> <span>break</span> <span>after being hit with</span> <span>enough bullets</span></p>
+            </div>
+            <span class="targetbox shoot-1"><p></p></span>
+            <span class="targetbox shoot-2"><p></p></span>
+            <span class="targetbox shoot-3"><p></p></span>
+            <span class="targetbox shoot-4"><p></p></span>
+            <div class="infobox continue">
+                <p>Click here to<br /><code><a href="bookmarklet.html">Continue ➠<span></span></a></code></p>
+            </div>
+            <footer>
+                <p>&copy; Julian Dymer 2017</p>
+            </footer>
+        </div>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://saberpeep.github.io/web-demos/jumpnshoot/jumpnshoot.js"></script>
+        <script>
+            $(function(){
+                JumpNShoot.start();
+            });
+        </script>
+    </body>
+</html>
