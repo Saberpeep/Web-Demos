@@ -1,231 +1,353 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<title>Web Demos - Julian Dymer</title>
-		<link href="images/favicon.png" rel="icon" />
-		<link href="https://fonts.googleapis.com/css?family=Alegreya+Sans|Droid+Sans|Roboto+Slab" rel="stylesheet">
-		<style>
-			body {
-				background-color:#686A75;
-				font-family: 'Droid Sans', sans-serif;
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>Web Demos - Julian Dymer</title>
+        <link href="images/favicon.png" rel="icon" />
+        <link href="https://fonts.googleapis.com/css?family=Droid+Sans|Raleway:100" rel="stylesheet">
+        <style>
+            html{
+                min-height: 100%;
+            }
+            body{
+                background-color:black;
+                color: #f4f4f4;
+                font-family: 'Droid Sans', sans-serif;
+                min-height: 100%;
+            }
+            #outer-wrap{
+                background-color:#1a1a1a;
+                
 				margin:3%;
                 margin-bottom:1%;
                 margin-top:2%;
-                min-width:640px;
-			}
-			header {
-				background-color:#222633;
-				color:white;
-				font-weight: 300;
-				padding-top:5px;
-				padding-bottom:5px;
-				text-align: center;
-			}
-			header h1 {
-				font-family: 'Roboto Slab', serif;
-			}
-			header h2 {
-				font-family: 'Alegreya Sans', sans-serif;
-			}
-			header * {
-				font-weight: 300;
-			}
-			section#main {
-				background-color:#EDECF8;
-				color:#4C4B4F;
-				padding: 10px 20px 10px 20px;
-				overflow:hidden;
-				position:relative;
-                min-height: 400px;
-			}
-			section#main article, section#main section {
-				position:relative;
-				z-index:2;
-			}
-			section#main h3 {
-				background-color:#4C4B4F;
-				color:#EDECF8;
-				font-family: 'Alegreya Sans', sans-serif;
-				font-weight: 300;
-				letter-spacing: 0.5px;
-				padding:5px;
-				padding-left:10px;
-				float:left;
-				clear:right;
-				box-sizing:border-box;
-				height:30px;
-				/*the width of the .labGroup minus the 30px of the colored box*/
-				width:570px;
-				margin-top:0px;
-			}
-			section#main .box {
-				float:left;
-				clear:left;
-				box-sizing:border-box;
-				height:30px;
-				width:30px;
-				margin-top:0px;
-				padding-left:7.5px;
-				/*these next two need to work in conjunction*/
-				padding-bottom:3px;
-				font-size:27px;
-				color:white;
-			}
-			.red { background-color:red; }
-			.green { background-color:green; }
-			.blue { background-color:blue; }
-			.orange { background-color:orange; }
-			.purple { background-color:purple; }
-            
-			section#main .lab {
-				overflow:hidden;
-				height:30px;
-				clear:both;
-			}
-			section#main .labGroup {
-				background-color:white;
-				/*must also change with width of grey boxes (see above)*/
-				width:600px;
-				margin-bottom:10px;
-				overflow:hidden;
-			}
-			section#main .parts{
-                padding-top:10px;
-				padding-bottom:10px;
-				margin-left:30px;
-				overflow:hidden;
-			}
-            section#main .parts p{
-                float:left;
-				clear:both;
-                margin:0;
                 
-			}
-			section#main .parts a{
-				float:left;
-				clear:both;
-			}
-			hr {
-				border:none;
-				height:1px;
-				background-color:#FFF8EA;
-			}
-			strong {
-				font-weight:700;
-			}
-			a {
-				color:rgb(100,100,181);
-			}
-			a:visited {
-				color:rgb(134,138,151);
-			}
-			a:hover {
-				color:rgb(134,138,220);
-			}
-			#sideimg {
-				width:50%;
-				position:absolute;
-				top: 20px;
-				right:20px;	
-			}
-            #note span{
-                color:grey;
-                font-size: 70%;
+                min-height: 90vh;
+                min-width:640px;
+                
+				position:relative;
+                
+            }
+            header{
+                background-color:#282828;
+                color:#fff;
+                
+                padding:5px;
+                margin-bottom:3px;
+                
+                font-family: 'Raleway', sans-serif;
+                font-size: 130%;
+                text-align: center;
+            }
+            header h1, header h5{
+                margin: 5px;
+            }
+            .slashes{
+                font-size: 250%;
+                font-weight: 100;
+                letter-spacing: -37px;
+                margin-right: 30px;
+                margin-left: -10px;
+                vertical-align: middle;
+            }
+            #content-wrap{
+                overflow: hidden;
+                position: absolute;
+                top: 128px;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                
+                background-image: url("images/codebg.jpg");
+                background-size: cover;
+                background-repeat: no-repeat;
+                background-position: right;
+            }
+            .content{
+                background-color:#282828;
+            }
+            .content.left{
+                float: left;
+                width: 50%;
+                height: 100%;
+                box-sizing: border-box;
+                
+                background-color:#212121;
+                
+                position: relative;
+                z-index: 2;
+            }
+            .content.right{
+                float: right;
+                width: 50%;
+                box-sizing: border-box;
+                padding:10px;
+                padding-left: 30px;
+                
+                background-color:#212121;
+                -webkit-box-shadow: inset 200px -7px 296px -58px rgba(0,0,0,0.1);
+                -moz-box-shadow: inset 200px -7px 296px -58px rgba(0,0,0,0.1);
+                box-shadow: inset 200px -7px 296px -58px rgba(0,0,0,0.1);
+                
+                position: relative;
+                left:-50%;
+                transition: left 0.3s;
+            }
+            .content.right.expand{
+                left:0;
+            }
+            a{
+                color: #2a2a2a;
+                padding: 10px;
+                background-color: #f4f4f4;
+                text-decoration: none;
+            }
+            a:hover{
+                background-color:white;
+                color:black;
+            }
+            .content.left .demo{
+                position: relative;
+                display: block;
+                margin-bottom: 15px;
+                font-size: 110%;
+                
+                box-sizing: border-box;
+                border-left: 5px solid black;
+            }
+            .content.left .data{
+                display:none;
+            }
+            .content.left .arrow{
+                float: right;
+                font-weight: bold;
+            }
+            
+            .content.right .description{
+                padding-right:25%;
+            }
+            .content.right h4{
+                margin-top:40px;
+            }
+            
+            #icon{
+                font-family: "serif";
+                position: absolute;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                width: 50%;
+                
+                display: inline-block;
+                font-size: 3000%;
+                color:#b4b4b4;
+                opacity: 0.1;
+                text-align: center;
+                line-height: 1;
+            }
+            #slider{
+                position: absolute;
+                transition: none;
+            }
+            #slider2{
+                position: absolute;
+                top:0;
+                left:0;
+                right:0;
+                border-left: 5px solid black;
+                pointer-events: none;
             }
             footer{
-                font-size:70%;
-                color: rgb(47, 49, 56);
+                position: absolute;
+                bottom: 0;
+                padding-left: 10px;
+                color: #a2a2a2;
             }
-            footer p{
-                margin:0;
-                margin-top:5px;
-            }
-			
-		</style>
-	</head>
-
-	<body>
-		<header>
-			<hr />
-			<h1>Web Demos</h1>
-			<h2>by Julian Dymer</h2>
-			<hr />
-		</header>
-		<section id="main">
-			<article class="labGroup">
-				<section class="lab">
-					<p class="box red">1</p>
-					<h3><strong>Daft Cubes</strong></h3>
-				</section>
-				<section class="parts">
-					<a href="isometricdemo/">Launch Demo ></a>
-                    <p><code>Chrome, Vivaldi, Opera</code></p>
-				</section>
-			</article>
-            <article class="labGroup">
-				<section class="lab">
-					<p class="box green">2</p>
-					<h3><strong>Tiny House</strong></h3>
-				</section>
-				<section class="parts">
-					<a href="housedemo/">Launch Demo ></a>
-                    <p><code>Chrome, Vivaldi, Opera, Firefox 55+</code></p>
-                    <p><code>[Touchscreen Support ✔]</code></p>
-				</section>
-			</article>
-            <article class="labGroup">
-				<section class="lab">
-					<p class="box blue">3</p>
-					<h3><strong>Holo Cube Navigation</strong></h3>
-				</section>
-				<section class="parts">
-					<a href="holodemo/">Launch Demo ></a>
-                    <p><code>Chrome, Vivaldi, Opera, Firefox*, Edge</code></p>
-                    <p><code>[Touchscreen Support ✔]</code></p>
-				</section>
-			</article>
-			<article class="labGroup">
-				<section class="lab">
-					<p class="box purple">4</p>
-					<h3><strong>3D Flip Marquee</strong></h3>
-				</section>
-				<section class="parts">
-					<a href="flipdemo/">Launch Demo ></a>
-                    <p><code>Chrome, Vivaldi, Opera, Firefox*, Edge*</code></p>
-				</section>
-			</article>
-            <article class="labGroup">
-				<section class="lab">
-					<p class="box orange">5</p>
-					<h3><strong>Traincar Navigation</strong></h3>
-				</section>
-				<section class="parts">
-					<a href="traindemo/">Launch Demo ></a>
-                    <p><code>Chrome, Vivaldi, Opera, Firefox, Edge*</code></p>
-				</section>
-			</article>
-            <article class="labGroup">
-				<section class="lab">
-					<p class="box red">6</p>
-					<h3><strong>Jump'N'Shoot</strong></h3>
-				</section>
-				<section class="parts">
-					<a href="javascript:(function()%7Bfunction%20callback()%7BJumpNShoot.start()%3B%7Dvar%20s%3Ddocument.createElement(%22script%22)%3Bs.src%3D%22https%3A%2F%2Fsaberpeep.github.io%2Fweb-demos%2Fjumpnshoot%2Fjumpnshoot.js%22%3Bif(s.addEventListener)%7Bs.addEventListener(%22load%22%2Ccallback%2Cfalse)%7Delse%20if(s.readyState)%7Bs.onreadystatechange%3Dcallback%7Ddocument.body.appendChild(s)%3B%7D)()">JumpNShoot (bookmarklet)</a>
-                    <p><code>to use bookmarklet:<br />&nbsp;1) drag jumpnshoot bookmarklet link into your bookmarks bar<br />&nbsp;2) click on bookmark from bookmarks bar to load JumpNShoot into any page!<br />&nbsp;</code></p>
-                    <p><code>Chrome, Works best on <strong>simple</strong> sites</code></p>
-				</section>
-			</article>
-            <article class="labGroup" id="note">
-				<section class="parts">
-                    <p><code>*<span>small graphical bugs</span></code></p>
-				</section>
-			</article>
-			
-			<img id="sideimg" src="images/codebg.png" alt="" />
-		</section>
-        <footer>
-            <p>&copy; Julian Dymer 2016</p>
-        </footer>
-	</body>
+        </style>
+    </head>
+    <body>
+        <div id="outer-wrap">
+            <header>
+                <h1>Web Demos</h1>
+                <h5>By Julian Dymer <span class="slashes">&#xFF0F&#xFF0F</span> Saberpeep</h5>
+            </header>
+            <div id="content-wrap">
+                <div id="icon"></div>
+                <div class="content left">
+                    <div id="demos-wrap">
+                        <a class="demo" href="#">
+                            Daft Cubes
+                            <code class="data">
+                                {"name":"Daft Cubes",
+                                "color":"#c43c3c",
+                                "icon":"&#x25C7;",
+                                "description":"My first web demo for the site. 3D blocks in a qbert-like arrangement, with text that crawls along thier surfaces. The lyrics to Daft Punk's \"Technologic\" are used as an example, a text box allows you to run your own text across. Relies heavily on precise timing, but created the basis for future 3D DOM-based fun.",
+                                "compatibility":"Chrome, Vivaldi, Opera",
+                                "link":"isometricdemo/"}
+                            </code>
+                            <span class="arrow">&gt;</span>
+                        </a>
+                        <a class="demo" href="#">
+                            Tiny House
+                            <code class="data">
+                                {"name":"Tiny House",
+                                "color":"#48c43c",
+                                "icon":"&#x2302;",
+                                "description":"Further expanding on the DOM-based 3D cubes, this demo was an exercise to see if it was possible to create complex shapes using the same basic system. Dragging or swiping left and right allow you to rotate the house as smoke puffs billow from the chimney.",
+                                "compatibility":"Chrome, Vivaldi, Opera, Firefox 55+",
+                                "touch":true,
+                                "link":"housedemo/"}
+                            </code>
+                            <span class="arrow">&gt;</span>
+                        </a>
+                        <a class="demo" href="#">
+                            Holo Cube Navigation
+                            <code class="data">
+                                {"name":"Holo Cube Navigation",
+                                "color":"#f26d0e",
+                                "icon":"&#x25D9;",
+                                "description":"Utilizing the same DOM-based 3d cubes as the previous demos, but used for a more practical application. Scroll, Drag or Swipe to navigate the different options. Note that the links are placeholders.",
+                                "compatibility":"Chrome, Vivaldi, Opera, Firefox (partial), Edge",
+                                "touch":true,
+                                "link":"holodemo/"}
+                            </code>
+                            <span class="arrow">&gt;</span>
+                        </a>
+                        <a class="demo" href="#">
+                            3D Flip Marquee
+                            <code class="data">
+                                {"name":"3D Flip Marquee",
+                                "color":"#c43cb4",
+                                "icon":"&#x25A6;",
+                                "description":"Inspired by an Ok Go music video, this demo provides an interactive flip marquee. Enter text in the box to display it on the marquee, or click on the tiles to flip them manually. Features a few random animations for displaying text. Supports all the main ASCII characters, and yes, I did have to manually define my own characters.",
+                                "compatibility":"Chrome, Vivaldi, Opera, Firefox (partial), Edge (partial)",
+                                "link":"flipdemo/"}
+                            </code>
+                            <span class="arrow">&gt;</span>
+                        </a>
+                        <a class="demo" href="#">
+                            Traincar Navigation
+                            <code class="data">
+                                {"name":"Traincar Navigation",
+                                "color":"#fc981e",
+                                "icon":"&#x1F6F2;",
+                                "description":"In an attempt to combine the technology of the Tiny House demo and the functionality of the Holo Cube demo, this demo attempts to create complex shapes with the same DOM-based 3D cubes and use them to create a novel landing page for a website. I hope you like trains.",
+                                "compatibility":"Chrome, Vivaldi, Opera, Firefox, Edge (partial)",
+                                "link":"traindemo/"}
+                            </code>
+                            <span class="arrow">&gt;</span>
+                        </a>
+                        <a class="demo" href="#">
+                            Jump'N'Shoot
+                            <code class="data">
+                                {"name":"Jump&#39;N&#39;Shoot",
+                                "color":"#f90e45",
+                                "icon":"&#x269F;&#x204D;",
+                                "description":"By far the most fun and challenging demo to develop, Jump&#39;N&#39;Shoot is a bookmarklet that allows you to load a little spaceman into any page. Equipped with a laser blaster and a space suit, turn any webpage into a side-scrolling destruction fest by running across, jumping on, and shooting page elements.",
+                                "compatibility":"Chrome, Vivaldi, Opera, Firefox, Edge",
+                                "link":"jumpnshoot/demopage/"}
+                            </code>
+                            <span class="arrow">&gt;</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="content right">
+                    <h3 class="title"></h3>
+                    <p class="description"></p>
+                    <p><code class="compatibility"></code></p>
+                    <p><code class="touch"></code></p>
+                    <h4><a class="link" href="#">Launch Demo &gt;</a></h4>
+                    <div id="slider2"></div>
+                </div>
+                <div id="slider"></div>
+            </div>
+            <footer>
+                <p>&copy; Julian Dymer 2017</p>
+            </footer>
+        </div>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script>
+            $(function(){
+                var $demo = $(".demo"),
+                    $demosWrap = $("#demos-wrap"),
+                    $rightPanel = $(".content.right"),
+                    $leftPanel = $(".content.left"),
+                    $slider = $("#slider"),
+                    $slider2 = $("#slider2"),
+                    $icon = $("#icon"),
+                    $titleEl = $(".title"),
+                    $descEl = $(".description"),
+                    $compatEl = $(".compatibility"),
+                    $touchEl = $(".touch"),
+                    $linkEl = $(".link");
+                for(var i = 0, data; i < $demo.length; i++){
+                    data = $.parseJSON($demo.eq(i).children(".data").text());
+                    $demo.eq(i).css("border-left", "5px solid " + data.color);
+                }
+                $demo.click(function(){
+                    var $this = $(this);
+                    $demo.removeClass("active");
+                    $this.addClass("active");
+                    $demo.trigger("mouseleave");
+                    $rightPanel.removeClass("expand");
+                    $rightPanel.children().hide();
+                    var data = $.parseJSON($this.children(".data").text());
+                    $slider.css({"width": $rightPanel.outerWidth() + "px",
+                                 "height": $this.outerHeight() + "px",
+                                 "top": $this.position().top + "px",
+                                 "left": $this.position().left + "px",
+                                 "background-color": data.color});
+                    $slider2.css({"border-left": "5px solid " + data.color,
+                                  "height": $this.position().top + $this.outerHeight()});
+                    setTimeout(function(){
+                        $slider.css("transition", "left 0.2s, top 0.2s, height 0.2s");
+                        $rightPanel.addClass("expand");
+                        $rightPanel.children().fadeIn(1000);
+                        $slider.css("left", $this.position().left + $this.outerWidth() + "px");
+                        setTimeout(function(){
+                            $slider.css({"top": "0px",
+                                         "height": $this.outerHeight() / 4});
+                            setTimeout(function(){
+                                $slider.css("transition", "none");
+                            },200);
+                        },250);
+                    },250);
+                    $titleEl.text(data.name);
+                    $descEl.text(data.description);
+                    $compatEl.text(data.compatibility);
+                    if(data.touch)
+                        $touchEl.text("[Touchscreen Support ✔]");
+                    else
+                        $touchEl.text("");
+                    $linkEl[0].href = data.link;
+                });
+                $demo.mouseenter(function(){
+                        var data = $.parseJSON($(this).children(".data").text());
+                    if (!$demo.hasClass("active")){
+                        $icon.text(data.icon);
+                        $icon.fadeIn(250);
+                    }
+                        $(this).css({"background-color": data.color,
+                                     "color": "white"});
+                });
+                $demo.mouseleave(function(){
+                    if (!$(this).hasClass("active")){
+                        $(this).css({"background-color": "#f4f4f4",
+                                 "color": "#2a2a2a"});   
+                    }
+                });
+                $demosWrap.mouseleave(function(){
+                    $icon.fadeOut(250,function(){
+                       $icon.text(""); 
+                    });
+                });
+                window.addEventListener('resize', function(e){
+                    //when done resizing
+                    $slider.css("width", $rightPanel.outerWidth() + "px");
+                    if ($demo.hasClass("active"))
+                        $slider.css("left", $demo.position().left + $demo.outerWidth() + "px");
+        }, true);
+            });
+        </script>
+    </body>
 </html>
