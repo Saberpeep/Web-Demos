@@ -23,7 +23,7 @@
                 margin-top:2%;
                 
                 min-height: 90vh;
-                min-width:640px;
+                min-width: 640px;
                 
 				position:relative;
                 
@@ -51,12 +51,13 @@
                 vertical-align: middle;
             }
             #content-wrap{
-                overflow: hidden;
                 position: absolute;
                 top: 128px;
                 bottom: 0;
                 left: 0;
                 right: 0;
+                
+                min-height: 420px;
                 
                 background-image: url("images/codebg.jpg");
                 background-size: cover;
@@ -84,6 +85,9 @@
                 padding:10px;
                 padding-left: 30px;
                 
+                max-height:100%;
+                overflow-y: auto;
+                
                 background-color:#212121;
                 -webkit-box-shadow: inset 200px -7px 296px -58px rgba(0,0,0,0.1);
                 -moz-box-shadow: inset 200px -7px 296px -58px rgba(0,0,0,0.1);
@@ -97,16 +101,43 @@
                 left:0;
             }
             a{
-                color: #2a2a2a;
+                display: inline-block;
+                color: #f4f4f4;
                 padding: 10px;
-                background-color: #f4f4f4;
+                margin-bottom: 10px;
                 text-decoration: none;
             }
             a:hover{
                 background-color:white;
                 color:black;
             }
-            .content.left .demo{
+            .link{
+                color: #2a2a2a;
+                padding: 10px;
+                background-color: #f4f4f4;
+                text-decoration: none;
+                border-left-style: solid;
+                border-left-width: 0;
+                margin-left: 5px;
+                transition: all 0.25s;
+            }
+            .link:hover{
+                background-color:white;
+                color:black;
+                border-left-width: 5px;
+                margin-left: 0px;
+                transition: all 0.1s;
+            }
+            .demo:hover{
+                transition: all 0.1s;
+            }
+            .demo{
+                color: #2a2a2a;
+                padding: 10px;
+                background-color: #f4f4f4;
+                text-decoration: none;
+                transition: all 0.25s;
+                
                 position: relative;
                 display: block;
                 margin-bottom: 15px;
@@ -115,28 +146,34 @@
                 box-sizing: border-box;
                 border-left: 5px solid black;
             }
-            .content.left .data{
+            .demo:nth-last-child(2){
+                margin-bottom: 50px;
+            }
+            .data{
                 display:none;
             }
-            .content.left .arrow{
+            .arrow{
                 float: right;
                 font-weight: bold;
             }
             
-            .content.right .description{
+            .description{
                 padding-right:25%;
             }
             .content.right h4{
                 margin-top:40px;
+                margin-bottom: 0;
             }
             
             #icon{
-                font-family: "serif";
+                /*font-family: "serif";*/
+                font-family: DejaVu Sans, Symbola, Everson Mono, Dingbats, Segoe UI Symbol, Quivira, SunExt-A, FreeSerif, Universali, unifont;
                 position: absolute;
                 top: 0;
                 right: 0;
                 bottom: 0;
                 width: 50%;
+                overflow: hidden;
                 
                 display: inline-block;
                 font-size: 3000%;
@@ -145,17 +182,15 @@
                 text-align: center;
                 line-height: 1;
             }
-            #slider{
+            #sliderX{
                 position: absolute;
                 transition: none;
             }
-            #slider2{
+            #sliderY{
                 position: absolute;
-                top:0;
-                left:0;
+                left:50%;
                 right:0;
-                border-left: 5px solid black;
-                pointer-events: none;
+                transition: none;
             }
             footer{
                 position: absolute;
@@ -260,10 +295,20 @@
                             <code class="data">
                                 {"name":"Jump&#39;N&#39;Shoot",
                                 "color":"#f90e45",
-                                "icon":"&#x269F;&#x204D;",
+                                "icon":"&#x204D;",
                                 "description":"By far the most fun and challenging demo to develop, Jump&#39;N&#39;Shoot is a bookmarklet that allows you to load a little spaceman into any page. Equipped with a laser blaster and a space suit, turn any webpage into a side-scrolling destruction fest by running across, jumping on, and shooting page elements.",
                                 "compatibility":"Chrome, Vivaldi, Opera, Firefox, Edge",
                                 "link":"jumpnshoot/demopage/"}
+                            </code>
+                            <span class="arrow">&gt;</span>
+                        </a>
+                        <a class="demo credits" href="javascript:void(0)">
+                            Credits
+                            <code class="data">
+                                {"name":"Credits",
+                                "color":"#9a9a9a",
+                                "icon":"&#x2254;",
+                                "description":"&lt;a href=https://jquery.com/ &gt;jQuery by jQuery Foundation and other contributors&lt;/a&gt;&lt;br /&gt;&lt;a href=https://github.com/jquery/jquery-mousewheel&gt;jQuery.mousewheel.js by jQuery Foundation and other contributors&lt;/a&gt;&lt;br /&gt;&lt;a href=https://css-tricks.com/almanac/properties/p/perspective/ &gt;DOM-based 3D based on code by css-tricks.com&lt;/a&gt;&lt;br /&gt;&lt;a href=https://stackoverflow.com/a/22050162&gt;3D drag and rotate based on code by Vals on stackoverflow.com&lt;/a&gt;&lt;br /&gt;&lt;a href=https://stackoverflow.com/a/22050162&gt;CSS triangles based on code by Danny Markov at tutorialzine.com&lt;/a&gt;&lt;br /&gt;&lt;a href=https://stackoverflow.com/a/33826947&gt;Firefox clip-path workaround by Cyril Mestrom on stackoverflow.com&lt;/a&gt;&lt;br /&gt;&lt;a href=https://stackoverflow.com/a/7880918&gt;Method to access object properties by index by 0x499602D2 on stackoverflow.com&lt;/a&gt;&lt;br /&gt;&lt;a href=https://gist.github.com/conorbuck/2606166&gt;Code to find the angle between two points by conorbuck on github.com&lt;/a&gt;&lt;br /&gt;&lt;a href=https://stackoverflow.com/a/1821603&gt;Code Get the slope from one point and an angle in degrees by BenAlabaster on stackoverflow.com&lt;/a&gt;&lt;br /&gt;&lt;a href=https://mrcoles.com/bookmarklet/ &gt;Bookmarklet creator by Peter Coles at mrcoles.com&lt;/a&gt;&lt;br /&gt;&lt;a href=https://stackoverflow.com/a/10113434&gt;Script to dynamically load jQuery based on code by Anders Tornblad on stackoverflow.com&lt;/a&gt;"}
                             </code>
                             <span class="arrow">&gt;</span>
                         </a>
@@ -275,9 +320,9 @@
                     <p><code class="compatibility"></code></p>
                     <p><code class="touch"></code></p>
                     <h4><a class="link" href="#">Launch Demo &gt;</a></h4>
-                    <div id="slider2"></div>
                 </div>
-                <div id="slider"></div>
+                <div id="sliderY"></div>
+                <div id="sliderX"></div>
             </div>
             <footer>
                 <p>&copy; Julian Dymer 2017</p>
@@ -290,14 +335,15 @@
                     $demosWrap = $("#demos-wrap"),
                     $rightPanel = $(".content.right"),
                     $leftPanel = $(".content.left"),
-                    $slider = $("#slider"),
-                    $slider2 = $("#slider2"),
+                    $sliderX = $("#sliderX"),
+                    $sliderY = $("#sliderY"),
                     $icon = $("#icon"),
                     $titleEl = $(".title"),
                     $descEl = $(".description"),
                     $compatEl = $(".compatibility"),
                     $touchEl = $(".touch"),
                     $linkEl = $(".link");
+                //give colored stripes to each left panel button
                 for(var i = 0, data; i < $demo.length; i++){
                     data = $.parseJSON($demo.eq(i).children(".data").text());
                     $demo.eq(i).css("border-left", "5px solid " + data.color);
@@ -310,34 +356,56 @@
                     $rightPanel.removeClass("expand");
                     $rightPanel.children().hide();
                     var data = $.parseJSON($this.children(".data").text());
-                    $slider.css({"width": $rightPanel.outerWidth() + "px",
+                    
+                    //slider animation
+                    $sliderX.css({"width": $rightPanel.outerWidth() + "px",
                                  "height": $this.outerHeight() + "px",
                                  "top": $this.position().top + "px",
                                  "left": $this.position().left + "px",
                                  "background-color": data.color});
-                    $slider2.css({"border-left": "5px solid " + data.color,
-                                  "height": $this.position().top + $this.outerHeight()});
+                    $sliderY.css({"width": "0px",
+                                 "height": $this.outerHeight() + "px",
+                                 "top": $this.position().top + "px",
+                                 "background-color": data.color});
                     setTimeout(function(){
-                        $slider.css("transition", "left 0.2s, top 0.2s, height 0.2s");
+                        $sliderX.css("transition", "left 0.2s, top 0.2s, height 0.2s");
+                        $sliderY.css("transition", "height 0.2s, top 0.2s, height 0.2s");
                         $rightPanel.addClass("expand");
                         $rightPanel.children().fadeIn(1000);
-                        $slider.css("left", $this.position().left + $this.outerWidth() + "px");
+                        $sliderX.css("left", $this.position().left + $this.outerWidth() + "px");
                         setTimeout(function(){
-                            $slider.css({"top": "0px",
+                            $sliderX.css({"top": "0px",
                                          "height": $this.outerHeight() / 4});
+                            //Math.trunc for compatibility with Edge's weird rendering engine
+                            $sliderY.css({"top": "0px",
+                                          "width": "5px",
+                                          "height": Math.trunc($this.position().top + $this.outerHeight()) + "px"});
                             setTimeout(function(){
-                                $slider.css("transition", "none");
+                                $sliderX.css("transition", "none");
                             },200);
                         },250);
                     },250);
+                    
+                    //load data into right panel
                     $titleEl.text(data.name);
-                    $descEl.text(data.description);
-                    $compatEl.text(data.compatibility);
+                    $descEl.html(data.description);
+                    if (data.compatibility)
+                        $compatEl.text(data.compatibility);
+                    else
+                        $compatEl.text("");
+                    
                     if(data.touch)
                         $touchEl.text("[Touchscreen Support ✔]");
                     else
                         $touchEl.text("");
-                    $linkEl[0].href = data.link;
+                    
+                    if(data.link){
+                        $linkEl.show();
+                        $linkEl[0].href = data.link;
+                    }else{
+                       $linkEl.hide(); 
+                    }
+                    $linkEl.css("border-left-color", data.color);
                 });
                 $demo.mouseenter(function(){
                         var data = $.parseJSON($(this).children(".data").text());
@@ -361,9 +429,9 @@
                 });
                 window.addEventListener('resize', function(e){
                     //when done resizing
-                    $slider.css("width", $rightPanel.outerWidth() + "px");
+                    $sliderX.css("width", $rightPanel.outerWidth() + "px");
                     if ($demo.hasClass("active"))
-                        $slider.css("left", $demo.position().left + $demo.outerWidth() + "px");
+                        $sliderX.css("left", $demo.position().left + $demo.outerWidth() + "px");
         }, true);
             });
         </script>
