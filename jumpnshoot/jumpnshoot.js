@@ -123,7 +123,7 @@
 
         if ($platforms.length > 500){
             console.log("JumpNShoot: platform array length limited to 500 (", $platforms.length, ")");
-            $platforms.slice(500).css("opacity", "0.7");
+            $platforms.slice(500).not(".bullet, #player, #arm").css("opacity", "0.7");
             $platforms = $platforms.slice(0, 500);   
         }
         if ($targets.length > 500){
