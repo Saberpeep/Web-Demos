@@ -5,6 +5,17 @@
             return;   
         }
         JumpNShoot.ALREADY_RUNNING = true;
+        //ie11 compat
+        Math.trunc = Math.trunc || function(x) {
+          if (isNaN(x)) {
+            return NaN;
+          }
+          if (x > 0) {
+            return Math.floor(x);
+          }
+          return Math.ceil(x);
+        };
+        //jq check
         if (typeof jQuery === "undefined" || jQuery.fn.jquery < "3.2.1") {
             console.log("JumpNShoot: jQuery 3.2.1 or greater not present, loading jQ");
             loadjQ();
@@ -63,10 +74,12 @@
         //SETUP
         //create player element
         var $player = $("<div>", {id: "player", html: ""});
-        var $arm = $("<div>", {id: "arms", html: ""});
+        var $arm = $("<div>", {id: "arm", html: ""});
         var $bullet = $("<span>", {class: "bullet", html: ""});
         $player.css({"width": "50px",
                      "height": "100px",
+                     "padding": "0",
+                     "margin": "0",
                      "padding-left": "25px",
                      "padding-right": "25px",
                      "position": "absolute",
@@ -83,6 +96,8 @@
         });
         $arm.css({  "width": "100px",
                      "height": "75px",
+                     "padding": "0",
+                     "margin": "0",
                      "position": "absolute",
                      "top": "0px",
                      "left": "0px",
@@ -94,6 +109,8 @@
         });
         $bullet.css({"width": "4px",
                      "height": "4px",
+                     "padding": "0",
+                     "margin": "0",
                      "position": "absolute",
                      "top": "0px",
                      "left": "0px",
@@ -123,7 +140,7 @@
 
         if ($platforms.length > 500){
             console.log("JumpNShoot: platform array length limited to 500 (", $platforms.length, ")");
-            $platforms.slice(500).not(".bullet, #player, #arm").css("opacity", "0.7");
+            $platforms.slice(500).css("opacity", "0.7");
             $platforms = $platforms.slice(0, 500);   
         }
         if ($targets.length > 500){
@@ -133,7 +150,8 @@
         }
 
         //cache player, platform, bullet, and target positions
-        function cachedShape ($element, type = "") {
+        function cachedShape ($element, type) {
+            if (!type) type = "";
             this.top = $element.offset().top;
             this.left = $element.offset().left;
             this.height = $element.height();
@@ -405,12 +423,14 @@
             }
             for(var i = 0; i < cachedBullets.length; i++){
                 if (!cachedBullets[i].shot){
-                    cachedBullets[i].top = gunpointY;
-                    cachedBullets[i].left = gunpointX;
+                    cachedBullets[i].top = -5;
+                    cachedBullets[i].left = -5;
                 }else{
-                    if(cachedBullets[i].yVelocity == 0){
-                        cachedBullets[i].xVelocity = (0 + JumpNShoot.BULLET_SPEED * Math.cos(armAngleRad));
-                        cachedBullets[i].yVelocity = (0 + JumpNShoot.BULLET_SPEED * Math.sin(armAngleRad));
+                    if(cachedBullets[i].yVelocity == 0 && cachedBullets[i].xVelocity == 0){
+                        cachedBullets[i].top = gunpointY;
+                        cachedBullets[i].left = gunpointX;
+                        cachedBullets[i].xVelocity = (JumpNShoot.BULLET_SPEED * Math.cos(armAngleRad));
+                        cachedBullets[i].yVelocity = (JumpNShoot.BULLET_SPEED * Math.sin(armAngleRad));
                     }
                     cachedBullets[i].top = (cachedBullets[i].top + cachedBullets[i].yVelocity);
                     cachedBullets[i].left = (cachedBullets[i].left + cachedBullets[i].xVelocity);
@@ -425,6 +445,7 @@
                                 $bullets[i].classList.remove("shot");
                             }
                             cachedBullets[i].yVelocity = 0;
+                            cachedBullets[i].xVelocity = 0;
                     }
                 }
                 //hitting targets
@@ -456,6 +477,7 @@
                                 cachedBullets[i].shot = false;
                                 $bullets[i].classList.remove("shot");
                                 cachedBullets[i].yVelocity = 0;
+                                cachedBullets[i].xVelocity = 0;
 
                                 if(cachedTargets[j].hitcounter == 0){
                                     cachedTargets[j].hitCounter = 1;   
@@ -502,7 +524,8 @@
 
         //CONTROLS
         $window.keydown(function(e){
-            e.preventDefault();
+            if (e.keyCode != '116') //F5
+                e.preventDefault();
             if (e.keyCode == '32' || e.keyCode == '87' || e.keyCode == '38') //SPACE W UPARROW
                 key_jump = true;
             if (e.keyCode == '65' || e.keycode == '37') //A LEFTARROW
