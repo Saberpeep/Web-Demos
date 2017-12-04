@@ -57,7 +57,7 @@
                 left: 0;
                 right: 0;
                 
-                min-height: 420px;
+                min-height: 445px;
                 
                 background-image: url("images/codebg.jpg");
                 background-size: cover;
@@ -99,6 +99,13 @@
             }
             .content.right.expand{
                 left:0;
+            }
+            .content.right *{
+                opacity: 0;
+            }
+            .content.right.expand *{
+                opacity: 1;
+                transition: opacity 1s;
             }
             .content.right::-webkit-scrollbar-track{
                 box-shadow: inset 0 0 6px black;
@@ -160,7 +167,7 @@
                 box-sizing: border-box;
                 border-left: 5px solid black;
             }
-            .demo:nth-last-child(2){
+            .demo:nth-last-child(3){
                 margin-bottom: 50px;
             }
             .data{
@@ -196,22 +203,23 @@
                 text-align: center;
                 line-height: 1;
             }
-            #sliderX{
+            #slider{
                 position: absolute;
                 transition: none;
-            }
-            #sliderY{
-                position: absolute;
-                left:50%;
-                right:0;
-                transition: none;
+                background-color: transparent;
+                box-sizing: border-box;
+                pointer-events: none;
             }
             footer{
                 color: #424242;
                 position: absolute;
                 bottom: 0;
-                padding-left: 10px;
                 z-index: 2;
+                font-size: 90%;
+            }
+            footer p{
+                margin: 0;
+                padding: 10px;
             }
         </style>
         <noscript>
@@ -327,6 +335,9 @@
                             </code>
                             <span class="arrow">&gt;</span>
                         </a>
+                        <footer>
+                            <p>&copy; Julian Dymer 2017</p>
+                        </footer>
                     </div>
                 </div>
                 <div class="content right">
@@ -336,12 +347,8 @@
                     <p><code class="touch"></code></p>
                     <h4><a class="link" href="#">Launch Demo &gt;</a></h4>
                 </div>
-                <div id="sliderY"></div>
-                <div id="sliderX"></div>
+                <div id="slider"></div>
             </div>
-            <footer>
-                <p>&copy; Julian Dymer 2017</p>
-            </footer>
         </div>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script>
@@ -350,8 +357,7 @@
                     $demosWrap = $("#demos-wrap"),
                     $rightPanel = $(".content.right"),
                     $leftPanel = $(".content.left"),
-                    $sliderX = $("#sliderX"),
-                    $sliderY = $("#sliderY"),
+                    $slider = $("#slider"),
                     $icon = $("#icon"),
                     $titleEl = $(".title"),
                     $descEl = $(".description"),
@@ -369,34 +375,36 @@
                     $this.addClass("active");
                     $demo.trigger("mouseleave");
                     $rightPanel.removeClass("expand");
-                    $rightPanel.children().hide();
                     var data = $.parseJSON($this.children(".data").text());
                     
                     //slider animation
-                    $sliderX.css({"width": $rightPanel.outerWidth() + "px",
-                                 "height": $this.outerHeight() + "px",
-                                 "top": $this.position().top + "px",
-                                 "left": $this.position().left + "px",
-                                 "background-color": data.color});
-                    $sliderY.css({"width": "0px",
-                                 "height": $this.outerHeight() + "px",
-                                 "top": $this.position().top + "px",
-                                 "background-color": data.color});
+                    //slider stage 1
+                    $slider.css({
+                        "width": "0px",
+                        "height": $this.outerHeight() + "px",
+                        "top": $this.position().top + "px",
+                        "left": $this.position().left + $this.outerWidth() + "px",
+                        "border-left": "none",
+                        "border-top": $this.outerHeight() + "px solid " + data.color
+                    });
                     setTimeout(function(){
-                        $sliderX.css("transition", "left 0.2s, top 0.2s, height 0.2s");
-                        $sliderY.css("transition", "height 0.2s, top 0.2s, height 0.2s");
+                        //slider stage 2
+                        $slider.css("transition", "width 0.2s, height 0.2s, top 0.2s, border-top 0.2s");
                         $rightPanel.addClass("expand");
-                        $rightPanel.children().fadeIn(1000);
-                        $sliderX.css("left", $this.position().left + $this.outerWidth() + "px");
+                        $slider.css({
+                            "width": $rightPanel.outerWidth() + "px",
+                            "height": $this.outerHeight() + "px",
+                            "border-left": "5px solid " + data.color
+                        });
                         setTimeout(function(){
-                            $sliderX.css({"top": "0px",
-                                         "height": $this.outerHeight() / 4});
-                            //Math.trunc for compatibility with Edge's weird rendering engine
-                            $sliderY.css({"top": "0px",
-                                          "width": "5px",
-                                          "height": Math.trunc($this.position().top + $this.outerHeight()) + "px"});
+                            //slider stage 3
+                            $slider.css({
+                                "top": "0px",
+                                "height": $this.position().top + $this.outerHeight() - $this.parent().position().top + "px",
+                                "border-top": "10px solid " + data.color,
+                            });
                             setTimeout(function(){
-                                $sliderX.css("transition", "none");
+                                $slider.css("transition", "none");
                             },200);
                         },250);
                     },250);
@@ -443,11 +451,10 @@
                     });
                 });
                 window.addEventListener('resize', function(e){
-                    //when done resizing
-                    $sliderX.css("width", $rightPanel.outerWidth() + "px");
+                    $slider.css("width", $rightPanel.outerWidth() + "px");
                     if ($demo.hasClass("active"))
-                        $sliderX.css("left", $demo.position().left + $demo.outerWidth() + "px");
-        }, true);
+                        $slider.css("left", $demo.position().left + $demo.outerWidth() + "px");
+                }, true);
             });
         </script>
     </body>
