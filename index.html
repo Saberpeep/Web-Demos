@@ -97,15 +97,14 @@
                 left:-50%;
                 transition: left 0.3s;
             }
-            .content.right.expand{
+            .content.right {
+                color: black;
+                transition: none;
+            }
+            .content.right.expand {
                 left:0;
-            }
-            .content.right *{
-                opacity: 0;
-            }
-            .content.right.expand *{
-                opacity: 1;
-                transition: opacity 1s;
+                color: inherit;
+                transition: left 0.3s, color 1s;
             }
             .content.right::-webkit-scrollbar-track{
                 box-shadow: inset 0 0 6px black;
@@ -113,11 +112,9 @@
                 border-top: 15px solid #151515;
                 border-bottom: 5px solid #151515;
             }
-
             .content.right::-webkit-scrollbar{
                 width: 10px;
             }
-
             .content.right::-webkit-scrollbar-thumb{
                 background-color: #151515;
             }
@@ -245,96 +242,103 @@
         <div id="outer-wrap">
             <header>
                 <h1>Web Demos</h1>
-                <h5>By Julian Dymer <span class="slashes">&#xFF0F&#xFF0F</span> Saberpeep</h5>
+                <h5>By Julian Dymer <span class="slashes">&#xFF0F;&#xFF0F;</span> Saberpeep</h5>
             </header>
             <div id="content-wrap">
                 <div id="icon"></div>
                 <div class="content left">
                     <div id="demos-wrap">
-                        <a class="demo" href="javascript:void(0)">
+                        <div class="demo" href="javascript:void(0)">
                             Daft Cubes
                             <code class="data">
-                                {"name":"Daft Cubes",
-                                "color":"#c43c3c",
-                                "icon":"&#x25C7;",
-                                "description":"My first web demo on the site. 3D blocks in a qbert-like arrangement, with text that crawls along thier surfaces. The lyrics to Daft Punk's \"Technologic\" are used as an example, a text box allows you to run your own text across. Relies heavily on precise timing, but created the basis for future 3D DOM-based fun.",
-                                "compatibility":"Chrome, Vivaldi, Opera 15+",
-                                "link":"isometricdemo/"}
+                                <h3 class="title">Daft Cubes</h3>
+                                <code class="data color icon" style="color: #c43c3c">&#x25C7;</code>
+                                <p class="description">My first web demo on the site. 3D blocks in a qbert-like arrangement, with text that crawls along thier surfaces. The lyrics to Daft Punk's "Technologic" are used as an example, a text box allows you to run your own text across. Relies heavily on precise timing, but created the basis for future 3D DOM-based fun.</p>
+                                <p><code class="compatibility">Chrome, Vivaldi, Opera 15+</code></p>
+                                <h4><a class="link" href="isometricdemo/">Launch Demo &gt;</a></h4>
                             </code>
                             <span class="arrow">&gt;</span>
-                        </a>
-                        <a class="demo" href="javascript:void(0)">
+                        </div>
+                        <div class="demo" href="javascript:void(0)">
                             Tiny House
                             <code class="data">
-                                {"name":"Tiny House",
-                                "color":"#48c43c",
-                                "icon":"&#x2302;",
-                                "description":"Further expanding on the DOM-based 3D cubes, this demo was an exercise to see if it was possible to create complex shapes using the same basic system. Dragging or swiping left and right allow you to rotate the house as smoke puffs billow from the chimney.",
-                                "compatibility":"Chrome, Vivaldi, Opera 15+, Firefox 55+",
-                                "touch":true,
-                                "link":"housedemo/"}
+                                <h3 class="title">Tiny House</h3>
+                                <code class="data color icon" style="color: #48c43c">&#x2302;</code>
+                                <p class="description">Further expanding on the DOM-based 3D cubes, this demo was an exercise to see if it was possible to create complex shapes using the same basic system. Dragging or swiping left and right allow you to rotate the house as smoke puffs billow from the chimney.</p>
+                                <p><code class="compatibility">Chrome, Vivaldi, Opera 15+, Firefox 55+</code></p>
+                                <p><code class="touch">[Touchscreen Support ✔]</code></p>
+                                <h4><a class="link" href="housedemo/">Launch Demo &gt;</a></h4>
                             </code>
                             <span class="arrow">&gt;</span>
-                        </a>
-                        <a class="demo" href="javascript:void(0)">
+                        </div>
+                        <div class="demo" href="javascript:void(0)">
                             Holo Cube Navigation
                             <code class="data">
-                                {"name":"Holo Cube Navigation",
-                                "color":"#f26d0e",
-                                "icon":"&#x25D9;",
-                                "description":"Utilizing the same DOM-based 3d cubes as the previous demos, but used for a more practical application. Scroll, Drag or Swipe to navigate the different options. Note that the links are placeholders.",
-                                "compatibility":"Chrome, Vivaldi, Opera 15+, Firefox (partial), Edge",
-                                "touch":true,
-                                "link":"holodemo/"}
+                                <h3 class="title">Holo Cube Navigation</h3>
+                                <code class="data color icon" style="color: #f26d0e">&#x25D9;</code>
+                                <p class="description">Utilizing the same DOM-based 3d cubes as the previous demos, but used for a more practical application. Scroll, Drag or Swipe to navigate the different options. Note that the links are placeholders.</p>
+                                <p><code class="compatibility">Chrome, Vivaldi, Opera 15+, Firefox (partial), Edge</code></p>
+                                <p><code class="touch">[Touchscreen Support ✔]</code></p>
+                                <h4><a class="link" href="holodemo/">Launch Demo &gt;</a></h4>
                             </code>
                             <span class="arrow">&gt;</span>
-                        </a>
-                        <a class="demo" href="javascript:void(0)">
+                        </div>
+                        <div class="demo" href="javascript:void(0)">
                             3D Flip Marquee
                             <code class="data">
-                                {"name":"3D Flip Marquee",
-                                "color":"#c43cb4",
-                                "icon":"&#x25A6;",
-                                "description":"Inspired by an Ok Go music video, this demo provides an interactive flip marquee. Enter text in the box to display it on the marquee, or click on the tiles to flip them manually. Features a few random animations for displaying text. Supports all the main ASCII characters, and yes, I did have to manually define my own characters.",
-                                "compatibility":"Chrome, Vivaldi, Opera 15+, Firefox (partial), Edge (partial)",
-                                "link":"flipdemo/"}
+                                <h3 class="title">3D Flip Marquee</h3>
+                                <code class="data color icon" style="color: #c43cb4">&#x25A6;</code>
+                                <p class="description">Inspired by an Ok Go music video, this demo provides an interactive flip marquee. Enter text in the box to display it on the marquee, or click on the tiles to flip them manually. Features a few random animations for displaying text. Supports all the main ASCII characters, and yes, I did have to manually define my own characters.</p>
+                                <p><code class="compatibility">Chrome, Vivaldi, Opera 15+, Firefox (partial), Edge (partial)</code></p>
+                                <h4><a class="link" href="flipdemo/">Launch Demo &gt;</a></h4>
                             </code>
                             <span class="arrow">&gt;</span>
-                        </a>
-                        <a class="demo" href="javascript:void(0)">
+                        </div>
+                        <div class="demo" href="javascript:void(0)">
                             Traincar Navigation
                             <code class="data">
-                                {"name":"Traincar Navigation",
-                                "color":"#fc981e",
-                                "icon":"&#x1F6F2;",
-                                "description":"In an attempt to combine the technology of the Tiny House demo and the functionality of the Holo Cube demo, this demo attempts to create complex shapes with the same DOM-based 3D cubes and use them to create a novel landing page for a website. I hope you like trains.",
-                                "compatibility":"Chrome, Vivaldi, Opera 15+, Firefox, Edge (partial)",
-                                "link":"traindemo/"}
+                                <h3 class="title">Traincar Navigation</h3>
+                                <code class="data color icon" style="color: #fc981e">&#x1F6F2;</code>
+                                <p class="description">In an attempt to combine the technology of the Tiny House demo and the functionality of the Holo Cube demo, this demo attempts to create complex shapes with the same DOM-based 3D cubes and use them to create a novel landing page for a website. I hope you like trains.</p>
+                                <p><code class="compatibility">Chrome, Vivaldi, Opera 15+, Firefox, Edge (partial)</code></p>
+                                <h4><a class="link" href="traindemo/">Launch Demo &gt;</a></h4>
                             </code>
                             <span class="arrow">&gt;</span>
-                        </a>
-                        <a class="demo" href="javascript:void(0)">
+                        </div>
+                        <div class="demo" href="javascript:void(0)">
                             Jump'N'Shoot
                             <code class="data">
-                                {"name":"Jump&#39;N&#39;Shoot",
-                                "color":"#f90e45",
-                                "icon":"&#x204D;",
-                                "description":"By far the most fun and challenging demo to develop, Jump&#39;N&#39;Shoot is a bookmarklet that allows you to load a little spaceman into any page. Equipped with a laser blaster and a space suit, turn any webpage into a side-scrolling destruction fest by running across, jumping on, and shooting page elements.",
-                                "compatibility":"Chrome, Vivaldi, Opera 15+, Firefox, Edge, IE11",
-                                "link":"jumpnshoot/demopage/"}
+                                <h3 class="title">Jump'N'Shoot</h3>
+                                <code class="data color icon" style="color: #f90e45">&#x204D;</code>
+                                <p class="description">By far the most fun and challenging demo to develop, Jump&#39;N&#39;Shoot is a bookmarklet that allows you to load a little spaceman into any page. Equipped with a laser blaster and a space suit, turn any webpage into a side-scrolling destruction fest by running across, jumping on, and shooting page elements.</p>
+                                <p><code class="compatibility">Chrome, Vivaldi, Opera 15+, Firefox, Edge, IE11</code></p>
+                                <h4><a class="link" href="jumpnshoot/demopage/">Launch Demo &gt;</a></h4>
                             </code>
                             <span class="arrow">&gt;</span>
-                        </a>
-                        <a class="demo credits" href="javascript:void(0)">
+                        </div>
+                        <div class="demo credits" href="javascript:void(0)">
                             Credits
                             <code class="data">
-                                {"name":"Credits",
-                                "color":"#9a9a9a",
-                                "icon":"&#x2254;",
-                                "description":"&lt;a href=https://jquery.com/ &gt;jQuery by jQuery Foundation and other contributors&lt;/a&gt;&lt;br /&gt;&lt;a href=https://github.com/jquery/jquery-mousewheel&gt;jQuery.mousewheel.js by jQuery Foundation and other contributors&lt;/a&gt;&lt;br /&gt;&lt;a href=https://css-tricks.com/almanac/properties/p/perspective/ &gt;DOM-based 3D based on code by Chris Coyier at css-tricks.com&lt;/a&gt;&lt;br /&gt;&lt;a href=https://stackoverflow.com/a/22050162&gt;3D drag and rotate based on code by Vals on stackoverflow.com&lt;/a&gt;&lt;br /&gt;&lt;a href=https://tutorialzine.com/2017/03/css-triangles-without-hacks&gt;CSS triangles based on code by Danny Markov at tutorialzine.com&lt;/a&gt;&lt;br /&gt;&lt;a href=https://stackoverflow.com/a/33826947&gt;Firefox clip-path workaround by Cyril Mestrom on stackoverflow.com&lt;/a&gt;&lt;br /&gt;&lt;a href=https://stackoverflow.com/a/7880918&gt;Method to access object properties by index by 0x499602D2 on stackoverflow.com&lt;/a&gt;&lt;br /&gt;&lt;a href=https://gist.github.com/conorbuck/2606166&gt;Code to find the angle between two points by conorbuck on github.com&lt;/a&gt;&lt;br /&gt;&lt;a href=https://stackoverflow.com/a/1821603&gt;Code to get the slope from one point and an angle in degrees by BenAlabaster on stackoverflow.com&lt;/a&gt;&lt;br /&gt;&lt;a href=https://mrcoles.com/bookmarklet/ &gt;Bookmarklet creator by Peter Coles at mrcoles.com&lt;/a&gt;&lt;br /&gt;&lt;a href=https://stackoverflow.com/a/10113434&gt;Script to dynamically load jQuery based on code by Anders Tornblad on stackoverflow.com&lt;/a&gt;&lt;br /&gt;&lt;a href=https://appendto.com/2010/10/how-good-c-habits-can-encourage-bad-javascript-habits-part-1&gt;Code for js object with public and private functions based on code by Kyle Pennell at appendto.com&lt;/a&gt;&lt;br /&gt;&lt;a href=https://stackoverflow.com/a/44576137&gt;IE11 Math.trunc() workaround by NTL on stackoverflow.com&lt;/a&gt;"}
+                                <h3 class="title">Credits</h3>
+                                <code class="data color icon" style="color: #9a9a9a">&#x2254;</code>
+                                <p class="description">
+                                    <a href="https://jquery.com/" >jQuery by jQuery Foundation and other contributors</a><br />
+                                    <a href="https://github.com/jquery/jquery-mousewheel">jQuery.mousewheel.js by jQuery Foundation and other contributors</a><br />
+                                    <a href="https://css-tricks.com/almanac/properties/p/perspective/" >DOM-based 3D based on code by Chris Coyier at css-tricks.com</a><br />
+                                    <a href="https://stackoverflow.com/a/22050162">3D drag and rotate based on code by Vals on stackoverflow.com</a><br />
+                                    <a href="https://tutorialzine.com/2017/03/css-triangles-without-hacks">CSS triangles based on code by Danny Markov at tutorialzine.com</a><br />
+                                    <a href="https://stackoverflow.com/a/33826947">Firefox clip-path workaround by Cyril Mestrom on stackoverflow.com</a><br />
+                                    <a href="https://stackoverflow.com/a/7880918">Method to access object properties by index by 0x499602D2 on stackoverflow.com</a><br />
+                                    <a href="https://gist.github.com/conorbuck/2606166">Code to find the angle between two points by conorbuck on github.com</a><br />
+                                    <a href="https://stackoverflow.com/a/1821603">Code to get the slope from one point and an angle in degrees by BenAlabaster on stackoverflow.com</a><br />
+                                    <a href="https://mrcoles.com/bookmarklet/" >Bookmarklet creator by Peter Coles at mrcoles.com</a><br />
+                                    <a href="https://stackoverflow.com/a/10113434">Script to dynamically load jQuery based on code by Anders Tornblad on stackoverflow.com</a><br />
+                                    <a href="https://appendto.com/2010/10/how-good-c-habits-can-encourage-bad-javascript-habits-part-1">Code for js object with public and private functions based on code by Kyle Pennell at appendto.com</a><br />
+                                    <a href="https://stackoverflow.com/a/44576137">IE11 Math.trunc() workaround by NTL on stackoverflow.com</a>"}
+                                </p>
                             </code>
                             <span class="arrow">&gt;</span>
-                        </a>
+                        </div>
                         <footer>
                             <p>&copy; Julian Dymer 2017</p>
                         </footer>
@@ -358,24 +362,24 @@
                     $rightPanel = $(".content.right"),
                     $leftPanel = $(".content.left"),
                     $slider = $("#slider"),
-                    $icon = $("#icon"),
-                    $titleEl = $(".title"),
-                    $descEl = $(".description"),
-                    $compatEl = $(".compatibility"),
-                    $touchEl = $(".touch"),
-                    $linkEl = $(".link");
+                    $icon = $("#icon");
                 //give colored stripes to each left panel button
-                for(var i = 0, data; i < $demo.length; i++){
-                    data = $.parseJSON($demo.eq(i).children(".data").text());
-                    $demo.eq(i).css("border-left", "5px solid " + data.color);
+                for(var i = 0, dataEl, color; i < $demo.length; i++){
+                    dataEl = $demo.eq(i).children(".data");
+                    color = dataEl.children(".color")[0].style.color;
+                    $demo.eq(i).css("border-left", "5px solid " + color);
+                    if(dataEl.find(".link"))
+                        dataEl.find(".link").css("border-left-color", color);
                 }
                 $demo.click(function(){
-                    var $this = $(this);
+                    var $this = $(this),
+                        dataEl = $this.children(".data")
+                        color = dataEl.children(".color")[0].style.color;
                     $demo.removeClass("active");
                     $this.addClass("active");
                     $demo.trigger("mouseleave");
                     $rightPanel.removeClass("expand");
-                    var data = $.parseJSON($this.children(".data").text());
+                    
                     
                     //slider animation
                     //slider stage 1
@@ -385,7 +389,7 @@
                         "top": $this.position().top + "px",
                         "left": $this.position().left + $this.outerWidth() + "px",
                         "border-left": "none",
-                        "border-top": $this.outerHeight() + "px solid " + data.color
+                        "border-top": $this.outerHeight() + "px solid " + color
                     });
                     setTimeout(function(){
                         //slider stage 2
@@ -394,14 +398,14 @@
                         $slider.css({
                             "width": $rightPanel.outerWidth() + "px",
                             "height": $this.outerHeight() + "px",
-                            "border-left": "5px solid " + data.color
+                            "border-left": "5px solid " + color
                         });
                         setTimeout(function(){
                             //slider stage 3
                             $slider.css({
                                 "top": "0px",
                                 "height": $this.position().top + $this.outerHeight() - $this.parent().position().top + "px",
-                                "border-top": "10px solid " + data.color,
+                                "border-top": "10px solid " + color,
                             });
                             setTimeout(function(){
                                 $slider.css("transition", "none");
@@ -410,33 +414,16 @@
                     },250);
                     
                     //load data into right panel
-                    $titleEl.text(data.name);
-                    $descEl.html(data.description);
-                    if (data.compatibility)
-                        $compatEl.text(data.compatibility);
-                    else
-                        $compatEl.text("");
-                    
-                    if(data.touch)
-                        $touchEl.text("[Touchscreen Support ✔]");
-                    else
-                        $touchEl.text("");
-                    
-                    if(data.link){
-                        $linkEl.show();
-                        $linkEl[0].href = data.link;
-                    }else{
-                       $linkEl.hide(); 
-                    }
-                    $linkEl.css("border-left-color", data.color);
+                    $rightPanel.html(dataEl.html());
                 });
                 $demo.mouseenter(function(){
-                        var data = $.parseJSON($(this).children(".data").text());
+                        var icon = $(this).children(".data").children(".icon").text(),
+                            color = $(this).children(".data").children(".color")[0].style.color;
                     if (!$demo.hasClass("active")){
-                        $icon.text(data.icon);
+                        $icon.text(icon);
                         $icon.fadeIn(250);
                     }
-                        $(this).css({"background-color": data.color,
+                        $(this).css({"background-color": color,
                                      "color": "white"});
                 });
                 $demo.mouseleave(function(){
