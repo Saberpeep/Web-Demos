@@ -130,11 +130,11 @@
 
         //collect platform elements
         $platforms = $("div, article, container, aside, header, footer, iframe")
-            .not(".bullet, #player, #arms")
+            .not(".bullet, #player, #arm")
             .not(function(){return ($(this).css("position") == "fixed")? true : false;});
         //collect target elements
         $targets = $("span, a, img, h1, h2, h3, h4, h5, li, th, td, button, input")
-            .not(".bullet, #player, #arms")
+            .not(".bullet, #player, #arm")
             .not(function(){return ($(this).css("position") == "fixed")? true : false;})
             .not(function(){return ($(this).find("span, a, img, h1, h2, h3, h4, h5, li, th, td, button, input").length > 0)? true : false;});
 
@@ -526,26 +526,26 @@
         $window.keydown(function(e){
             if (e.keyCode != '116') //F5
                 e.preventDefault();
-            if (e.keyCode == '32' || e.keyCode == '87' || e.keyCode == '38') //SPACE W UPARROW
+            if (e.keyCode == '32' || e.keyCode == '87' || e.keyCode == '38' || e.key == "ArrowUp") //SPACE W UPARROW
                 key_jump = true;
-            if (e.keyCode == '65' || e.keycode == '37') //A LEFTARROW
+            if (e.keyCode == '65' || e.keycode == '37' || e.key == "ArrowLeft") //A LEFTARROW
                 key_walkL = true;
-            if (e.keyCode == '68' || e.keycode == '39') //D RIGHTARROW
+            if (e.keyCode == '68' || e.keycode == '39' || e.key == "ArrowRight") //D RIGHTARROW
                 key_walkR = true;
-            if (e.keyCode == '83' || e.keycode == '40') //S DOWNARROW
+            if (e.keyCode == '83' || e.keycode == '40' || e.key == "ArrowDown") //S DOWNARROW
                 key_crouch = true;
             if (e.keyCode == '16') //SHIFT
                 key_run = true;
         });
         $window.keyup(function(e){
             e.preventDefault();
-            if (e.keyCode == '32' || e.keyCode == '87' || e.keyCode == '38') //SPACE W UPARROW
+            if (e.keyCode == '32' || e.keyCode == '87' || e.keyCode == '38' || e.key == "ArrowUp") //SPACE W UPARROW
                 key_jump = false;
-            if (e.keyCode == '65' || e.keycode == '37') //A LEFTARROW
+            if (e.keyCode == '65' || e.keycode == '37' || e.key == "ArrowLeft") //A LEFTARROW
                 key_walkL = false;
-            if (e.keyCode == '68' || e.keycode == '39') //D RIGHTARROW
+            if (e.keyCode == '68' || e.keycode == '39' || e.key == "ArrowRight") //D RIGHTARROW
                 key_walkR = false;
-            if (e.keyCode == '83' || e.keycode == '40') //S DOWNARROW
+            if (e.keyCode == '83' || e.keycode == '40' || e.key == "ArrowDown") //S DOWNARROW
                 key_crouch = false;
             if (e.keyCode == '16') //SHIFT
                 key_run = false;
