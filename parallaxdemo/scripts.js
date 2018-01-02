@@ -1,5 +1,5 @@
 $parallaxEl = $(".parallax");
-$parallaxEl.css("bottom", ($parallaxEl.width() / 10 - 16) + "px")
+$parallaxEl.css("bottom", calcOffset($parallaxEl.width()) + "px")
 //shift view based on mouse move
 $(document).mousemove(function (event) {
     $parallaxEl.css("transform","rotateY(" + (((event.pageX - ($(".parallax").width() / 2)) / 200)) + "deg)"
@@ -7,5 +7,15 @@ $(document).mousemove(function (event) {
   
 });
 window.addEventListener('resize', function(e){
-        $parallaxEl.css("bottom", ($parallaxEl.width() / 10 - 16) + "px");
+        $parallaxEl.css("bottom", calcOffset($parallaxEl.width()) + "px");
 }, true);
+function calcOffset(width){
+    var offset = width / 12 - 16, 
+        upper = 200,
+        lower = 100;
+    if (offset < lower)
+        return lower;
+    else if (offset > upper)
+        return upper;
+    return offset;
+}
