@@ -1,0 +1,128 @@
+
+body {
+    font-family: 'Raleway', sans-serif;
+    font-size: 100%;
+    line-height: 1;
+    background-color:black;
+    color:white;
+    overflow: auto;
+    margin: 0;
+}
+
+#demowrap{
+    position: relative;
+    transform-style: preserve-3d;
+    width:100%;
+    margin:0 auto;
+    margin-top:-10%;
+    min-height: 630px;
+    min-width: 550px;
+    overflow: auto;
+}
+
+.overlay{
+    box-sizing: border-box;
+    padding: 100px;
+    text-align: center;
+    background-color: transparent;
+    position: absolute;
+    z-index: 10;
+    top:0;
+    width: 100%;
+    font-size: 200%;
+    opacity: 0.9;
+}
+.overlay h1{
+    font-size: 300%;
+    margin-bottom: 0;
+}
+.attrib{
+    font-size: 70%;
+}
+a{
+    color: white;
+    text-decoration: none;
+    opacity: 0.7;
+}
+a:active{
+    opacity: 0.9;
+}
+a:hover{
+    opacity: 1;
+}
+
+.plane {
+    width:100%;
+    margin:0 auto;
+    overflow:hidden;
+    background-color: transparent;
+    transform-style: preserve-3d;
+}
+
+.col {
+    width:100%;
+    height: 455px;
+    overflow: hidden;
+    margin:0;
+    float:left;
+    clear: none;
+}
+
+.parallax{
+    position: relative;
+    height: 130%;
+    width: 130%;
+    right: 15%;
+    bottom: 100px;
+    margin: 0;
+    transform-style: preserve-3d;
+}
+.parallax:after {
+    content: "";
+    display: block;
+    padding-bottom: 100%;
+    pointer-events: none;
+}
+
+.layer{
+    transition: all 0.2s;
+}
+
+.layer {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 10%;
+    left: 0;
+
+    background-color: transparent;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+
+    overflow:hidden;
+    white-space: nowrap;
+    backface-visibility: hidden;
+    transform-style: preserve-3d;
+}
+
+.l1{
+    background-image:url(parallax/mountainrange_layer1.png);
+    transform: translateZ(0px);
+}
+.l2{
+    background-image:url(parallax/mountainrange_layer2.png);
+    transform: translateZ(-100px);
+}
+.l3{
+    background-image:url(parallax/mountainrange_layer3.png);
+    transform: translateZ(-200px);
+}
+.l4{
+    background-image:url(parallax/mountainrange_layer4.png);
+    transform: translateZ(-300px);
+}
+.l5{
+    background-image:url(parallax/mountainrange_layer5.png);
+    transform: translateZ(-500px);
+}
