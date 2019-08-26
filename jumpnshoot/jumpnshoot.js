@@ -1,7 +1,7 @@
 (function(JumpNShoot) {
     JumpNShoot.start = function() {
         if (JumpNShoot.ALREADY_RUNNING){
-            console.log("JumpNShoot: can't start, instance already running!");
+            console.warn("JumpNShoot: can't start, instance already running!");
             return;   
         }
         JumpNShoot.ALREADY_RUNNING = true;
@@ -33,15 +33,12 @@
         document.getElementsByTagName("head")[0].appendChild(script);
     }
     function main(){
-        JumpNShoot.FRAMES_PER_SECOND = 60;
         JumpNShoot.MAX_FALL_SPEED = 15;
         JumpNShoot.MAX_WALK_SPEED = 10;
         JumpNShoot.JUMP_VELOCITY = 31;
         JumpNShoot.BULLET_SPEED = 15;
-        var $document = $(document),
-            $window = $(window),
-            $body = $("body"),
-            body = document.getElementsByTagName("body")[0],
+        var $window = $(window),
+            $body = $(document.body),
             $platforms,
             cachedPlatforms = [],
             $targets,
@@ -49,6 +46,7 @@
             gravity = 0,
             key_walkL = false,
             key_walkR = false,
+            key_run = false,
             animation_walk = 0,
             xVelocity = 0,
             adjustedxVelocity = 0,
@@ -60,7 +58,6 @@
             jumpCounter = 2,
             key_crouch = false,
             crouchFallTimer = 0,
-            key_run = false,
             $bullets,
             cachedBullets = [],
             key_shoot = false,
@@ -69,7 +66,10 @@
             armAngleDeg = 0,
             bulletIndex = 0,
             gunpointX = 0,
-            gunpointY = 0;
+            gunpointY = 0,
+            mousePosX,
+            mousePosY,
+            fps = 0;
 
         //SETUP
         //create player element
@@ -139,12 +139,12 @@
             .not(function(){return ($(this).find("span, a, img, h1, h2, h3, h4, h5, li, th, td, button, input").length > 0)? true : false;});
 
         if ($platforms.length > 500){
-            console.log("JumpNShoot: platform array length limited to 500 (", $platforms.length, ")");
+            console.warn("JumpNShoot: platform array length limited to 500 (", $platforms.length, ")");
             $platforms.slice(500).css("opacity", "0.7");
             $platforms = $platforms.slice(0, 500);   
         }
         if ($targets.length > 500){
-            console.log("JumpNShoot: target array length limited to 500 (", $targets.length, ")");
+            console.warn("JumpNShoot: target array length limited to 500 (", $targets.length, ")");
             $targets = $targets.slice(0, 500);
 
         }
@@ -152,13 +152,28 @@
         //cache player, platform, bullet, and target positions
         function cachedShape ($element, type) {
             if (!type) type = "";
-            this.top = $element.offset().top;
-            this.left = $element.offset().left;
-            this.height = $element.height();
-            this.width = $element.width();
-            this.bottom = $element.offset().top + $element.height();
+            this.$element = $element;
+            function updatePositionCache(){
+                this.height = this.$element.height();
+                this.width = this.$element.width();
+                this.top = this.$element.offset().top;
+                this.left = this.$element.offset().left;
+                this.bottom = this.$element.offset().top + this.$element.height();
+                this.right = this.$element.offset().left + this.$element.width();
+            }
+            //'bind' allows 'this' to be used inside the function
+            updatePositionCache = updatePositionCache.bind(this);
+            //run once initially
+            updatePositionCache();
+            if (type != "bullet" && type != "player"){
+                //export the function for use later
+                this.updatePositionCache = updatePositionCache;
+            }
+            
             if (type == "player"){
-                this.oneSidePadding = ((($player.innerWidth() - $player.width()) / 2));
+                //oneSidePadding is effectively the difference between the player sprite and a perfect square (on one side)
+                // This is used to calculate more accurate-looking collision when the feet are near edges.
+                this.oneSidePadding = ((($element.innerWidth() - $element.width()) / 2));
                 this.innerWidth = $element.innerWidth();
                 this.background_position_y = -200;
                 this.background_position_x = 0;
@@ -167,7 +182,7 @@
                 this.xVelocity = 0;
                 this.shot = false;
             }else if(type == "platform"){
-                this.platform = false;   
+                this.active_platform = false;   
             }else if(type == "target"){
                 this.hit = false;
                 this.destroy = false;
@@ -203,7 +218,7 @@
                         99% {transform: translateY(300px) translateX(100px) rotate(2500deg) scale(0); visibility:hidden;}\
                         100% {transform: translateY(0px) translateX(0px) rotate(0deg) scale(1); visibility:hidden;}\
                     }\
-                  .platform {\
+                  .active_platform {\
                         transition: border 1s;\
                         border-top: 2px solid black !important;\
                     }\
@@ -227,48 +242,47 @@
                    .destroyed {\
                         visibility: hidden !important;\
                    }\
-                   .inlineFix.hit {\
-                        display:inline-block;\
-                   }\
-                   .inlineFix.destroy {\
-                        display:inline-block;\
-                   }\
-                   .inlineFix.destroyed {\
+                   .inlineFix.hit, .inlineFix.destroy, .inlineFix.destroyed {\
                         display:inline-block;\
                    }")
             .appendTo("head");
         //change page title
-        $("title").html("JumpNShoot in " + $("title").html());
+        $("title").text("JumpNShoot in " + $("title").text());
 
         //PLAYER LOOP
-        playerInterval = setInterval(function(){
+        function playerloop(){
             cachedPlayer.bottom = cachedPlayer.top + cachedPlayer.height;
             //platform collision
             for (var i = 0; i < cachedPlatforms.length; i++){
                 if (cachedPlayer.bottom >= cachedPlatforms[i].top
                     && cachedPlayer.bottom < cachedPlatforms[i].top + JumpNShoot.MAX_FALL_SPEED
                     && cachedPlayer.left + cachedPlayer.innerWidth - cachedPlayer.oneSidePadding >= cachedPlatforms[i].left 
-                    && cachedPlayer.left + cachedPlayer.oneSidePadding <= cachedPlatforms[i].left + cachedPlatforms[i].width
+                    && cachedPlayer.left + cachedPlayer.oneSidePadding <= cachedPlatforms[i].right
                     && yVelocity <= gravity){
                         landed = true;
-                        if (cachedPlatforms[i].platform == false){
-                            cachedPlatforms[i].platform = true;
-                            $platforms[i].classList.add("platform");
+                        if (cachedPlatforms[i].active_platform == false){
+                            cachedPlatforms[i].active_platform = true;
+                            $platforms[i].classList.add("active_platform");
                         }
                         if (cachedPlayer.bottom > cachedPlatforms[i].top)
                             cachedPlayer.top = cachedPlatforms[i].top - cachedPlayer.height;
                         break;
-                }else if (cachedPlayer.bottom >= $window.height() + $window.scrollTop()){
+                }else if (cachedPlayer.bottom >= document.documentElement.clientHeight + window.pageYOffset){
                         //stops falling out of the bottom of the window
                         landed = true;
-                        if (cachedPlayer.bottom > $window.height() + $window.scrollTop())
-                            cachedPlayer.top = ($window.height() + $window.scrollTop() - $player.height());
+                        if (cachedPlayer.bottom > document.documentElement.clientHeight + window.pageYOffset)
+                            cachedPlayer.top = (document.documentElement.clientHeight + window.pageYOffset - cachedPlayer.height);
+                        break;
+                }else if(cachedPlayer.top + cachedPlayer.height <= 0){
+                        //prevents being stuck above top of window
+                        landed = false;
+                        cachedPlayer.top = JumpNShoot.MAX_FALL_SPEED - cachedPlayer.height;
                         break;
                 }else{
                         landed = false;
-                        if (cachedPlatforms[i].platform == true){
-                            cachedPlatforms[i].platform = false;
-                            $platforms[i].classList.remove("platform");
+                        if (cachedPlatforms[i].active_platform == true){
+                            cachedPlatforms[i].active_platform = false;
+                            $platforms[i].classList.remove("active_platform");
                         }
                 }
             }
@@ -296,7 +310,7 @@
             if (yVelocity > 0){
                 yVelocity--;
             }
-            if (key_jump && jumpCounter > 0 && yVelocity == 0){
+            if (key_jump && jumpCounter > 0 && Math.trunc(yVelocity) == 0){
                 if (!jumping){
                     yVelocity = JumpNShoot.JUMP_VELOCITY;
                     jumpCounter--;   
@@ -308,7 +322,7 @@
 
             //crouch fall
             if (key_crouch){
-                if (crouchFallTimer < 0.5 * JumpNShoot.FRAMES_PER_SECOND){
+                if (crouchFallTimer < 0.5 * fps){
                     crouchFallTimer++;
                 }else{
                     cachedPlayer.top = cachedPlayer.top + JumpNShoot.MAX_FALL_SPEED;
@@ -344,8 +358,19 @@
             }
 
             //scroll to follow player
-            $window.scrollLeft(cachedPlayer.left - $window.width() / 2 + cachedPlayer.innerWidth / 2);
-            $window.scrollTop(cachedPlayer.top - $window.height() / 3);
+            window.scrollTo(cachedPlayer.left - $window.width() / 2 + cachedPlayer.innerWidth / 2,
+                            cachedPlayer.top - document.documentElement.clientHeight / 3 );
+
+            //Arm angle to mouse position
+            if(walkDirection == 1){
+                armAngleDeg = (Math.atan2(mousePosY - $player.offset().top - $player.height() / 2 + 26, mousePosX - $player.offset().left - $player.innerWidth() / 2) * 180 / Math.PI); 
+                armAngleRad = (Math.atan2(mousePosY - $player.offset().top - $player.height() / 2 + 26, mousePosX - $player.offset().left - $player.innerWidth() / 2));
+                //26 is the difference between the shoulder joint and the middle of the player
+            }else{
+                armAngleDeg = (-1 * (Math.atan2(mousePosY - $player.offset().top - $player.height() / 2 + 26, mousePosX - $player.offset().left - $player.innerWidth() / 2) * 180 / Math.PI) + 180);
+                armAngleRad = ((Math.atan2(mousePosY - $player.offset().top - $player.height() / 2 + 26, mousePosX - $player.offset().left - $player.innerWidth() / 2)));
+            }
+            
 
             //left and right walk
             if (key_walkR)
@@ -394,10 +419,6 @@
             if (cachedPlayer.left + cachedPlayer.oneSidePadding < 0){
                 cachedPlayer.left = -1 * cachedPlayer.oneSidePadding; 
             }
-            /*else if ($player.position().left + $player.innerWidth() - playerPadding > $window.width() + $window.scrollLeft()){
-                //$player.css("left", ($window.width() + $window.scrollLeft() - $player.innerWidth() + playerPadding) + "px");
-                $player.css("left","0");
-            }*/
 
             //WRITE CACHE TO REAL ELEMENTS
             $player.css({"top": cachedPlayer.top + "px",
@@ -405,12 +426,14 @@
                          "background-position-y": cachedPlayer.background_position_y + "px",
                          "background-position-x": cachedPlayer.background_position_x + "px",
                          "transform": "scaleX(" + walkDirection + ")"});
-
-        }, 1000 / JumpNShoot.FRAMES_PER_SECOND);
+            $arm.css("transform","rotate(" + armAngleDeg + "deg)");
+            
+            requestAnimationFrame(playerloop);
+        }
+        requestAnimationFrame(playerloop);
 
         //BULLET LOOP
-        bulletInterval = setInterval(function(){
-            cachedBullets[i]
+        function bulletLoop(){
             if(walkDirection == 1){
                 gunpointX = (cachedPlayer.left + 43) + 30 * Math.cos(armAngleRad + 0.6);
                 gunpointY = (cachedPlayer.top + 22) + 30 * Math.sin(armAngleRad + 0.6);
@@ -437,9 +460,9 @@
 
                     //out of bounds
                     if (cachedBullets[i].top + cachedBullets[i].height < 0
-                        || cachedBullets[i].top + cachedBullets[i].height + cachedBullets[i].yVelocity > $window.height() + $window.scrollTop()
+                        || cachedBullets[i].top + cachedBullets[i].height + cachedBullets[i].yVelocity > document.documentElement.clientHeight + window.pageYOffset
                         || cachedBullets[i].left + cachedBullets[i].width < 0
-                        || cachedBullets[i].left + cachedBullets[i].width + cachedBullets[i].xVelocity > $window.width() + $window.scrollLeft()){
+                        || cachedBullets[i].left + cachedBullets[i].width + cachedBullets[i].xVelocity > document.documentElement.clientWidth + window.pageXOffset){
                             if (cachedBullets[i].shot == true){
                                 cachedBullets[i].shot = false;
                                 $bullets[i].classList.remove("shot");
@@ -455,8 +478,8 @@
                         }
                         //out of bounds
                         if (cachedTargets[j].destroy == true
-                            && (cachedTargets[j].top + cachedTargets[j].height >= $window.height() + $window.scrollTop()
-                            || cachedTargets[j].left >= $window.width() + $window.scrollLeft())){
+                            && (cachedTargets[j].bottom >= document.documentElement.clientHeight + window.pageYOffset
+                            || cachedTargets[j].left >= document.documentElement.clientWidth + window.scrollLeft)){
                                 cachedTargets[j].destroy = false;
                                 cachedTargets[j].destroyed = true;
                                 $targets[j].classList.remove("destroy");
@@ -467,13 +490,14 @@
                            && cachedTargets[j].destroyed == false
                            && cachedBullets[i].shot == true
                            && cachedBullets[i].top >= cachedTargets[j].top
-                           && cachedBullets[i].top + cachedBullets[i].height <= cachedTargets[j].top + cachedTargets[j].height
+                           && cachedBullets[i].top + cachedBullets[i].height <= cachedTargets[j].bottom
                            && cachedBullets[i].left >= cachedTargets[j].left
                            && cachedBullets[i].left + cachedBullets[i].width <= cachedTargets[j].left + cachedTargets[j].width){
                                 if (cachedTargets[j].hit == false){
                                     cachedTargets[j].hit = true;
                                     $targets[j].classList.add("hit");
                                 }
+                                cachedTargets[j].hitAnimation = 1.4 * fps;
                                 cachedBullets[i].shot = false;
                                 $bullets[i].classList.remove("shot");
                                 cachedBullets[i].yVelocity = 0;
@@ -491,9 +515,7 @@
                                     $targets[j].classList.add("destroy");
                                 }
                         }else{
-                            if (cachedTargets[j].hitAnimation == 0 && cachedTargets[j].hit == true){
-                                cachedTargets[j].hitAnimation = 5000 / JumpNShoot.FRAMES_PER_SECOND;
-                            }else if(cachedTargets[j].hitAnimation > 0){
+                            if(cachedTargets[j].hitAnimation > 0){
                                 cachedTargets[j].hitAnimation = cachedTargets[j].hitAnimation - 1;
                             }else{
                                 cachedTargets[j].hit = false;
@@ -506,25 +528,27 @@
             $bullets.eq(i).css({"top": cachedBullets[i].top + "px",
                                 "left": cachedBullets[i].left + "px"});
             }
-        }, 1000 / JumpNShoot.FRAMES_PER_SECOND);
-
-        //ARM ANGLE BY MOUSE POSITION
-        window.onmousemove = function (e) {
-            if(walkDirection == 1){
-                armAngleDeg = (Math.atan2(e.pageY - $player.offset().top - $player.height() / 2 + 26, e.pageX - $player.offset().left - $player.innerWidth() / 2) * 180 / Math.PI); 
-                armAngleRad = (Math.atan2(e.pageY - $player.offset().top - $player.height() / 2 + 26, e.pageX - $player.offset().left - $player.innerWidth() / 2));
-                //26 is the difference between the shoulder joint and the middle of the player
-            }else{
-                armAngleDeg = (-1 * (Math.atan2(e.pageY - $player.offset().top - $player.height() / 2 + 26, e.pageX - $player.offset().left - $player.innerWidth() / 2) * 180 / Math.PI) + 180);
-                armAngleRad = ((Math.atan2(e.pageY - $player.offset().top - $player.height() / 2 + 26, e.pageX - $player.offset().left - $player.innerWidth() / 2)));
-            }
-
-            $arm.css("transform","rotate(" + armAngleDeg + "deg)");
+            requestAnimationFrame(bulletLoop);
         }
+        requestAnimationFrame(bulletLoop);
+
+        //Measure FPS - used to adjust durations so seconds accurately represent real seconds
+        var lastFrameStartTime = performance.now();
+        function fpsMeasure(now){
+            fps = 1000 / (now - lastFrameStartTime);
+            lastFrameStartTime = now;
+
+            requestAnimationFrame(fpsMeasure);
+        }
+        requestAnimationFrame(fpsMeasure);
 
         //CONTROLS
+        window.addEventListener('mousemove', function(e){
+            mousePosX = e.pageX;
+            mousePosY = e.pageY;
+        });
         $window.keydown(function(e){
-            if (e.keyCode != '116') //F5
+            if (e.keyCode != '116' && e.keyCode != '123') //F5, F12
                 e.preventDefault();
             if (e.keyCode == '32' || e.keyCode == '87' || e.keyCode == '38' || e.key == "ArrowUp") //SPACE W UPARROW
                 key_jump = true;
@@ -550,18 +574,18 @@
             if (e.keyCode == '16') //SHIFT
                 key_run = false;
         });
-        window.onmousedown = function (e) {
-            e.preventDefault();
-            if(e.which == 1)
+        window.addEventListener('mousedown',function(e){
+            if(e.which == 1){
+                e.preventDefault();
                 key_shoot = true;
-        }
-        window.onmouseup = function (e) {
-            //e.preventDefault();
+            }    
+        });
+        window.addEventListener('mouseup',function(e){
             if(e.which == 1)
                 key_shoot = false;
-        }
+        })
 
-        //update platform and target cache on resize
+        // update platform and target cache on resize
         var resizeTimer;
         window.addEventListener('resize', function(e){
             clearTimeout(resizeTimer);
@@ -569,20 +593,14 @@
                 //when done resizing
                 console.log("JumpNShoot: updating caches...");
                 for (var i = 0; i < cachedPlatforms.length; i++){
-                    cachedPlatforms[i].top = $platforms.eq(i).offset().top;
-                    cachedPlatforms[i].left = $platforms.eq(i).offset().left;
-                    cachedPlatforms[i].height = $platforms.eq(i).height();
-                    cachedPlatforms[i].width = $platforms.eq(i).width();
+                    cachedPlatforms[i].updatePositionCache();
                 }
                 console.log("JumpNShoot: platform cache updated");
                 for (var i = 0; i < cachedTargets.length; i++){
-                    cachedTargets[i].top = $targets.eq(i).offset().top;
-                    cachedTargets[i].left = $targets.eq(i).offset().left;
-                    cachedTargets[i].height = $targets.eq(i).height();
-                    cachedTargets[i].width = $targets.eq(i).width();
+                    cachedTargets[i].updatePositionCache();
                 }
                 console.log("JumpNShoot: target cache updated");
-            }, 1000);
+            }, 80);
         }, true);
     }
 }( window.JumpNShoot = window.JumpNShoot || {}));
