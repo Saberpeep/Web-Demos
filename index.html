@@ -64,7 +64,7 @@
                 left: 0;
                 right: 0;
                 
-                min-height: 445px;
+                min-height: 510px;
                 
                 background-image: url("images/codebg.jpg");
                 background-size: cover;
@@ -79,6 +79,10 @@
                 width: 50%;
                 height: 100%;
                 box-sizing: border-box;
+
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
                 
                 background-color:#212121;
                 
@@ -173,7 +177,7 @@
 
                 cursor: pointer;
             }
-            .demo:nth-last-child(3){
+            .demo:nth-last-child(2){
                 margin-bottom: 50px;
             }
             .data{
@@ -218,9 +222,6 @@
             }
             footer{
                 color: #424242;
-                position: absolute;
-                bottom: 0;
-                z-index: 2;
                 font-size: 90%;
             }
             footer p{
@@ -359,10 +360,10 @@
                             </code>
                             <span class="arrow">&gt;</span>
                         </div>
-                        <footer>
-                            <p>&copy; Julian Dymer 2017</p>
-                        </footer>
                     </div>
+                    <footer>
+                        <p>&copy; Julian Dymer 2017</p>
+                    </footer>
                 </div>
                 <div class="content right">
                     <h3 class="title"></h3>
