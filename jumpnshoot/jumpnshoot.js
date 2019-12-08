@@ -25,9 +25,10 @@
     };
     function loadjQ() {
         var script = document.createElement("script");
-        script.src = 'https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js';
+        script.src = 'https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js';
         script.type = 'text/javascript';
         script.onload = function() {
+            console.log("JumpNShoot: loaded jQuery", jQuery.fn.jquery);
             main();
         }
         document.getElementsByTagName("head")[0].appendChild(script);
@@ -39,37 +40,40 @@
         JumpNShoot.BULLET_SPEED = 15;
         var $window = $(window),
             $body = $(document.body),
+            //objects
             $platforms,
             cachedPlatforms = [],
             $targets,
             cachedTargets = [],
+            $bullets,
+            cachedBullets = [],
+            //physics
             gravity = 0,
-            key_walkL = false,
-            key_walkR = false,
-            key_run = false,
-            animation_walk = 0,
             xVelocity = 0,
-            adjustedxVelocity = 0,
             walkDirection = 1,
             landed = false,
-            key_jump = false,
             yVelocity = 0,
             jumping = false,
             jumpCounter = 2,
-            key_crouch = false,
             crouchFallTimer = 0,
-            $bullets,
-            cachedBullets = [],
-            key_shoot = false,
-            animation_shoot = 0,
             armAngleRad = 0,
             armAngleDeg = 0,
             bulletIndex = 0,
             gunpointX = 0,
             gunpointY = 0,
+            fps = 0,
+            //controls
+            key_walkL = false,
+            key_walkR = false,
+            key_run = false,
+            key_jump = false,
+            key_crouch = false,
+            key_shoot = false,
             mousePosX,
             mousePosY,
-            fps = 0;
+            //animation
+            animation_walk = 0,
+            animation_shoot = 0;
 
         //SETUP
         //create player element
@@ -138,14 +142,15 @@
             .not(function(){return ($(this).css("position") == "fixed")? true : false;})
             .not(function(){return ($(this).find("span, a, img, h1, h2, h3, h4, h5, li, th, td, button, input").length > 0)? true : false;});
 
-        if ($platforms.length > 500){
-            console.warn("JumpNShoot: platform array length limited to 500 (", $platforms.length, ")");
-            $platforms.slice(500).css("opacity", "0.7");
-            $platforms = $platforms.slice(0, 500);   
+        var maxItems = 1500;
+        if ($platforms.length > maxItems){
+            console.warn("JumpNShoot: platform array length limited to ", maxItems, " (", $platforms.length, ")");
+            $platforms.slice(maxItems).css("opacity", "0.7");
+            $platforms = $platforms.slice(0, maxItems);   
         }
-        if ($targets.length > 500){
-            console.warn("JumpNShoot: target array length limited to 500 (", $targets.length, ")");
-            $targets = $targets.slice(0, 500);
+        if ($targets.length > maxItems){
+            console.warn("JumpNShoot: target array length limited to ", maxItems, " (", $targets.length, ")");
+            $targets = $targets.slice(0, maxItems);
 
         }
 
@@ -177,6 +182,9 @@
                 this.innerWidth = $element.innerWidth();
                 this.background_position_y = -200;
                 this.background_position_x = 0;
+                this.arm = {
+                    background_position_x: 0, 
+                }
             }else if (type == "bullet"){
                 this.yVelocity = 0;
                 this.xVelocity = 0;
@@ -184,9 +192,9 @@
             }else if(type == "platform"){
                 this.active_platform = false;   
             }else if(type == "target"){
-                this.hit = false;
-                this.destroy = false;
-                this.destroyed = false;
+                this.hit = false; //hit wobble animation state
+                this.destroy = false; //destroy spin animation state
+                this.destroyed = false; //destroyed hidden state
                 this.hitCounter = 0;
                 this.hitAnimation = 0;
             }
@@ -254,6 +262,8 @@
             cachedPlayer.bottom = cachedPlayer.top + cachedPlayer.height;
             //platform collision
             for (var i = 0; i < cachedPlatforms.length; i++){
+                if (!isOnScreen(cachedPlatforms[i], JumpNShoot.MAX_WALK_SPEED * 1.5, JumpNShoot.MAX_FALL_SPEED)) continue;
+
                 if (cachedPlayer.bottom >= cachedPlatforms[i].top
                     && cachedPlayer.bottom < cachedPlatforms[i].top + JumpNShoot.MAX_FALL_SPEED
                     && cachedPlayer.left + cachedPlayer.innerWidth - cachedPlayer.oneSidePadding >= cachedPlatforms[i].left 
@@ -265,10 +275,11 @@
                             $platforms[i].classList.add("active_platform");
                         }
                         if (cachedPlayer.bottom > cachedPlatforms[i].top)
+                            //prevents falling through platforms
                             cachedPlayer.top = cachedPlatforms[i].top - cachedPlayer.height;
                         break;
                 }else if (cachedPlayer.bottom >= document.documentElement.clientHeight + window.pageYOffset){
-                        //stops falling out of the bottom of the window
+                        //prevents falling out of the bottom of the window
                         landed = true;
                         if (cachedPlayer.bottom > document.documentElement.clientHeight + window.pageYOffset)
                             cachedPlayer.top = (document.documentElement.clientHeight + window.pageYOffset - cachedPlayer.height);
@@ -287,7 +298,7 @@
                 }
             }
             if (!landed){
-                cachedPlayer.background_position_y = 0;
+                cachedPlayer.background_position_y = 0; //falling sprites
                 if(gravity < JumpNShoot.MAX_FALL_SPEED){
                     gravity += 1;
                 }
@@ -301,11 +312,11 @@
                 jumpCounter = 0;
             }
             if (yVelocity > gravity)
-                cachedPlayer.background_position_y = -100;
+                cachedPlayer.background_position_y = -100; //jumping sprites
             if (landed){
                 yVelocity = 0;
                 jumpCounter = 2;
-                cachedPlayer.background_position_y = -200;
+                cachedPlayer.background_position_y = -200; //walking sprites
             }
             if (yVelocity > 0){
                 yVelocity--;
@@ -349,12 +360,12 @@
                     }
                 }
                 animation_shoot += 0.2;
-                $arm.css("background-position-x", (Math.trunc(animation_shoot) * -100) + "px");
+                cachedPlayer.arm.background_position_x = (Math.trunc(animation_shoot) * -100);
                 if (animation_shoot > 3)
                     animation_shoot = 0;
             }else{
                 animation_shoot = 0;
-                $arm.css("background-position-x", "0px");
+                cachedPlayer.arm.background_position_x = 0;
             }
 
             //scroll to follow player
@@ -362,16 +373,10 @@
                             cachedPlayer.top - document.documentElement.clientHeight / 3 );
 
             //Arm angle to mouse position
-            if(walkDirection == 1){
-                armAngleDeg = (Math.atan2(mousePosY - $player.offset().top - $player.height() / 2 + 26, mousePosX - $player.offset().left - $player.innerWidth() / 2) * 180 / Math.PI); 
-                armAngleRad = (Math.atan2(mousePosY - $player.offset().top - $player.height() / 2 + 26, mousePosX - $player.offset().left - $player.innerWidth() / 2));
-                //26 is the difference between the shoulder joint and the middle of the player
-            }else{
-                armAngleDeg = (-1 * (Math.atan2(mousePosY - $player.offset().top - $player.height() / 2 + 26, mousePosX - $player.offset().left - $player.innerWidth() / 2) * 180 / Math.PI) + 180);
-                armAngleRad = ((Math.atan2(mousePosY - $player.offset().top - $player.height() / 2 + 26, mousePosX - $player.offset().left - $player.innerWidth() / 2)));
-            }
+            armAngleDeg = (walkDirection * Math.atan2(mousePosY - $player.offset().top - $player.height() / 2 + 26, mousePosX - $player.offset().left - $player.innerWidth() / 2) * 180 / Math.PI) + ((walkDirection > 0)? 0 : 180); 
+            armAngleRad = (Math.atan2(mousePosY - $player.offset().top - $player.height() / 2 + 26, mousePosX - $player.offset().left - $player.innerWidth() / 2));
+            //26 is the difference between the shoulder joint and the middle of the player
             
-
             //left and right walk
             if (key_walkR)
                 walkDirection = 1;
@@ -404,18 +409,17 @@
             }
 
             //speed adjustments
+            var xVelocityAdj = 1;
             if (key_crouch)
-                adjustedxVelocity = xVelocity * 0.2;
+                xVelocityAdj = 0.2;
             else if (key_run)
-                adjustedxVelocity = xVelocity * 1.5;
-            else
-                adjustedxVelocity = xVelocity;
+                xVelocityAdj = 1.5;
 
             //MAIN POSITION OUTPUT
             cachedPlayer.top = (cachedPlayer.top + gravity - yVelocity);
-            cachedPlayer.left = (cachedPlayer.left + adjustedxVelocity * walkDirection);
+            cachedPlayer.left = (cachedPlayer.left + xVelocity * xVelocityAdj * walkDirection);
 
-            //LRedge constraints
+            //left screen edge constraint
             if (cachedPlayer.left + cachedPlayer.oneSidePadding < 0){
                 cachedPlayer.left = -1 * cachedPlayer.oneSidePadding; 
             }
@@ -426,7 +430,8 @@
                          "background-position-y": cachedPlayer.background_position_y + "px",
                          "background-position-x": cachedPlayer.background_position_x + "px",
                          "transform": "scaleX(" + walkDirection + ")"});
-            $arm.css("transform","rotate(" + armAngleDeg + "deg)");
+            $arm.css({"transform": "rotate(" + armAngleDeg + "deg)",
+                      "background-position-x": cachedPlayer.arm.background_position_x + "px"});
             
             requestAnimationFrame(playerloop);
         }
@@ -446,6 +451,7 @@
             }
             for(var i = 0; i < cachedBullets.length; i++){
                 if (!cachedBullets[i].shot){
+                    //hide unfired bullets near the top left
                     cachedBullets[i].top = -5;
                     cachedBullets[i].left = -5;
                 }else{
@@ -458,12 +464,9 @@
                     cachedBullets[i].top = (cachedBullets[i].top + cachedBullets[i].yVelocity);
                     cachedBullets[i].left = (cachedBullets[i].left + cachedBullets[i].xVelocity);
 
-                    //out of bounds
-                    if (cachedBullets[i].top + cachedBullets[i].height < 0
-                        || cachedBullets[i].top + cachedBullets[i].height + cachedBullets[i].yVelocity > document.documentElement.clientHeight + window.pageYOffset
-                        || cachedBullets[i].left + cachedBullets[i].width < 0
-                        || cachedBullets[i].left + cachedBullets[i].width + cachedBullets[i].xVelocity > document.documentElement.clientWidth + window.pageXOffset){
-                            if (cachedBullets[i].shot == true){
+                    //bullet out of bounds
+                    if (cachedBullets[i].shot && !isOnScreen(cachedBullets[i], cachedBullets[i].xVelocity, cachedBullets[i].yVelocity)){
+                            if (cachedBullets[i].shot){
                                 cachedBullets[i].shot = false;
                                 $bullets[i].classList.remove("shot");
                             }
@@ -476,7 +479,7 @@
                         if (cachedTargets[j].destroyed == true){
                             continue;
                         }
-                        //out of bounds
+                        //animation out of bounds
                         if (cachedTargets[j].destroy == true
                             && (cachedTargets[j].bottom >= document.documentElement.clientHeight + window.pageYOffset
                             || cachedTargets[j].left >= document.documentElement.clientWidth + window.scrollLeft)){
@@ -486,6 +489,7 @@
                                 $targets[j].classList.add("destroyed");
                                 continue;
                         }
+
                         if(cachedTargets[j].destroy == false
                            && cachedTargets[j].destroyed == false
                            && cachedBullets[i].shot == true
@@ -521,7 +525,7 @@
                                 cachedTargets[j].hit = false;
                                 $targets[j].classList.remove("hit");
                                 cachedTargets[j].hitAnimation = 0;   
-                            }   
+                            }
                         }
                     }
             //WRITE CACHED BULLETS TO REAL BULLETS
@@ -531,6 +535,22 @@
             requestAnimationFrame(bulletLoop);
         }
         requestAnimationFrame(bulletLoop);
+
+        //frustrum culling
+        function isOnScreen(cacheItem, xVelocity, yVelocity){
+            if(!xVelocity) xVelocity = 0;
+            if(!yVelocity) yVelocity = 0;
+            if (!cacheItem instanceof cachedShape) throw new Error('isOnScreen requires instanceof cachedShape');
+
+            if (cacheItem.top < window.pageYOffset + document.documentElement.clientHeight - yVelocity //bottom
+                && cacheItem.top + cacheItem.height > window.pageYOffset + yVelocity //top
+                && cacheItem.left < window.pageXOffset + document.documentElement.clientWidth - xVelocity //right
+                && cacheItem.left + cacheItem.width > window.pageXOffset + xVelocity //left
+            ){
+                return true;
+            }
+            return false;
+        }
 
         //Measure FPS - used to adjust durations so seconds accurately represent real seconds
         var lastFrameStartTime = performance.now();
@@ -547,43 +567,41 @@
             mousePosX = e.pageX;
             mousePosY = e.pageY;
         });
-        $window.keydown(function(e){
-            if (e.keyCode != '116' && e.keyCode != '123') //F5, F12
-                e.preventDefault();
-            if (e.keyCode == '32' || e.keyCode == '87' || e.keyCode == '38' || e.key == "ArrowUp") //SPACE W UPARROW
-                key_jump = true;
-            if (e.keyCode == '65' || e.keycode == '37' || e.key == "ArrowLeft") //A LEFTARROW
-                key_walkL = true;
-            if (e.keyCode == '68' || e.keycode == '39' || e.key == "ArrowRight") //D RIGHTARROW
-                key_walkR = true;
-            if (e.keyCode == '83' || e.keycode == '40' || e.key == "ArrowDown") //S DOWNARROW
-                key_crouch = true;
-            if (e.keyCode == '16') //SHIFT
-                key_run = true;
-        });
-        $window.keyup(function(e){
-            e.preventDefault();
-            if (e.keyCode == '32' || e.keyCode == '87' || e.keyCode == '38' || e.key == "ArrowUp") //SPACE W UPARROW
-                key_jump = false;
-            if (e.keyCode == '65' || e.keycode == '37' || e.key == "ArrowLeft") //A LEFTARROW
-                key_walkL = false;
-            if (e.keyCode == '68' || e.keycode == '39' || e.key == "ArrowRight") //D RIGHTARROW
-                key_walkR = false;
-            if (e.keyCode == '83' || e.keycode == '40' || e.key == "ArrowDown") //S DOWNARROW
-                key_crouch = false;
-            if (e.keyCode == '16') //SHIFT
-                key_run = false;
-        });
-        window.addEventListener('mousedown',function(e){
-            if(e.which == 1){
-                e.preventDefault();
-                key_shoot = true;
-            }    
-        });
-        window.addEventListener('mouseup',function(e){
-            if(e.which == 1)
-                key_shoot = false;
-        })
+
+        $window.keydown(keyHandler(true));
+        $window.keyup(keyHandler(false));
+        function keyHandler(state){
+            return function(e){
+                var captured = true;
+
+                if (e.keyCode == '32' || e.keyCode == '87' || e.keyCode == '38' || e.key == "ArrowUp") //SPACE W UPARROW
+                    key_jump = state;
+                else if (e.keyCode == '65' || e.keycode == '37' || e.key == "ArrowLeft") //A LEFTARROW
+                    key_walkL = state;
+                else if (e.keyCode == '68' || e.keycode == '39' || e.key == "ArrowRight") //D RIGHTARROW
+                    key_walkR = state;
+                else if (e.keyCode == '83' || e.keycode == '40' || e.key == "ArrowDown") //S DOWNARROW
+                    key_crouch = state;
+                else if (e.keyCode == '16') //SHIFT
+                    key_run = state;
+                else 
+                    captured = false;
+
+                if (captured) e.preventDefault();
+            }
+        }
+
+        window.addEventListener('mousedown', clickHandler(true));
+        window.addEventListener('mouseup', clickHandler(false))
+        window.addEventListener('click', function(e){e.preventDefault();}); //prevents clicking links
+        function clickHandler(state){
+            return function(e){
+                if(e.which == 1){
+                    e.preventDefault(); //prevents dragging text selection
+                    key_shoot = state;
+                }
+            }
+        }
 
         // update platform and target cache on resize
         var resizeTimer;
@@ -591,16 +609,23 @@
             clearTimeout(resizeTimer);
             resizeTimer = setTimeout(function() {
                 //when done resizing
-                console.log("JumpNShoot: updating caches...");
+                var then = performance.now();
+                
                 for (var i = 0; i < cachedPlatforms.length; i++){
                     cachedPlatforms[i].updatePositionCache();
                 }
-                console.log("JumpNShoot: platform cache updated");
+
+                var now = performance.now();
+                console.log("JumpNShoot: platform cache updated (" + Math.trunc(now - then) + "ms)");
+                then = now;
+
                 for (var i = 0; i < cachedTargets.length; i++){
                     cachedTargets[i].updatePositionCache();
                 }
-                console.log("JumpNShoot: target cache updated");
-            }, 80);
+                
+                now = performance.now();
+                console.log("JumpNShoot: target cache updated (" + Math.trunc(now - then) + "ms)");
+            }, 500);
         }, true);
     }
 }( window.JumpNShoot = window.JumpNShoot || {}));
