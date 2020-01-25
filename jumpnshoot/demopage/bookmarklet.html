@@ -148,7 +148,7 @@
                         xhttp.send();
                     });
                 }
-                getTextFile("bookmarklet.txt").then(function(res){
+                getTextFile("../bookmarklet.txt").then(function(res){
                     document.querySelector('#bookmarklet_link').setAttribute('href', res);
                 });
             });
