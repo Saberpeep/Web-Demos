@@ -118,6 +118,8 @@ body {
     
     text-align: center;
     white-space: nowrap;
+    
+    backface-visibility: hidden;
 }
 .side:before {
     content: '';

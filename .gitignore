@@ -1,0 +1,7 @@
+*.psd
+*.url
+*backup.*
+*/backup
+/backup
+*/node_modules
+/indev
