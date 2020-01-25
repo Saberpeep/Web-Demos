@@ -111,7 +111,7 @@
     <body>
         <div id="outer-wrap">
             <div class="infobox bookmarklet-message-1">
-                <h4>Now you're ready to Jump'N'Shoot!</h4><p>drag this <br /><code><a href="javascript:(function()%7Bfunction%20callback()%7BJumpNShoot.start()%3B%7Dvar%20s%3Ddocument.createElement(%22script%22)%3Bs.src%3D%22https%3A%2F%2Fsaberpeep.github.io%2Fweb-demos%2Fjumpnshoot%2Fjumpnshoot.js%22%3Bif(s.addEventListener)%7Bs.addEventListener(%22load%22%2Ccallback%2Cfalse)%7Delse%20if(s.readyState)%7Bs.onreadystatechange%3Dcallback%7Ddocument.body.appendChild(s)%3B%7D)()">JumpNShoot Bookmarklet<span></span></a></code><br /> link into your bookmarks bar <code>⤴</code></p>
+                <h4>Now you're ready to Jump'N'Shoot!</h4><p>drag this <br /><code><a id="bookmarklet_link">JumpNShoot Bookmarklet<span></span></a></code><br /> link into your bookmarks bar <code>⤴</code></p>
             </div>
             <div class="infobox bookmarklet-message-2">
                 <p>Navigate to almost any site and click that bookmark in your bookmarks bar to load Jump'N'Shoot into that page!</p>
@@ -127,12 +127,30 @@
         <script>
             JumpNShoot = {};
             $(function(){
+                //fade out dummy player if user loads actual jumpnshoot into page
                 var waitInterval = setInterval(function(){
                     if (JumpNShoot.ALREADY_RUNNING){
                         $("#dummyplayer").fadeTo(1500,0.7);
                         clearInterval(waitInterval);
                     }
                 },1000);
+
+                //get bookmarklet content and insert into link
+                function getTextFile(url){
+                    return new Promise(function(resolve, reject){
+                        var xhttp = new XMLHttpRequest();
+                        xhttp.onreadystatechange = function() {
+                            if (this.readyState == 4 && this.status == 200) {
+                                resolve(this.responseText);
+                            }
+                        };
+                        xhttp.open("GET", url, true);
+                        xhttp.send();
+                    });
+                }
+                getTextFile("bookmarklet.txt").then(function(res){
+                    document.querySelector('#bookmarklet_link').setAttribute('href', res);
+                });
             });
         </script>
     </body>
