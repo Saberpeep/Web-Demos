@@ -593,12 +593,16 @@
 
         window.addEventListener('mousedown', clickHandler(true));
         window.addEventListener('mouseup', clickHandler(false))
-        window.addEventListener('click', function(e){e.preventDefault();}); //prevents clicking links
+        window.addEventListener('click', clickHandler());
         function clickHandler(state){
             return function(e){
                 if(e.which == 1){
-                    e.preventDefault(); //prevents dragging text selection
-                    key_shoot = state;
+                    if (e.target.classList.contains('jumpnshoot-click-allowed')){
+                        key_shoot = false;
+                    }else{
+                        e.preventDefault(); //prevents dragging text selection
+                        if(state !== undefined) key_shoot = state;
+                    }
                 }
             }
         }
