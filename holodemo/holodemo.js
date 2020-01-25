@@ -85,13 +85,12 @@ $(function() {
             };
         };
     //rotate on mouse wheel
-    $(window).mousewheel(function(e, delta) {
+    window.addEventListener('wheel', function(e){
+        var delta = (e.deltaY > 0)? 1 : -1;
         offset += (delta * 90);
         
         shiftActiveSide(delta);
         setRotationStyles(offset);
-        
-        e.preventDefault();
     });
     //rotate on touch swipe
     $("#demowrap")

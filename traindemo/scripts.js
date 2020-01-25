@@ -140,9 +140,9 @@ $(function() {
             };
         };
     //shift on mouse wheel
-    $(window).mousewheel(function(e, delta) {
+    window.addEventListener('wheel', function(e){
+        var delta = (e.deltaY < 0)? 1 : -1;
         shiftActiveCar(delta);
-        e.preventDefault();
     });
     //shift on touch swipe
     $("#demowrap")
